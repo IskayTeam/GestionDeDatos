@@ -5,6 +5,8 @@
  */
 package controlador;
 
+import vista.PantallaPrincipal;
+
 /**
  *
  * @author Luca
@@ -15,10 +17,13 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         
-        //CHUPAME UN HUEVO :D
-        //y ella?
+        System.out.println("CHUPAME LA PIJA :D");
+        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+        pantallaPrincipal.setVisible(true);
+        pantallaPrincipal.setLocationRelativeTo(null);
+        
+        
     }
     
 }
