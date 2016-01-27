@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package modelo.liquidacion;
 
 import java.util.Date;
 
@@ -45,6 +45,11 @@ public class Obrero {
 
     public int getCuil() {
         return cuil;
+    }
+
+    @Override
+    public String toString() {
+        return "Obrero{" + "idObrero=" + idObrero + ", nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", dni=" + dni + ", cuil=" + cuil + '}';
     }
     
     

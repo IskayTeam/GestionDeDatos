@@ -6,7 +6,7 @@
 package controlador;
 
 import java.util.ArrayList;
-import modelo.Administrativo;
+import modelo.liquidacion.Administrativo;
 
 /**
  *
