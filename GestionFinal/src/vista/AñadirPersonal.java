@@ -245,7 +245,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int codigo = Integer.parseInt(getCampoIdObrero().getText());
+        
         String nombre = getCampoNombreObrero().getText();
         int dni = Integer.parseInt(getCampoDniObrero().getText());
         int cuil = Integer.parseInt(getCampoCuilObrero().getText()); 
