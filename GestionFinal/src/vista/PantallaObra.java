@@ -68,11 +68,19 @@ public class PantallaObra extends javax.swing.JDialog {
 
         jLabel1.setText("Obra Actual:");
 
+        jTextField1.setEditable(false);
+
         jLabel2.setText("Dirección:");
 
         jLabel3.setText("Fecha de Inicio:");
 
         jLabel4.setText("Fecha estimada de finalizacion:");
+
+        jTextField2.setEditable(false);
+
+        jTextField3.setEditable(false);
+
+        jTextField4.setEditable(false);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -263,7 +271,7 @@ public class PantallaObra extends javax.swing.JDialog {
     }//GEN-LAST:event_jTextField8ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        PantallaCompra pantallaCompra = new PantallaCompra(null, true);
+        NuevaCompra pantallaCompra = new NuevaCompra(null, true);
         pantallaCompra.setLocationRelativeTo(this);
         pantallaCompra.setVisible(true);
         ControladorCompra.nuevaCompra();

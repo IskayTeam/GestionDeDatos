@@ -5,7 +5,7 @@
  */
 package controlador;
 
-import vista.PantallaPrincipal;
+import vista.PantallaAdmin;
 
 /**
  *
@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         
         System.out.println("CHUPAME LA PIJA :D");
-        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
+        PantallaAdmin pantallaPrincipal = new PantallaAdmin();
         pantallaPrincipal.setVisible(true);
         pantallaPrincipal.setLocationRelativeTo(null);
         
