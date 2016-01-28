@@ -104,12 +104,10 @@ public class NuevaCompra extends javax.swing.JDialog {
         campoNombreProveedor = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         campoDireccionProveedor = new javax.swing.JTextField();
-        botonBuscarProveedor = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         campoCodigoMaterial = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
         campoDescripcionMaterial = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         campoPrecioMaterial = new javax.swing.JTextField();
@@ -117,11 +115,13 @@ public class NuevaCompra extends javax.swing.JDialog {
         campoCantidad = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        botonAgregarLinea = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         campoTotalCompra = new javax.swing.JTextField();
         botonFinalizarCompra = new javax.swing.JButton();
         botonCancelarCompra = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -145,27 +145,21 @@ public class NuevaCompra extends javax.swing.JDialog {
 
         jLabel3.setText("Nombre:");
 
+        campoNombreProveedor.setEditable(false);
+
         jLabel4.setText("Dirección:");
 
-        botonBuscarProveedor.setText("Buscar");
-        botonBuscarProveedor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonBuscarProveedorActionPerformed(evt);
-            }
-        });
+        campoDireccionProveedor.setEditable(false);
 
         jLabel5.setText("Codigo Material:");
 
         jLabel6.setText("Descripcion:");
 
-        jButton2.setText("Buscar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        campoDescripcionMaterial.setEditable(false);
 
         jLabel7.setText("Precio:");
+
+        campoPrecioMaterial.setEditable(false);
 
         jLabel8.setText("Cantidad:");
 
@@ -190,19 +184,37 @@ public class NuevaCompra extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        botonAgregarLinea.setText("Agregar");
-        botonAgregarLinea.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAgregarLineaActionPerformed(evt);
-            }
-        });
-
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("TOTAL:");
 
         botonFinalizarCompra.setText("Finalizar");
 
         botonCancelarCompra.setText("Cancelar");
+        botonCancelarCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarCompraActionPerformed(evt);
+            }
+        });
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/11564764-vector-de-agregar-eliminar-o-mostrar-ocultar-los-botones-de-colores-Foto-de-archivo.png"))); // NOI18N
+        jButton3.setText("jButton3");
+        jButton3.setMargin(new java.awt.Insets(2, 29, 2, 14));
+        jButton3.setMaximumSize(new java.awt.Dimension(121, 37));
+        jButton3.setMinimumSize(new java.awt.Dimension(121, 37));
+        jButton3.setPreferredSize(new java.awt.Dimension(107, 35));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ico_buscar_tbjo.png"))); // NOI18N
+        jButton1.setText("jButton1");
+        jButton1.setMargin(new java.awt.Insets(2, 29, 2, 14));
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ico_buscar_tbjo.png"))); // NOI18N
+        jButton4.setText("jButton1");
+        jButton4.setMargin(new java.awt.Insets(2, 29, 2, 14));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -225,8 +237,8 @@ public class NuevaCompra extends javax.swing.JDialog {
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(campoCodigoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonBuscarProveedor)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
@@ -245,8 +257,9 @@ public class NuevaCompra extends javax.swing.JDialog {
                                         .addComponent(jLabel5)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(campoCodigoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(16, 16, 16)
-                                        .addComponent(jButton2))
+                                        .addGap(37, 37, 37)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(19, 19, 19))
                                     .addComponent(jLabel7))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
@@ -264,8 +277,8 @@ public class NuevaCompra extends javax.swing.JDialog {
                                         .addComponent(jLabel8)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(campoCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(35, 35, 35)
-                                        .addComponent(botonAgregarLinea))))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -284,13 +297,13 @@ public class NuevaCompra extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(22, 22, 22)
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(campoCodigoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(campoNombreProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonBuscarProveedor))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -303,7 +316,7 @@ public class NuevaCompra extends javax.swing.JDialog {
                         .addComponent(jLabel5)
                         .addComponent(jLabel6)
                         .addComponent(campoCodigoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(campoDescripcionMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -311,7 +324,7 @@ public class NuevaCompra extends javax.swing.JDialog {
                     .addComponent(campoPrecioMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(campoCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonAgregarLinea))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
@@ -322,7 +335,7 @@ public class NuevaCompra extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonFinalizarCompra)
                     .addComponent(botonCancelarCompra))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -332,25 +345,14 @@ public class NuevaCompra extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoCantidadActionPerformed
 
-    private void botonBuscarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarProveedorActionPerformed
-        int codigo = Integer.parseInt(getCampoCodigoProveedor().getText());
-        controlador.buscarProveedor(codigo);
-    }//GEN-LAST:event_botonBuscarProveedorActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int codigo = Integer.parseInt(getCampoCodigoMaterial().getText());
-        m = controlador.buscarMaterial(codigo);
- 
-        getCampoDescripcionMaterial().setText(m.getDescripcion());
-        getCampoPrecioMateiral().setText("" + m.getPrecio());
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void botonAgregarLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAgregarLineaActionPerformed
-        int cantidad = Integer.parseInt(getCampoCantidad().getText());
-        controlador.agregarLinea(cantidad);
-    }//GEN-LAST:event_botonAgregarLineaActionPerformed
+    private void botonCancelarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarCompraActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_botonCancelarCompraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,8 +398,6 @@ public class NuevaCompra extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonAgregarLinea;
-    private javax.swing.JButton botonBuscarProveedor;
     private javax.swing.JButton botonCancelarCompra;
     private javax.swing.JButton botonFinalizarCompra;
     private javax.swing.JTextField campoCantidad;
@@ -408,7 +408,9 @@ public class NuevaCompra extends javax.swing.JDialog {
     private javax.swing.JTextField campoNombreProveedor;
     private javax.swing.JTextField campoPrecioMaterial;
     private javax.swing.JTextField campoTotalCompra;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

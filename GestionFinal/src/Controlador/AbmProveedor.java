@@ -17,9 +17,9 @@ public class AbmProveedor {
     
     private static ArrayList<Proveedor> proveedores = new ArrayList<>();
     
-    public static void agregarProveedor(int idProveedor, String nombre, String direccion , int cuit, int telefono){
+    public static void agregarProveedor(String nombre, String direccion , int cuit, int telefono){
         
-        Proveedor proveedor = new Proveedor(idProveedor, nombre, direccion, cuit, telefono);
+        Proveedor proveedor = new Proveedor(nombre, direccion, cuit, telefono);
         
         proveedores.add(proveedor);
         

@@ -6,6 +6,7 @@
 package vista;
 
 import controlador.AbmProveedor;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,7 +32,6 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
@@ -59,14 +59,6 @@ public class PantallaAdmin extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jMenu1.setText("Usuario");
-
-        jMenuItem7.setText("Iniciar Sesión");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem7);
 
         jMenuItem8.setText("Cerrar Sesión");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +109,11 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jMenu4.add(jMenuItem4);
 
         jMenuItem5.setText("Listado de Personal");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem5);
 
         jMenuBar1.add(jMenu4);
@@ -183,7 +180,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
         jMenu9.setText("Liquidación");
 
-        jMenuItem14.setText("Nueva Compra");
+        jMenuItem14.setText("Nueva Liquidación");
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem14ActionPerformed(evt);
@@ -191,7 +188,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
         });
         jMenu9.add(jMenuItem14);
 
-        jMenuItem15.setText("Listado de Compra");
+        jMenuItem15.setText("Listado de Conceptos");
         jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem15ActionPerformed(evt);
@@ -256,22 +253,35 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
+        PantallaObra obra = new PantallaObra(this, true);
+        obra.setVisible(true);
+        obra.setLocationRelativeTo(null);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
-
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
+        int dialog = JOptionPane.showConfirmDialog(this, "Seguro desea cerrar sesión?");
+        if(dialog == JOptionPane.YES_OPTION){
+        PantallaPrincipal pp = new PantallaPrincipal();
+        pp.setVisible(true);
+        pp.setLocationRelativeTo(null);
+        this.setVisible(false);
+        }else{
+        this.setVisible(true);
+        }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+        ListaProveedor listaprov = new ListaProveedor(this, true);
+        listaprov.setLocationRelativeTo(this);
+        listaprov.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -284,6 +294,9 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
+        NuevaCompra compranueva = new NuevaCompra(this, true);
+        compranueva.setLocationRelativeTo(this);
+        compranueva.setVisible(true);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
@@ -305,6 +318,14 @@ public class PantallaAdmin extends javax.swing.JFrame {
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem17ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        ListaPersonal lista = new ListaPersonal(this, true);
+        lista.setLocationRelativeTo(this);
+        lista.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -366,7 +387,6 @@ public class PantallaAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables

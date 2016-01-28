@@ -20,8 +20,8 @@ public class Proveedor {
     private String direccion;
     private ArrayList<Material> materiales;
 
-    public Proveedor(int idProveedor, String nombre, String direccion  , int cuit, int telefono) {
-        this.idProveedor = idProveedor;
+    public Proveedor(String nombre, String direccion  , int cuit, int telefono) {
+        
         this.nombre = nombre;
         this.telefono = telefono;
         this.cuit = cuit;
