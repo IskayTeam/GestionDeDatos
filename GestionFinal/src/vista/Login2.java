@@ -5,26 +5,88 @@
  */
 package vista;
 
-import java.sql.*;
+import Controlador.conectar;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import Controlador.conectar;
 
 /**
  *
  * @author Fran
  */
-public class Login extends javax.swing.JFrame {
+public class Login2 extends javax.swing.JDialog {
 
     /**
-     * Creates new form Login
+     * Creates new form Login2
      */
-    public Login() {
+    public Login2(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-        setLocationRelativeTo(null);
+    }
+    
+    
+    
+    void acceder(String usuario, String password) {
+        String tip = "";
+        String sql = "SELECT * FROM usuario WHERE user='" + usuario + "' && password='" + password + "'";
+
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                tip = rs.getString("tipoUsuario");
+
+            }
+            if (tip.equals("Administrador")) {
+                this.setVisible(false);
+                JOptionPane.showMessageDialog(null, "BIENVENIDO ADMIN");
+                this.dispose();
+                PantallaAdmin admin = new PantallaAdmin();
+                admin.setVisible(true);
+                admin.setLocationRelativeTo(null);
+
+            }
+            if (tip.equals("Ventas")) {
+                this.setVisible(false);
+                JOptionPane.showMessageDialog(null, "BIENVENIDO A VENTAS");
+                this.dispose();
+                PantallaVentas ventas = new PantallaVentas();
+                ventas.setVisible(true);
+                ventas.setLocationRelativeTo(null);
+            }
+
+            if (tip.equals("Compras")) {
+                this.setVisible(false);
+                JOptionPane.showMessageDialog(null, "BIENVENIDO A COMPRAS");
+                this.dispose();
+                PantallaCompras compras = new PantallaCompras();
+                compras.setVisible(true);
+                compras.setLocationRelativeTo(null);
+            }
+            if (tip.equals("Liquidaciones")) {
+                this.setVisible(false);
+                JOptionPane.showMessageDialog(null, "BIENVENIDO A LIQUIDACIONES");
+                this.dispose();
+                PantallaLiquidaciones liquidaciones = new PantallaLiquidaciones();
+                liquidaciones.setVisible(true);
+                liquidaciones.setLocationRelativeTo(null);
+
+            }
+            if ((!tip.equals("Administrador")) && (!tip.equals("Compras")) && (!tip.equals("Ventas")) && (!tip.equals("Liquidaciones"))) {
+                JOptionPane.showMessageDialog(null, "Datos incorrectos, vuelva a ingresar");
+                jTextField1.setText(null);
+                jPasswordField1.setText(null);
+                jTextField1.requestFocus();
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Login2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -37,17 +99,16 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
+        btnAceptar = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Login");
 
         jLabel1.setText("Usuario:");
-
-        jLabel2.setText("Contraseña:");
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,10 +116,17 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Aceptar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Contraseña:");
+
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAceptarActionPerformed(evt);
+            }
+        });
+        btnAceptar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAceptarKeyPressed(evt);
             }
         });
 
@@ -77,7 +145,7 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addComponent(jButton1)
+                        .addComponent(btnAceptar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
@@ -89,7 +157,7 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(jPasswordField1))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(97, 97, 97))
         );
@@ -106,94 +174,34 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnAceptar)
                     .addComponent(jButton2))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    void acceder(String usuario, String password){
-        String tip = "";
-        String sql = "SELECT * FROM usuario WHERE user='"+usuario+"' && password='"+password+"'";
-        
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                tip=rs.getString("tipoUsuario");
-                
-            }
-            if(tip.equals("Administrador")){
-                this.setVisible(false);
-                JOptionPane.showMessageDialog(null, "BIENVENIDO ADMIN");
-                this.dispose();
-                PantallaAdmin admin = new PantallaAdmin();
-                admin.setVisible(true);
-                admin.setLocationRelativeTo(null);
-                
-            }
-            if(tip.equals("Ventas")){
-            this.setVisible(false);
-            JOptionPane.showMessageDialog(null, "BIENVENIDO A VENTAS");
-            this.dispose();
-            }
-            if(tip.equals("Compras")){
-            this.setVisible(false);
-            JOptionPane.showMessageDialog(null, "BIENVENIDO A COMPRAS");
-            this.dispose();
-            PantallaCompras compras = new PantallaCompras();
-                compras.setVisible(true);
-                compras.setLocationRelativeTo(null);
-            
-            }
-            if((!tip.equals("Administrador")) && (!tip.equals("Compras")) && (!tip.equals("Ventas"))){
-            JOptionPane.showMessageDialog(null, "Datos incorrectos, vuelva a ingresar");
-            jTextField1.setText(null);
-            jPasswordField1.setText(null);
-            jTextField1.requestFocus();
-            
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
     
-    }
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        String usu = jTextField1.getText();
-        String pass = new String (jPasswordField1.getPassword());
-        acceder(usu, pass);
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    public JPasswordField getjPasswordField1() {
-        return jPasswordField1;
-    }
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        String usu = jTextField1.getText();
+        String pass = new String(jPasswordField1.getPassword());
+        acceder(usu, pass);
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
-    public void setjPasswordField1(JPasswordField jPasswordField1) {
-        this.jPasswordField1 = jPasswordField1;
-    }
+    private void btnAceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAceptarKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptarKeyPressed
 
-    public JTextField getjTextField1() {
-        return jTextField1;
-    }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        dispose();
 
-    public void setjTextField1(JTextField jTextField1) {
-        this.jTextField1 = jTextField1;
-    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,26 +220,33 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                Login2 dialog = new Login2(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

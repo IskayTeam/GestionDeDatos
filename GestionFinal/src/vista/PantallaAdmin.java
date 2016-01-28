@@ -240,7 +240,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         
-        GestionarProveedor pantallaProveedor = new GestionarProveedor(this, true);
+        AltaProveedor pantallaProveedor = new AltaProveedor(this, true);
         pantallaProveedor.setLocationRelativeTo(this);
         pantallaProveedor.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -254,8 +254,9 @@ public class PantallaAdmin extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
         PantallaObra obra = new PantallaObra(this, true);
+        obra.setLocationRelativeTo(this);
         obra.setVisible(true);
-        obra.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed

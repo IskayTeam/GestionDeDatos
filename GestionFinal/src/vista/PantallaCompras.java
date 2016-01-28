@@ -41,6 +41,7 @@ public class PantallaCompras extends javax.swing.JFrame {
         jMenuItem17 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Compra");
 
         jMenu3.setText("Usuario");
 

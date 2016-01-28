@@ -7,7 +7,7 @@ package controlador;
 
 import java.util.ArrayList;
 import modelo.compra.Proveedor;
-import vista.GestionarProveedor;
+import vista.AltaProveedor;
 
 /**
  *
