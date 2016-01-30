@@ -33,6 +33,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -67,6 +68,14 @@ public class PantallaAdmin extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem8);
+
+        jMenuItem7.setText("Crear nuevo usuario");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem7);
 
         jMenuItem9.setText("Salir");
         jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
@@ -328,6 +337,13 @@ public class PantallaAdmin extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        NuevoUsuario usuarionuevo = new NuevoUsuario(this, true);
+        usuarionuevo.setLocationRelativeTo(this);
+        usuarionuevo.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -388,6 +404,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables

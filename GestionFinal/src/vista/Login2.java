@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -31,9 +32,11 @@ public class Login2 extends javax.swing.JDialog {
     
     
     void acceder(String usuario, String password) {
+        
         String tip = "";
-        String sql = "SELECT * FROM usuario WHERE user='" + usuario + "' && password='" + password + "'";
-
+        String passC = DigestUtils.md5Hex(password);
+        String sql = "SELECT * FROM usuario WHERE user='" + usuario + "' && password='" + passC + "'";
+        
         try {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -118,6 +121,12 @@ public class Login2 extends javax.swing.JDialog {
 
         jLabel2.setText("Contraseña:");
 
+        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jPasswordField1ActionPerformed(evt);
+            }
+        });
+
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,9 +208,13 @@ public class Login2 extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        dispose();
+        System.exit(0);
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     /**
      * @param args the command line arguments
