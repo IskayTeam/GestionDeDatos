@@ -5,7 +5,14 @@
  */
 package vista;
 
+import Controlador.conectar;
 import controlador.AbmProveedor;
+import java.sql.Connection;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -14,6 +21,8 @@ import javax.swing.JTextField;
  */
 public class AltaProveedor extends javax.swing.JDialog {
 
+    conectar cc = new conectar();
+    Connection cn = cc.conexion();
     /**
      * Creates new form GestionarProveedor
      */
@@ -21,6 +30,8 @@ public class AltaProveedor extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,16 +48,16 @@ public class AltaProveedor extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        campoTelefonoProveedor = new javax.swing.JTextField();
-        campoDireccionProveedor = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         campoCuitProveedor = new javax.swing.JTextField();
+        campoTelefonoProveedor = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        campoLocalidadProv = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         campoNombreProveedor = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        campoCuitProveedor1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        campoDireccionProv = new javax.swing.JTextField();
+        comboProvincia = new javax.swing.JComboBox();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -73,7 +84,24 @@ public class AltaProveedor extends javax.swing.JDialog {
 
         jLabel2.setText("Nombre:");
 
+        campoCuitProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCuitProveedorActionPerformed(evt);
+            }
+        });
+        campoCuitProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoCuitProveedorKeyTyped(evt);
+            }
+        });
+
         jLabel5.setText("CUIT:");
+
+        campoLocalidadProv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoLocalidadProvActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Teléfono:");
 
@@ -81,7 +109,7 @@ public class AltaProveedor extends javax.swing.JDialog {
 
         jLabel8.setText("Localidad:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Buenos Aires(CABA)", "Buenos Aires(Capital Federal)", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego", "Tucumán" }));
+        comboProvincia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Buenos Aires(CABA)", "Buenos Aires(Capital Federal)", "Catamarca", "Chaco", "Chubut", "Córdoba", "Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fe", "Santiago del Estero", "Tierra del Fuego", "Tucumán" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -100,12 +128,12 @@ public class AltaProveedor extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(campoNombreProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoCuitProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoCuitProveedor1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoLocalidadProv, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoDireccionProv, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 145, Short.MAX_VALUE)
-                        .addComponent(campoDireccionProveedor, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(campoTelefonoProveedor, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(comboProvincia, javax.swing.GroupLayout.Alignment.LEADING, 0, 145, Short.MAX_VALUE)
+                        .addComponent(campoTelefonoProveedor, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(campoCuitProveedor, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(108, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -118,23 +146,23 @@ public class AltaProveedor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(campoTelefonoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoCuitProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(campoDireccionProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoTelefonoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboProvincia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8)
-                    .addComponent(campoCuitProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoLocalidadProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(campoCuitProveedor1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDireccionProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34))
         );
 
@@ -170,19 +198,49 @@ public class AltaProveedor extends javax.swing.JDialog {
 
     private void botonAceptarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarProvActionPerformed
         
-        String nombre = getCampoNombreProveedor().getText();
-        String direccion = getCampoDireccionProveedor().getText();
-        int cuit = Integer.parseInt(getCampoCuitProveedor().getText());
+        String nombre = getCampoNombreProveedor().getText().toUpperCase();
+        String cuit = getCampoCuitProveedor().getText();
+        String provincia = getComboProvincia().getSelectedItem().toString().toUpperCase();
+        String localidad = getCampoLocalidadProv().getText().toUpperCase();
+        String direccion = getCampoDireccionProv().getText().toUpperCase();
         int telefono = Integer.parseInt(getCampoTelefonoProveedor().getText());
+       
+    String sql = "INSERT INTO proveedor(nombre, cuit, provincia, localidad, direccion, telefono) VALUES ('"+nombre+"','"+cuit+"','"+provincia+"','"+localidad+"','"+direccion+"','"+telefono+"')";
+       // String sql ="INSERT INTO proveedor(nombre, cuit) VALUES (('"+nombre+"','"+cuit+"')";
+        try{
+            cc.conexion();
+            Statement st = cn.createStatement();
+            st.execute(sql);
+            AbmProveedor.agregarProveedor(nombre, cuit, provincia, localidad, direccion, telefono);
+            JOptionPane.showMessageDialog(null, "Se agregó correctamente");
+            setVisible(false);
+        }catch(SQLException ex){
+                JOptionPane.showMessageDialog(null, "Error al insertar");
+                setVisible(true);
+
+        }
         
-        AbmProveedor.agregarProveedor(nombre, direccion, cuit, telefono);
-        setVisible(false);
     }//GEN-LAST:event_botonAceptarProvActionPerformed
 
     private void botonCancelarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarProvActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_botonCancelarProvActionPerformed
+
+    private void campoLocalidadProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLocalidadProvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoLocalidadProvActionPerformed
+
+    private void campoCuitProveedorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoCuitProveedorKeyTyped
+        // TODO add your handling code here:
+        if(campoCuitProveedor.getText().length()== 11){
+        evt.consume();
+        }
+    }//GEN-LAST:event_campoCuitProveedorKeyTyped
+
+    private void campoCuitProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCuitProveedorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCuitProveedorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,14 +293,21 @@ public class AltaProveedor extends javax.swing.JDialog {
         this.campoCuitProveedor = campoCuitProveedor;
     }
 
-    public JTextField getCampoDireccionProveedor() {
-        return campoDireccionProveedor;
+    public JTextField getCampoDireccionProv() {
+        return campoDireccionProv;
     }
 
-    public void setCampoDireccionProveedor(JTextField campoDireccionProveedor) {
-        this.campoDireccionProveedor = campoDireccionProveedor;
+    public void setCampoDireccionProv(JTextField campoDireccionProv) {
+        this.campoDireccionProv = campoDireccionProv;
     }
 
+    public JTextField getCampoLocalidadProv() {
+        return campoLocalidadProv;
+    }
+
+    public void setCampoLocalidadProv(JTextField campoLocalidadProv) {
+        this.campoLocalidadProv = campoLocalidadProv;
+    }
 
     public JTextField getCampoNombreProveedor() {
         return campoNombreProveedor;
@@ -259,6 +324,14 @@ public class AltaProveedor extends javax.swing.JDialog {
     public void setCampoTelefonoProveedor(JTextField campoTelefonoProveedor) {
         this.campoTelefonoProveedor = campoTelefonoProveedor;
     }
+
+    public JComboBox getComboProvincia() {
+        return comboProvincia;
+    }
+
+    public void setComboProvincia(JComboBox comboProvincia) {
+        this.comboProvincia = comboProvincia;
+    }
     
     
 
@@ -266,11 +339,11 @@ public class AltaProveedor extends javax.swing.JDialog {
     private javax.swing.JButton botonAceptarProv;
     private javax.swing.JButton botonCancelarProv;
     private javax.swing.JTextField campoCuitProveedor;
-    private javax.swing.JTextField campoCuitProveedor1;
-    private javax.swing.JTextField campoDireccionProveedor;
+    private javax.swing.JTextField campoDireccionProv;
+    private javax.swing.JTextField campoLocalidadProv;
     private javax.swing.JTextField campoNombreProveedor;
     private javax.swing.JTextField campoTelefonoProveedor;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox comboProvincia;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

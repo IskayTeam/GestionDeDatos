@@ -107,12 +107,12 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="campoNombreProveedor" min="-2" pref="212" max="-2" attributes="0"/>
-                      <Component id="campoCuitProveedor" min="-2" pref="139" max="-2" attributes="0"/>
-                      <Component id="campoCuitProveedor1" min="-2" pref="139" max="-2" attributes="0"/>
+                      <Component id="campoLocalidadProv" min="-2" pref="139" max="-2" attributes="0"/>
+                      <Component id="campoDireccionProv" min="-2" pref="139" max="-2" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jComboBox1" alignment="0" pref="145" max="32767" attributes="0"/>
-                          <Component id="campoDireccionProveedor" alignment="0" max="32767" attributes="0"/>
+                          <Component id="comboProvincia" alignment="0" pref="145" max="32767" attributes="0"/>
                           <Component id="campoTelefonoProveedor" alignment="0" max="32767" attributes="0"/>
+                          <Component id="campoCuitProveedor" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="108" max="32767" attributes="0"/>
@@ -130,27 +130,27 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="campoTelefonoProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoCuitProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="campoDireccionProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoTelefonoProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="comboProvincia" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                      <Component id="campoCuitProveedor" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoLocalidadProv" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="campoCuitProveedor1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="campoDireccionProv" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
               </Group>
@@ -168,16 +168,23 @@
             <Property name="text" type="java.lang.String" value="Nombre:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="campoTelefonoProveedor">
+        <Component class="javax.swing.JTextField" name="campoCuitProveedor">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="campoCuitProveedorActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="campoCuitProveedorKeyTyped"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="campoDireccionProveedor">
+        <Component class="javax.swing.JTextField" name="campoTelefonoProveedor">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="text" type="java.lang.String" value="CUIT:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="campoCuitProveedor">
+        <Component class="javax.swing.JTextField" name="campoLocalidadProv">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="campoLocalidadProvActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
@@ -196,9 +203,9 @@
             <Property name="text" type="java.lang.String" value="Localidad:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="campoCuitProveedor1">
+        <Component class="javax.swing.JTextField" name="campoDireccionProv">
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="comboProvincia">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="24">

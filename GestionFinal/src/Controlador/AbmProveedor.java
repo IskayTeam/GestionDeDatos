@@ -15,14 +15,12 @@ import vista.AltaProveedor;
  */
 public class AbmProveedor {
     
-    private static ArrayList<Proveedor> proveedores = new ArrayList<>();
+    public static ArrayList<Proveedor> proveedores = new ArrayList<>();
     
-    public static void agregarProveedor(String nombre, String direccion , int cuit, int telefono){
+    public static void agregarProveedor(String nombre, String cuit, String provincia, String localidad, String direccion, int telefono){
         
-        Proveedor proveedor = new Proveedor(nombre, direccion, cuit, telefono);
-        
+        Proveedor proveedor = new Proveedor(nombre, cuit, provincia, localidad, direccion, telefono);
         proveedores.add(proveedor);
-        
         System.out.println(proveedor);
     }
     

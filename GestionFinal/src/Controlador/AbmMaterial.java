@@ -16,9 +16,9 @@ public class AbmMaterial {
     
     private static ArrayList<Material> materiales = new ArrayList<Material>();
     
-    public static void agregarMaterial(int codigo, String descripcion, int precio){
+    public static void agregarMaterial(int codigo, String descripcion, int precio, int idProv){
         
-        Material material  = new Material(precio, descripcion, precio);
+        Material material  = new Material(codigo, descripcion, precio, idProv);
         materiales.add(material);
         
         System.out.println(materiales);

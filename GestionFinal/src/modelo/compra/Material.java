@@ -14,11 +14,13 @@ public class Material {
     private int idMaterial;
     private String descripcion;
     private int precio;
+    private int idProv;
 
-    public Material(int idMaterial, String descripcion, int precio) {
+    public Material(int idMaterial, String descripcion, int precio, int idProv) {
         this.idMaterial = idMaterial;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.idProv = idProv;
 
     }
 
@@ -36,6 +38,14 @@ public class Material {
 
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public int getIdProv() {
+        return idProv;
+    }
+
+    public void setIdProv(int idProv) {
+        this.idProv = idProv;
     }
     
 

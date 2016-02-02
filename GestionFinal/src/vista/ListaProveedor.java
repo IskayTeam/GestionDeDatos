@@ -4,14 +4,32 @@
  * and open the template in the editor.
  */
 package vista;
+import Controlador.conectar;
 import com.mxrck.autocompleter.TextAutoCompleter;
+import com.sun.istack.internal.logging.Logger;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JTextField;
+import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+
 
 /**
  *
  * @author Fran
  */
 public class ListaProveedor extends javax.swing.JDialog {
+    
+conectar cc = new conectar();
+Connection cn = cc.conexion();
+private TableRowSorter trsfiltro;
 
     /**
      * Creates new form ListaPersonals
@@ -19,14 +37,64 @@ public class ListaProveedor extends javax.swing.JDialog {
     public ListaProveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        TextAutoCompleter txt = new TextAutoCompleter(campoBuscarProv);
-                txt.addItem("EASY");
-                txt.addItem("EL CACIQUE");
-                txt.addItem("KLAUKOL");
-                txt.addItem("MINETTI");
+        
+        //autoCompletar();
+        mostrarProv();
+    
+    }
+public String materialesSegunProv(){
+    int row = tablaProveedor.getSelectedRow();
+        String name = tablaProveedor.getValueAt(row, 0).toString();
+    return name;
+    }
+
+    public ListaProveedor(JTable jTable1) {
+        this.tablaProveedor = jTable1;
     }
     
     
+    void autoCompletar(){
+        TextAutoCompleter txt = new TextAutoCompleter(campoBuscarProv);
+        String sql = "SELECT nombre FROM proveedor";
+        cc.conexion();
+        try{
+        Statement st = cn.prepareStatement(sql);
+        ResultSet rs = st.executeQuery(sql);
+        while(rs.next()){
+            txt.addItem(rs.getString("nombre"));
+        }
+        }catch(SQLException ex){
+            Logger.getLogger(sql, null);
+        }
+    }
+    
+    public void mostrarProv(){
+    String sql = "SELECT nombre, cuit, provincia, localidad, direccion, telefono FROM proveedor";
+        try{
+    cc.conexion();
+    Statement st = cn.createStatement();
+    ResultSet rs = st.executeQuery(sql);
+    DefaultTableModel modelo = (DefaultTableModel)this.getjTable1().getModel();
+    this.tablaProveedor.setModel(modelo);
+    
+    int i;
+    Object datosfila[] = new Object[6];
+    while(rs.next()){
+    for(i=0;i<datosfila.length;i++){
+    datosfila[i]=rs.getObject(i+1);
+    }
+    modelo.addRow(datosfila);
+    }
+      }catch(SQLException ex){
+    Logger.getLogger(sql, null);
+
+    
+    }
+    }
+    
+    public void filtro() {
+    trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarProv.getText(), 0));
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,7 +112,7 @@ public class ListaProveedor extends javax.swing.JDialog {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaProveedor = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
 
@@ -59,10 +127,20 @@ public class ListaProveedor extends javax.swing.JDialog {
                 campoBuscarProvActionPerformed(evt);
             }
         });
+        campoBuscarProv.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoBuscarProvKeyTyped(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ico_buscar_tbjo.png"))); // NOI18N
         jButton1.setText("jButton1");
         jButton1.setMargin(new java.awt.Insets(2, 29, 2, 14));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/btnAgregar.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -80,15 +158,15 @@ public class ListaProveedor extends javax.swing.JDialog {
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/btnEliminar.png"))); // NOI18N
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Apellido", "Dni", "Fecha Nacimiento", "CUIL", "Localidad", "Dirección", "Categoría"
+                "Nombre", "CUIT", "Provincia", "Localidad", "Dirección", "Telefono"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaProveedor);
 
         jButton5.setText("Salir");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -174,6 +252,12 @@ public class ListaProveedor extends javax.swing.JDialog {
         this.campoBuscarProv = campoBuscarProv;
     }
 
+    public JTable getjTable1() {
+        return tablaProveedor;
+    }
+    
+    
+
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -192,10 +276,34 @@ public class ListaProveedor extends javax.swing.JDialog {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
         ListaMateriales materiales = new ListaMateriales(this, true);
+        materiales.getLabelProveedor().setText(materialesSegunProv());
         materiales.setLocationRelativeTo(this);
         materiales.setVisible(true);
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void campoBuscarProvKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoBuscarProvKeyTyped
+        // TODO add your handling code here:
+    campoBuscarProv.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (campoBuscarProv.getText().toUpperCase());
+                campoBuscarProv.setText(cadena);
+                repaint();
+                filtro();
+           
+            }
+        });
+    
+    trsfiltro = new TableRowSorter(tablaProveedor.getModel());
+    tablaProveedor.setRowSorter(trsfiltro);
+    
+    }//GEN-LAST:event_campoBuscarProvKeyTyped
+
+    
     /**
      * @param args the command line arguments
      */
@@ -254,6 +362,6 @@ public class ListaProveedor extends javax.swing.JDialog {
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaProveedor;
     // End of variables declaration//GEN-END:variables
 }
