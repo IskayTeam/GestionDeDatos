@@ -38,7 +38,7 @@ private TableRowSorter trsfiltro;
         super(parent, modal);
         initComponents();
         
-        //autoCompletar();
+        autoCompletar();
         mostrarProv();
     
     }
