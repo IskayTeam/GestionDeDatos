@@ -26,6 +26,7 @@ public class ListaMateriales extends javax.swing.JDialog {
 
     conectar cc = new conectar();
     Connection cn = cc.conexion();
+    private String cuitProveedor;
     
     /**
      * Creates new form ListaMateriales
@@ -39,10 +40,18 @@ public class ListaMateriales extends javax.swing.JDialog {
         super(owner, modal);
         initComponents();
         autoCompletar();
-        mostrarMateriales();
+        //mostrarMateriales();
     }
     
-    
+    void mostrarCon(String cuitProveedor, String nombreProveedor){
+        
+        this.getLabelProveedor().setText(nombreProveedor);
+        this.cuitProveedor = cuitProveedor;
+        this.mostrarMateriales();
+        this.setLocationRelativeTo(this);
+        this.setVisible(true);
+
+    }
     void autoCompletar(){
       TextAutoCompleter txt = new TextAutoCompleter(campoProducto);
         String sql = "SELECT descripcion FROM material";
@@ -58,31 +67,31 @@ public class ListaMateriales extends javax.swing.JDialog {
         }
         
     }
-    
-    
-    void mostrarMateriales(){
-        String p = labelProveedor.getText();
-        String sqlp = "SELECT idProveedor FROM proveedor WHERE nombre='" + p + "'";
-        try{
+    public int getIdProv(String cuit){
+
+    String sqlp = "SELECT idProveedor FROM proveedor WHERE cuit=" + cuit + "";
+    //System.out.println(sqlp);
+    try{
         cc.conexion();
         Statement st1 = cn.createStatement();
         ResultSet rs1 = st1.executeQuery(sqlp);
+        rs1.next();
+        return rs1.getInt(1);
+    }catch(SQLException ex){
+     throw new RuntimeException(ex);
+     }
+    }
+    void mostrarMateriales(){
         
-        }catch(SQLException ex){
-        Logger.getLogger(sqlp,null);
-        }
-        String sql = "SELECT idMaterial, descripcion, precio FROM material WHERE Proveedor='"+p+"'";
-        
-        
+        int idProv = getIdProv(cuitProveedor);
+        String sql = "SELECT idMaterial, descripcion, precio FROM material WHERE "
+                + "Proveedor='"+idProv+"'";
         try{
         cc.conexion();
         Statement st = cn.createStatement();
         ResultSet rs = st.executeQuery(sql);
-        
-        
         DefaultTableModel modelo = (DefaultTableModel)this.getTablaMateriales().getModel();
-        this.tablaMateriales.setModel(modelo);
-    
+//        this.tablaMateriales.setModel(modelo);
     int i;
     Object datosfila[] = new Object[3];
     while(rs.next()){
@@ -92,10 +101,8 @@ public class ListaMateriales extends javax.swing.JDialog {
     modelo.addRow(datosfila);
     }
         }catch(SQLException ex){
-        Logger.getLogger(sql, null);
+        Logger.getLogger(sql,null);
         }
-        
-
     }
 
     /**

@@ -42,10 +42,16 @@ private TableRowSorter trsfiltro;
         mostrarProv();
     
     }
-public String materialesSegunProv(){
+public String getNombreProveedorSeleccionado(){
     int row = tablaProveedor.getSelectedRow();
         String name = tablaProveedor.getValueAt(row, 0).toString();
     return name;
+    }
+
+public String getCuitProveedorSeleccionado(){
+    int row = tablaProveedor.getSelectedRow();
+        String cuit = tablaProveedor.getValueAt(row, 1).toString();
+    return cuit;
     }
 
     public ListaProveedor(JTable jTable1) {
@@ -242,6 +248,9 @@ public String materialesSegunProv(){
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        AltaProveedor altaproveedor = new AltaProveedor(null, true);
+        altaproveedor.setLocationRelativeTo(this);
+        altaproveedor.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public JTextField getCampoBuscarProv() {
@@ -275,10 +284,16 @@ public String materialesSegunProv(){
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        
         ListaMateriales materiales = new ListaMateriales(this, true);
-        materiales.getLabelProveedor().setText(materialesSegunProv());
-        materiales.setLocationRelativeTo(this);
-        materiales.setVisible(true);
+        getNombreProveedorSeleccionado();
+        materiales.mostrarCon(getCuitProveedorSeleccionado(), getNombreProveedorSeleccionado());
+        
+        
+        
+        
+        
+        
         
     }//GEN-LAST:event_jButton6ActionPerformed
 
