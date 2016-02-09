@@ -13,7 +13,10 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import modelo.compra.Material;
 
 /**
@@ -21,62 +24,98 @@ import modelo.compra.Material;
  * @author Luca
  */
 public class NuevaCompra extends javax.swing.JDialog {
-    
-conectar cc = new conectar();
-Connection cn = cc.conexion();
-   ControladorCompra controlador = new ControladorCompra();
-   Material m;
-    
-   public NuevaCompra(java.awt.Frame parent, boolean modal) {
+
+    conectar cc = new conectar();
+    Connection cn = cc.conexion();
+    ControladorCompra controlador = new ControladorCompra();
+    Material m;
+
+    public NuevaCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         autoCompletar();
-        
     }
-    
-    void autoCompletar(){
+
+    public String getNombreProveedorSeleccionado() {
+
+        String np = campoBuscarProv.getText();
+        return np;
+    }
+
+    public String getCuitProveedorSeleccionado() {
+        String prov = campoCuit.getText();
+        return prov;
+    }
+
+    void autoCompletar() {
         TextAutoCompleter txt = new TextAutoCompleter(campoBuscarProv);
         String sql = "SELECT nombre FROM proveedor";
         cc.conexion();
-        try{
-        Statement st = cn.prepareStatement(sql);
-        ResultSet rs = st.executeQuery(sql);
-        while(rs.next()){
-            txt.addItem(rs.getString("nombre"));
+        try {
+            Statement st = cn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                txt.addItem(rs.getString("nombre"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sql, null);
         }
-        }catch(SQLException ex){
+    }
+
+    void validacionProv() {
+        String sql = "SELECT nombre FROM proveedor";
+        cc.conexion();
+        try {
+            Statement st = cn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                if (getCampoBuscarProv().getText().equals(rs.getString("nombre"))) {
+                    llenarCamposSegunProv();
+                }
+            }
+
+        } catch (SQLException ex) {
+
+        }
+    }
+
+    void llenarCamposSegunProv() {
+
+        String nombre = getCampoBuscarProv().getText();
+        String sql = "SELECT cuit, provincia, localidad, direccion, telefono FROM proveedor "
+                + "WHERE nombre='" + nombre + "'";
+
+        cc.conexion();
+        try {
+            Statement st = cn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery(sql);
+            rs.next();
+            String cuit = rs.getString("cuit");
+            String provincia = rs.getString("provincia");
+            String localidad = rs.getString("localidad");
+            String direccion = rs.getString("direccion");
+            int telefono = rs.getInt("telefono");
+            //this.getCampoId().setText(String.valueOf(id1));
+            this.getCampoCuit().setText(cuit);
+            this.getCampoProvincia().setText(provincia);
+            this.getCampoLocalidad().setText(localidad);
+            this.getCampoDireccion().setText(direccion);
+            this.getCampoTelefono().setText(String.valueOf(telefono));
+        } catch (SQLException ex) {
             Logger.getLogger(sql, null);
         }
     }
     
-    void llenarCamposSegunProv(){
-        
-        String nombre = getCampoBuscarProv().getText();
-        String sql = "SELECT cuit, provincia, localidad, direccion, telefono FROM proveedor "
-                + "WHERE nombre='"+nombre+"'";
-         
-        cc.conexion();
-        try{
-        Statement st = cn.prepareStatement(sql);
-        ResultSet rs = st.executeQuery(sql);
-        rs.next();
-        String cuit = rs.getString("cuit");
-        String provincia = rs.getString("provincia");
-        String localidad = rs.getString("localidad");
-        String direccion = rs.getString("direccion");
-        int telefono = rs.getInt("telefono");
-        //this.getCampoId().setText(String.valueOf(id1));
-        this.getCampoCuit().setText(cuit);
-        this.getCampoProvincia().setText(provincia);
-        this.getCampoLocalidad().setText(localidad);
-        this.getCampoDireccion().setText(direccion);
-        this.getCampoTelefono().setText(String.valueOf(telefono));
-        }catch(SQLException ex){
-        Logger.getLogger(sql, null);
-        }
+   
+
+    public JTextField getCampoBuscarProv() {
+        return campoBuscarProv;
     }
-    
-    
+
+    public void setCampoBuscarProv(JTextField campoBuscarProv) {
+        this.campoBuscarProv = campoBuscarProv;
+    }
 
     public JTextField getCampoCantidad() {
         return campoCantidad;
@@ -94,77 +133,20 @@ Connection cn = cc.conexion();
         this.campoCodigoMaterial = campoCodigoMaterial;
     }
 
-    
-    public JTextField getCampoDescripcionMaterial() {
-        return campoPrecioMaterial;
-    }
-
-    public void setCampoDescripcionMaterial(JTextField campoDescripcionMaterial) {
-        this.campoPrecioMaterial = campoDescripcionMaterial;
-    }
-
-    public JTextField getCampoTelefono() {
-        return campoTelefono;
-    }
-
-    public void setCampoTelefono(JTextField campoTelefono) {
-        this.campoTelefono = campoTelefono;
-    }
-
-    public JTextField getCampoDireccionProveedor() {
-        return campoBuscarProv;
-    }
-
-    public void setCampoDireccionProveedor(JTextField campoDireccionProveedor) {
-        this.campoBuscarProv = campoDireccionProveedor;
-    }
-
-    public JTextField getCampoNombreProveedor() {
-        return campoDireccion;
-    }
-
-    public void setCampoNombreProveedor(JTextField campoNombreProveedor) {
-        this.campoDireccion = campoNombreProveedor;
-    }
-
-    public JTextField getCampoPrecioMateiral() {
-        return campoDescripMaterial;
-    }
-
-    public void setCampoPrecioMateiral(JTextField campoPrecioMateiral) {
-        this.campoDescripMaterial = campoPrecioMateiral;
-    }
-
-    public JTextField getCampoTotalCompra() {
-        return campoTotalCompra;
-    }
-
-    public JTextField getCampoProvincia() {
-        return campoProvincia;
-    }
-
-    public void setCampoProvincia(JTextField campoProvincia) {
-        this.campoProvincia = campoProvincia;
-    }
-
-    public void setCampoTotalCompra(JTextField campoTotalCompra) {
-        this.campoTotalCompra = campoTotalCompra;
-    }
-
-    public JTextField getCampoBuscarProv() {
-        return campoBuscarProv;
-    }
-
-    public void setCampoBuscarProv(JTextField campoBuscarProv) {
-        this.campoBuscarProv = campoBuscarProv;
-    }
-
     public JTextField getCampoCuit() {
         return campoCuit;
     }
 
     public void setCampoCuit(JTextField campoCuit) {
         this.campoCuit = campoCuit;
+    }
+
+    public JTextField getCampoDescripMaterial() {
+        return campoDescripMaterial;
+    }
+
+    public void setCampoDescripMaterial(JTextField campoDescripMaterial) {
+        this.campoDescripMaterial = campoDescripMaterial;
     }
 
     public JTextField getCampoDireccion() {
@@ -183,6 +165,46 @@ Connection cn = cc.conexion();
         this.campoLocalidad = campoLocalidad;
     }
 
+    public JTextField getCampoPrecioMaterial() {
+        return campoPrecioMaterial;
+    }
+
+    public void setCampoPrecioMaterial(JTextField campoPrecioMaterial) {
+        this.campoPrecioMaterial = campoPrecioMaterial;
+    }
+
+    public JTextField getCampoProvincia() {
+        return campoProvincia;
+    }
+
+    public void setCampoProvincia(JTextField campoProvincia) {
+        this.campoProvincia = campoProvincia;
+    }
+
+    public JTextField getCampoTelefono() {
+        return campoTelefono;
+    }
+
+    public void setCampoTelefono(JTextField campoTelefono) {
+        this.campoTelefono = campoTelefono;
+    }
+
+    public JTextField getCampoTotalCompra() {
+        return campoTotalCompra;
+    }
+
+    public void setCampoTotalCompra(JTextField campoTotalCompra) {
+        this.campoTotalCompra = campoTotalCompra;
+    }
+
+    public JTable getTablaNuevaCompra() {
+        return tablaNuevaCompra;
+    }
+
+    public void setTablaNuevaCompra(JTable tablaNuevaCompra) {
+        this.tablaNuevaCompra = tablaNuevaCompra;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -196,7 +218,7 @@ Connection cn = cc.conexion();
         jTable2 = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaNuevaCompra = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         campoTotalCompra = new javax.swing.JTextField();
         botonFinalizarCompra = new javax.swing.JButton();
@@ -227,7 +249,7 @@ Connection cn = cc.conexion();
         jLabel8 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        btnBuscarProduc = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -246,7 +268,7 @@ Connection cn = cc.conexion();
         setTitle("Nueva Compra");
         setBackground(new java.awt.Color(51, 0, 255));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaNuevaCompra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -254,7 +276,7 @@ Connection cn = cc.conexion();
                 "Codigo", "Descripcion", "Cantidad", "Precio Unitario", "Subtotal"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaNuevaCompra);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("TOTAL:");
@@ -298,6 +320,11 @@ Connection cn = cc.conexion();
         jLabel12.setText("Provincia:");
 
         campoCuit.setEditable(false);
+        campoCuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCuitActionPerformed(evt);
+            }
+        });
 
         campoLocalidad.setEditable(false);
 
@@ -395,9 +422,16 @@ Connection cn = cc.conexion();
 
         campoPrecioMaterial.setEditable(false);
 
+        campoCodigoMaterial.setEditable(false);
+
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/btnRemover.png"))); // NOI18N
         jButton5.setText("jButton2");
         jButton5.setMargin(new java.awt.Insets(2, 25, 2, 14));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         campoDescripMaterial.setEditable(false);
 
@@ -410,12 +444,12 @@ Connection cn = cc.conexion();
         jButton6.setMargin(new java.awt.Insets(2, 26, 2, 14));
         jButton6.setPreferredSize(new java.awt.Dimension(107, 35));
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ico_buscar_tbjo.png"))); // NOI18N
-        jButton7.setText("jButton1");
-        jButton7.setMargin(new java.awt.Insets(2, 29, 2, 14));
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarProduc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ico_buscar_tbjo.png"))); // NOI18N
+        btnBuscarProduc.setText("jButton1");
+        btnBuscarProduc.setMargin(new java.awt.Insets(2, 29, 2, 14));
+        btnBuscarProduc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnBuscarProducActionPerformed(evt);
             }
         });
 
@@ -435,7 +469,7 @@ Connection cn = cc.conexion();
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(campoCodigoMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscarProduc, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(10, 10, 10)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -466,7 +500,7 @@ Connection cn = cc.conexion();
                             .addComponent(jLabel6)
                             .addComponent(campoDescripMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnBuscarProduc, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
@@ -478,7 +512,7 @@ Connection cn = cc.conexion();
                             .addComponent(campoCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -518,9 +552,9 @@ Connection cn = cc.conexion();
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(campoTotalCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -541,8 +575,9 @@ Connection cn = cc.conexion();
 
     private void botonBuscarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBuscarProvActionPerformed
         // TODO add your handling code here:
-        llenarCamposSegunProv();
-        
+        validacionProv();
+
+
     }//GEN-LAST:event_botonBuscarProvActionPerformed
 
     private void campoBuscarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoBuscarProvActionPerformed
@@ -553,13 +588,38 @@ Connection cn = cc.conexion();
         // TODO add your handling code here:
     }//GEN-LAST:event_campoBuscarProvKeyTyped
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnBuscarProducActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProducActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+        AgregarMateriales agregarmateriales = new AgregarMateriales(this, true);
+        getNombreProveedorSeleccionado();
+        agregarmateriales.setCallback(new Callback() {
+
+            @Override
+            public void notificar(int idMaterial, String descripcion, float precio) {
+                getCampoCodigoMaterial().setText(String.valueOf(idMaterial));
+                getCampoDescripMaterial().setText(descripcion);
+                getCampoPrecioMaterial().setText(String.valueOf(precio));
+            }
+        });
+        agregarmateriales.mostrarCon(getCuitProveedorSeleccionado(), getNombreProveedorSeleccionado());
+
+
+    }//GEN-LAST:event_btnBuscarProducActionPerformed
 
     private void campoTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoTelefonoActionPerformed
+
+    private void campoCuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCuitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCuitActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        getCampoCodigoMaterial().setText("");
+        getCampoDescripMaterial().setText("");
+        getCampoPrecioMaterial().setText("");
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -608,6 +668,7 @@ Connection cn = cc.conexion();
     private javax.swing.JButton botonBuscarProv;
     private javax.swing.JButton botonCancelarCompra;
     private javax.swing.JButton botonFinalizarCompra;
+    private javax.swing.JButton btnBuscarProduc;
     private javax.swing.JTextField campoBuscarProv;
     private javax.swing.JTextField campoCantidad;
     private javax.swing.JTextField campoCodigoMaterial;
@@ -622,7 +683,6 @@ Connection cn = cc.conexion();
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -639,7 +699,7 @@ Connection cn = cc.conexion();
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable tablaNuevaCompra;
     // End of variables declaration//GEN-END:variables
 }

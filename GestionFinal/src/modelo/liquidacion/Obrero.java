@@ -15,18 +15,34 @@ public class Obrero {
     
     private int idObrero;
     private String nombre;
+    private String cuil;
+    private String estadoCivil;
+    private String localidad;
+    private String direccion;
     private Date fechaNacimiento;
+    private Date fechaIngreso;
     private int dni;
-    private int cuil;
+    private int telefono;   
+    private int categoria;
 
-    public Obrero(int idObrero, String nombre, Date fechaNacimiento, int dni, int cuil) {
-        this.idObrero = idObrero;
+    public Obrero(String nombre, String cuil, String estadoCivil, String localidad, String direccion, Date fechaNacimiento, Date fechaIngreso, int dni, int telefono, int categoria) {
+        
         this.nombre = nombre;
-        this.fechaNacimiento = fechaNacimiento;
-        this.dni = dni;
         this.cuil = cuil;
+        this.estadoCivil = estadoCivil;
+        this.localidad = localidad;
+        this.direccion = direccion;
+        this.fechaNacimiento = fechaNacimiento;
+        this.fechaIngreso = fechaIngreso;
+        this.dni = dni;
+        this.telefono = telefono;
+        this.categoria = categoria;
     }
+    
+    
 
+
+    
     public int getIdObrero() {
         return idObrero;
     }
@@ -43,7 +59,7 @@ public class Obrero {
         return dni;
     }
 
-    public int getCuil() {
+    public String getCuil() {
         return cuil;
     }
 

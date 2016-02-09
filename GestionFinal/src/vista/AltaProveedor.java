@@ -205,8 +205,9 @@ public class AltaProveedor extends javax.swing.JDialog {
         String direccion = getCampoDireccionProv().getText().toUpperCase();
         int telefono = Integer.parseInt(getCampoTelefonoProveedor().getText());
        
-    String sql = "INSERT INTO proveedor(nombre, cuit, provincia, localidad, direccion, telefono) VALUES ('"+nombre+"','"+cuit+"','"+provincia+"','"+localidad+"','"+direccion+"','"+telefono+"')";
-       // String sql ="INSERT INTO proveedor(nombre, cuit) VALUES (('"+nombre+"','"+cuit+"')";
+    String sql = "INSERT INTO proveedor(nombre, cuit, provincia, localidad, direccion, telefono) "
+            + "VALUES ('"+nombre+"','"+cuit+"','"+provincia+"','"+localidad+"','"+direccion+"','"+telefono+"')";
+       
         try{
             cc.conexion();
             Statement st = cn.createStatement();

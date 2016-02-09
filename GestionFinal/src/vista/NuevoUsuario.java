@@ -33,7 +33,6 @@ public class NuevoUsuario extends javax.swing.JDialog {
     public NuevoUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
         mostrarUltimoId();
         
     }

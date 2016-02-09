@@ -5,8 +5,24 @@
  */
 package vista;
 
+import Controlador.AbmGrupoFamiliar;
+import Controlador.Fecha;
+import Controlador.conectar;
+import com.toedter.calendar.JDateChooser;
 import controlador.AbmObrero;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import modelo.liquidacion.Categoria;
 
 /**
  *
@@ -14,39 +30,134 @@ import javax.swing.JTextField;
  */
 public class AñadirPersonal extends javax.swing.JDialog {
 
+    conectar cc = new conectar();
+    Connection cn = cc.conexion();
+    private String cuil;
+
     /**
      * Creates new form GestionarObrero
      */
     public AñadirPersonal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        mostrarUltimoId();
     }
 
-    public JTextField getCampoCuilObrero() {
-        return campoCuilObrero;
+    void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaGrupoFliar.getModel();
+        Controlador.Fecha fecha = new Fecha();
+
+        Object[] fila = new Object[5];
+        fila[0] = campoNombreFliar.getText();
+        fila[1] = campoApellidoFliar.getText();
+        fila[2] = campoDniFliar.getText();
+        fila[4] = comboParentesco.getSelectedItem();
+        fila[3] = fecha.getFecha(DateChooserNacGpoFliar);
+
+        modelo.addRow(fila);
+        tablaGrupoFliar.setModel(modelo);
     }
 
-    public void setCampoCuilObrero(JTextField campoCuilObrero) {
-        this.campoCuilObrero = campoCuilObrero;
+    void mostrarUltimoId() {
+        String sqlid = "SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'obrero' AND table_schema = DATABASE();";
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlid);
+            rs.next();
+            int id1 = rs.getInt(1);
+            this.getCampoInvisible().setText(String.valueOf(id1));
+        } catch (SQLException ex) {
+            Logger.getLogger(NuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
-    public JTextField getCampoDniObrero() {
-        return campoDniObrero;
+    public int getIdCategoriaObrero() {
+        String categoria = getComboCategoria().getSelectedItem().toString();
+        String sqlOb = "SELECT idCategoria FROM categoria WHERE nombreCategoria='" + categoria + "'";
+        try {
+            cc.conexion();
+            Statement st1 = cn.createStatement();
+            ResultSet rs1 = st1.executeQuery(sqlOb);
+            rs1.next();
+            return rs1.getInt(1);
+        } catch (SQLException ex) {
+            System.out.println("Puto");
+            throw new RuntimeException(ex);
+        }
     }
 
-    public void setCampoDniObrero(JTextField campoDniObrero) {
-        this.campoDniObrero = campoDniObrero;
+    void agregarPersonal() {
+        //Tomo datos obrero
+        int idOb = Integer.parseInt(getCampoInvisible().getText());
+        int idCat = getIdCategoriaObrero();
+        String nombre = getCampoNombreObrero().getText().toUpperCase();
+        String apellido = getCampoApellido().getText().toUpperCase();
+        int dni = Integer.parseInt(getCampoDni().getText());
+        String cuil = getCampoCuil().getText();
+        int telefono = Integer.parseInt(getCampoTelefono().getText());
+        String direccion = getCampoDireccion().getText().toUpperCase();
+        String localidad = getCampoLocalidad().getText().toUpperCase();
+        String estadoCivil = getComboEstadoCivil().getSelectedItem().toString().toUpperCase();
+        Date fechaNac = getDateChooserNacOb().getDate();
+        Date fechaIng = getDateChooserIngOb().getDate();
+
+        String sqlObrero = "INSERT INTO obrero(nombre, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria) "
+                + "VALUES ('" +nombre+apellido+ "','" + dni + "','" + cuil + "','" + fechaNac + "','" + localidad + "','" + direccion + "','" + estadoCivil + "','" + fechaIng + "','" + telefono + "','" + idCat + "')";
+
+        //Tomo datos Gpo Fliar
+        
+        String nombreF = getCampoNombreFliar().getText().toUpperCase();
+        String apellidoF = getCampoApellidoFliar().getText().toUpperCase();
+        int dniF = Integer.parseInt(getCampoDniFliar().getText());
+        String parentesco = getComboParentesco().getSelectedItem().toString();
+        Date fechaNacF = getDateChooserNacGpoFliar().getDate();
+
+        String sqlFliar = "INSERT INTO grupofamiliar(nombre, dni, fechaNacimiento, parentesco, Obrero)"
+                + " VALUES ('" + nombreF + "','" + dniF + "','" + fechaNacF + "','" + parentesco + "','" + idOb + "')";
+
+        try {
+            cc.conexion();
+            Statement st = cn.createStatement();
+            st.execute(sqlObrero);
+            st.execute(sqlFliar);
+            AbmObrero.agregarObrero(nombre, cuil, estadoCivil, localidad, direccion, fechaNacF, fechaIng, dni, telefono, idCat);
+            AbmGrupoFamiliar.agregarGrupoFamiliar(nombre, dni, fechaNacF, parentesco, idOb);
+            JOptionPane.showMessageDialog(null, "Se agrego correctamente");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR AL REGISTRAR");
+
+        }
+
+    }
+
+    public JComboBox getComboEstadoCivil() {
+        return comboEstadoCivil;
+    }
+
+    public void setComboEstadoCivil(JComboBox comboEstadoCivil) {
+        this.comboEstadoCivil = comboEstadoCivil;
+    }
+
+    public JDateChooser getDateChooserIngOb() {
+        return DateChooserIngOb;
+    }
+
+    public JDateChooser getDateChooserNacGpoFliar() {
+        return DateChooserNacGpoFliar;
+    }
+
+    public JDateChooser getDateChooserNacOb() {
+        return DateChooserNacOb;
     }
 
     public JTextField getCampoNombreObrero() {
-        return campoNombreObrero;
+        return campoCuil;
     }
 
     public void setCampoNombreObrero(JTextField campoNombreObrero) {
-        this.campoNombreObrero = campoNombreObrero;
+        this.campoCuil = campoNombreObrero;
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,55 +170,50 @@ public class AñadirPersonal extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        campoNombreObrero1 = new javax.swing.JTextField();
-        campoCuilObrero = new javax.swing.JTextField();
-        jComboDia = new javax.swing.JComboBox();
-        jComboMes = new javax.swing.JComboBox();
+        campoDireccion = new javax.swing.JTextField();
+        campoNombre = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jComboanio = new javax.swing.JComboBox();
-        campoCuilObrero1 = new javax.swing.JTextField();
-        campoNombreObrero = new javax.swing.JTextField();
-        campoDniObrero = new javax.swing.JTextField();
+        campoDni = new javax.swing.JTextField();
+        campoCuil = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        campoNombreObrero2 = new javax.swing.JTextField();
+        campoLocalidad = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        comboEstadoCivil = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
-        campoCuilObrero2 = new javax.swing.JTextField();
+        campoTelefono = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jComboDia2 = new javax.swing.JComboBox();
-        jComboanio2 = new javax.swing.JComboBox();
-        jComboMes3 = new javax.swing.JComboBox();
         jLabel16 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        comboCategoria = new javax.swing.JComboBox();
         jLabel17 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        campoSalarioBasico = new javax.swing.JTextField();
+        DateChooserNacOb = new com.toedter.calendar.JDateChooser();
+        DateChooserIngOb = new com.toedter.calendar.JDateChooser();
+        campoApellido = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jComboDia1 = new javax.swing.JComboBox();
-        jComboanio1 = new javax.swing.JComboBox();
-        jComboMes1 = new javax.swing.JComboBox();
-        jComboMes2 = new javax.swing.JComboBox();
+        campoApellidoFliar = new javax.swing.JTextField();
+        campoDniFliar = new javax.swing.JTextField();
+        campoNombreFliar = new javax.swing.JTextField();
+        comboParentesco = new javax.swing.JComboBox();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaGrupoFliar = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        DateChooserNacGpoFliar = new com.toedter.calendar.JDateChooser();
+        campoInvisible = new javax.swing.JTextField();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -115,43 +221,27 @@ public class AñadirPersonal extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jButton1.setText("Aceptar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAceptarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Cancelar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
         jLabel6.setText("Apellido:");
 
-        jComboDia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DIA", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-
-        jComboMes.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AÑO", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997" }));
-        jComboMes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboMesActionPerformed(evt);
-            }
-        });
-
         jLabel7.setText("Dirección:");
 
-        jComboanio.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MES", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" }));
-        jComboanio.addActionListener(new java.awt.event.ActionListener() {
+        campoCuil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboanioActionPerformed(evt);
-            }
-        });
-
-        campoDniObrero.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoDniObreroActionPerformed(evt);
+                campoCuilActionPerformed(evt);
             }
         });
 
@@ -167,36 +257,31 @@ public class AñadirPersonal extends javax.swing.JDialog {
 
         jLabel13.setText("Estado Civil:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "Soltero", "Casado", "Viudo", "Divorciado" }));
+        comboEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "Soltero", "Casado", "Viudo", "Divorciado" }));
 
         jLabel14.setText("Teléfono:");
 
-        campoCuilObrero2.addActionListener(new java.awt.event.ActionListener() {
+        campoTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoCuilObrero2ActionPerformed(evt);
+                campoTelefonoActionPerformed(evt);
             }
         });
 
         jLabel15.setText("Fecha de Ingreso:");
 
-        jComboDia2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DIA", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-
-        jComboanio2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MES", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" }));
-
-        jComboMes3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AÑO", "2010", "2011", "2012", "2013", "2014", "2015", "2016" }));
-        jComboMes3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboMes3ActionPerformed(evt);
-            }
-        });
-
         jLabel16.setText("Categoría:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "Oficial Especializado", "Oficial", "Medio Oficial", "Ayudante", "Sereno" }));
 
         jLabel17.setText("Salario Básico:");
 
-        jTextField4.setEditable(false);
+        campoSalarioBasico.setEditable(false);
+
+        campoApellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoApellidoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -208,66 +293,58 @@ public class AñadirPersonal extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(38, 38, 38)
-                        .addComponent(campoNombreObrero)
+                        .addComponent(campoCuil)
                         .addGap(289, 289, 289))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboDia2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboanio2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboMes3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(DateChooserIngOb, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4))
+                                .addComponent(campoSalarioBasico))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(25, 25, 25)
-                                    .addComponent(campoCuilObrero1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel3)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jComboDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jComboanio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jComboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(DateChooserNacOb, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel12)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(campoNombreObrero2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(campoLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(44, 44, 44)
                                     .addComponent(jLabel7)
                                     .addGap(26, 26, 26)
-                                    .addComponent(campoNombreObrero1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                             .addComponent(jLabel6)
                                             .addGap(18, 18, 18)
-                                            .addComponent(campoDniObrero, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(campoApellido))
                                         .addGroup(jPanel2Layout.createSequentialGroup()
                                             .addComponent(jLabel2)
                                             .addGap(18, 18, 18)
-                                            .addComponent(campoCuilObrero, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGap(18, 18, 18)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel13)
                                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(campoCuilObrero2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(comboEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -278,51 +355,47 @@ public class AñadirPersonal extends javax.swing.JDialog {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(campoCuilObrero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(campoDniObrero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(campoApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel14)
-                            .addComponent(campoCuilObrero2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(7, 7, 7)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(comboEstadoCivil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(campoCuilObrero1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(campoNombreObrero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoCuil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(DateChooserNacOb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jComboDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboanio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(campoNombreObrero2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoLocalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(campoNombreObrero1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15)
-                    .addComponent(jComboDia2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboanio2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboMes3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                    .addComponent(DateChooserIngOb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoSalarioBasico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28))
         );
 
@@ -340,42 +413,26 @@ public class AñadirPersonal extends javax.swing.JDialog {
 
         jLabel11.setText("Parentesco:");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        campoDniFliar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                campoDniFliarActionPerformed(evt);
             }
         });
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        campoNombreFliar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                campoNombreFliarActionPerformed(evt);
             }
         });
 
-        jComboDia1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DIA", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
-
-        jComboanio1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "MES", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" }));
-        jComboanio1.addActionListener(new java.awt.event.ActionListener() {
+        comboParentesco.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "Esposo/a", "Hijo/a", "Padre", "Madre", "Hermano/a" }));
+        comboParentesco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboanio1ActionPerformed(evt);
+                comboParentescoActionPerformed(evt);
             }
         });
 
-        jComboMes1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AÑO", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", " " }));
-        jComboMes1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboMes1ActionPerformed(evt);
-            }
-        });
-
-        jComboMes2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione", "Esposo/a", "Hijo/a", "Padre", "Madre", "Hermano/a" }));
-        jComboMes2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboMes2ActionPerformed(evt);
-            }
-        });
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaGrupoFliar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -383,7 +440,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
                 "Nombre", "Apellido", "DNI", "Fecha Nacimiento", "Parentesco"
             }
         ));
-        jScrollPane3.setViewportView(jTable2);
+        jScrollPane3.setViewportView(tablaGrupoFliar);
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/11564764-vector-de-agregar-eliminar-o-mostrar-ocultar-los-botones-de-colores-Foto-de-archivo.png"))); // NOI18N
         jButton3.setText("jButton3");
@@ -416,27 +473,23 @@ public class AñadirPersonal extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoApellidoFliar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel11)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboMes2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(comboParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoNombreFliar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(campoDniFliar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboDia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboanio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboMes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(DateChooserNacGpoFliar, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -452,29 +505,35 @@ public class AñadirPersonal extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoDniFliar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoNombreFliar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboMes2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(campoApellidoFliar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel10)
-                        .addComponent(jComboDia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboanio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboMes1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(DateChooserNacGpoFliar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Grupo Familiar", jPanel3);
+
+        campoInvisible.setText("jTextField1");
+        campoInvisible.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoInvisibleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -484,87 +543,210 @@ public class AñadirPersonal extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(campoInvisible, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(117, 117, 117)
-                        .addComponent(jButton1)
+                        .addComponent(btnAceptar)
                         .addGap(157, 157, 157)
-                        .addComponent(jButton2)))
-                .addContainerGap(98, Short.MAX_VALUE))
+                        .addComponent(btnCancelar)))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(73, 73, 73)
+                        .addComponent(campoInvisible, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnAceptar)
+                    .addComponent(btnCancelar))
                 .addGap(39, 39, 39))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        String nombre = getCampoNombreObrero().getText();
-        int dni = Integer.parseInt(getCampoDniObrero().getText());
-        int cuil = Integer.parseInt(getCampoCuilObrero().getText()); 
-        //falta fecha de nacimiento
-        AbmObrero.agregarObrero(cuil, nombre, null, dni, cuil);
-        setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+    
+        agregarPersonal();
+        this.dispose();
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
-    private void campoDniObreroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDniObreroActionPerformed
+    private void campoDniFliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDniFliarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoDniObreroActionPerformed
+    }//GEN-LAST:event_campoDniFliarActionPerformed
 
-    private void jComboMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboMesActionPerformed
+    private void campoNombreFliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoNombreFliarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboMesActionPerformed
+    }//GEN-LAST:event_campoNombreFliarActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void comboParentescoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboParentescoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jComboMes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboMes1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboMes1ActionPerformed
-
-    private void jComboMes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboMes2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboMes2ActionPerformed
+    }//GEN-LAST:event_comboParentescoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        llenarTabla();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void campoCuilObrero2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCuilObrero2ActionPerformed
+    private void campoTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTelefonoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoCuilObrero2ActionPerformed
+    }//GEN-LAST:event_campoTelefonoActionPerformed
 
-    private void jComboMes3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboMes3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboMes3ActionPerformed
-
-    private void jComboanioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboanioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboanioActionPerformed
-
-    private void jComboanio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboanio1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboanio1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void campoCuilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCuilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoCuilActionPerformed
+
+    private void campoInvisibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoInvisibleActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_campoInvisibleActionPerformed
+
+    private void campoApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoApellidoActionPerformed
+
+    
+    public JTextField getCampoApellidoFliar() {
+        return campoApellidoFliar;
+    }
+
+    public void setCampoApellidoFliar(JTextField campoApellidoFliar) {
+        this.campoApellidoFliar = campoApellidoFliar;
+    }
+
+    public JTextField getCampoCuil() {
+        return campoCuil;
+    }
+
+    public void setCampoCuil(JTextField campoCuil) {
+        this.campoCuil = campoCuil;
+    }
+
+    public JTextField getCampoDireccion() {
+        return campoDireccion;
+    }
+
+    public void setCampoDireccion(JTextField campoDireccion) {
+        this.campoDireccion = campoDireccion;
+    }
+
+    public JTextField getCampoDni() {
+        return campoDni;
+    }
+
+    public void setCampoDni(JTextField campoDni) {
+        this.campoDni = campoDni;
+    }
+
+    public JTextField getCampoDniFliar() {
+        return campoDniFliar;
+    }
+
+    public void setCampoDniFliar(JTextField campoDniFliar) {
+        this.campoDniFliar = campoDniFliar;
+    }
+
+    public JTextField getCampoLocalidad() {
+        return campoLocalidad;
+    }
+
+    public void setCampoLocalidad(JTextField campoLocalidad) {
+        this.campoLocalidad = campoLocalidad;
+    }
+
+    public JTextField getCampoNombre() {
+        return campoNombre;
+    }
+
+    public void setCampoNombre(JTextField campoNombre) {
+        this.campoNombre = campoNombre;
+    }
+
+    public JTextField getCampoNombreFliar() {
+        return campoNombreFliar;
+    }
+
+    public void setCampoNombreFliar(JTextField campoNombreFliar) {
+        this.campoNombreFliar = campoNombreFliar;
+    }
+
+    public JTextField getCampoSalarioBasico() {
+        return campoSalarioBasico;
+    }
+
+    public void setCampoSalarioBasico(JTextField campoSalarioBasico) {
+        this.campoSalarioBasico = campoSalarioBasico;
+    }
+
+    public JTextField getCampoTelefono() {
+        return campoTelefono;
+    }
+
+    public void setCampoTelefono(JTextField campoTelefono) {
+        this.campoTelefono = campoTelefono;
+    }
+
+    public JComboBox getComboCategoria() {
+        return comboCategoria;
+    }
+
+    public void setComboCategoria(JComboBox comboCategoria) {
+        this.comboCategoria = comboCategoria;
+    }
+
+    public JComboBox getComboParentesco() {
+        return comboParentesco;
+    }
+
+    public void setComboParentesco(JComboBox comboParentesco) {
+        this.comboParentesco = comboParentesco;
+    }
+
+    public JComboBox getjComboBox1() {
+        return comboEstadoCivil;
+    }
+
+    public void setjComboBox1(JComboBox jComboBox1) {
+        this.comboEstadoCivil = jComboBox1;
+    }
+
+    public JTable getTablaGrupoFliar() {
+        return tablaGrupoFliar;
+    }
+
+    public void setTablaGrupoFliar(JTable tablaGrupoFliar) {
+        this.tablaGrupoFliar = tablaGrupoFliar;
+    }
+
+    public JTextField getCampoInvisible() {
+        return campoInvisible;
+    }
+
+    public void setCampoInvisible(JTextField campoInvisible) {
+        this.campoInvisible = campoInvisible;
+    }
+
+    public JTextField getCampoApellido() {
+        return campoApellido;
+    }
+
+    public void setCampoApellido(JTextField campoApellido) {
+        this.campoApellido = campoApellido;
+    }
 
     /**
      * @param args the command line arguments
@@ -610,29 +792,28 @@ public class AñadirPersonal extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField campoCuilObrero;
-    private javax.swing.JTextField campoCuilObrero1;
-    private javax.swing.JTextField campoCuilObrero2;
-    private javax.swing.JTextField campoDniObrero;
-    private javax.swing.JTextField campoNombreObrero;
-    private javax.swing.JTextField campoNombreObrero1;
-    private javax.swing.JTextField campoNombreObrero2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private com.toedter.calendar.JDateChooser DateChooserIngOb;
+    private com.toedter.calendar.JDateChooser DateChooserNacGpoFliar;
+    private com.toedter.calendar.JDateChooser DateChooserNacOb;
+    private javax.swing.JButton btnAceptar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JTextField campoApellido;
+    private javax.swing.JTextField campoApellidoFliar;
+    private javax.swing.JTextField campoCuil;
+    private javax.swing.JTextField campoDireccion;
+    private javax.swing.JTextField campoDni;
+    private javax.swing.JTextField campoDniFliar;
+    private javax.swing.JTextField campoInvisible;
+    private javax.swing.JTextField campoLocalidad;
+    private javax.swing.JTextField campoNombre;
+    private javax.swing.JTextField campoNombreFliar;
+    private javax.swing.JTextField campoSalarioBasico;
+    private javax.swing.JTextField campoTelefono;
+    private javax.swing.JComboBox comboCategoria;
+    private javax.swing.JComboBox comboEstadoCivil;
+    private javax.swing.JComboBox comboParentesco;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboDia;
-    private javax.swing.JComboBox jComboDia1;
-    private javax.swing.JComboBox jComboDia2;
-    private javax.swing.JComboBox jComboMes;
-    private javax.swing.JComboBox jComboMes1;
-    private javax.swing.JComboBox jComboMes2;
-    private javax.swing.JComboBox jComboMes3;
-    private javax.swing.JComboBox jComboanio;
-    private javax.swing.JComboBox jComboanio1;
-    private javax.swing.JComboBox jComboanio2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -655,11 +836,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTable tablaGrupoFliar;
     // End of variables declaration//GEN-END:variables
 }

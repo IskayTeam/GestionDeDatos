@@ -9,13 +9,17 @@ import Controlador.conectar;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
 import java.awt.Dialog;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import vista.ListaProveedor;
 
 /**
@@ -27,6 +31,8 @@ public class ListaMateriales extends javax.swing.JDialog {
     conectar cc = new conectar();
     Connection cn = cc.conexion();
     private String cuitProveedor;
+    private TableRowSorter trsfiltro;
+    
     
     /**
      * Creates new form ListaMateriales
@@ -54,7 +60,8 @@ public class ListaMateriales extends javax.swing.JDialog {
     }
     void autoCompletar(){
       TextAutoCompleter txt = new TextAutoCompleter(campoProducto);
-        String sql = "SELECT descripcion FROM material";
+        int idProv = getIdProv(cuitProveedor);
+        String sql = "SELECT descripcion FROM material WHERE Proveedor='"+idProv+"'";
         cc.conexion(); 
         try{
         Statement st = cn.prepareStatement(sql);
@@ -70,7 +77,7 @@ public class ListaMateriales extends javax.swing.JDialog {
     public int getIdProv(String cuit){
 
     String sqlp = "SELECT idProveedor FROM proveedor WHERE cuit=" + cuit + "";
-    //System.out.println(sqlp);
+    
     try{
         cc.conexion();
         Statement st1 = cn.createStatement();
@@ -84,8 +91,7 @@ public class ListaMateriales extends javax.swing.JDialog {
     void mostrarMateriales(){
         
         int idProv = getIdProv(cuitProveedor);
-        String sql = "SELECT idMaterial, descripcion, precio FROM material WHERE "
-                + "Proveedor='"+idProv+"'";
+        String sql = "SELECT idMaterial, descripcion, precio FROM material WHERE Proveedor='"+idProv+"'";
         try{
         cc.conexion();
         Statement st = cn.createStatement();
@@ -142,6 +148,11 @@ public class ListaMateriales extends javax.swing.JDialog {
         campoProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoProductoActionPerformed(evt);
+            }
+        });
+        campoProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoProductoKeyTyped(evt);
             }
         });
 
@@ -212,6 +223,24 @@ public class ListaMateriales extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void campoProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoProductoKeyTyped
+        // TODO add your handling code here:
+        campoProducto.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (campoProducto.getText().toUpperCase());
+                campoProducto.setText(cadena);
+                repaint();
+                filtro();
+           
+            }
+        });
+    
+    trsfiltro = new TableRowSorter(tablaMateriales.getModel());
+    tablaMateriales.setRowSorter(trsfiltro);
+    }//GEN-LAST:event_campoProductoKeyTyped
+public void filtro() {
+    trsfiltro.setRowFilter(RowFilter.regexFilter(campoProducto.getText(), 1));
+}
     /**
      * @param args the command line arguments
      */

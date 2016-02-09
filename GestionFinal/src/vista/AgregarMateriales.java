@@ -5,8 +5,22 @@
  */
 package vista;
 
+import Controlador.conectar;
 import com.mxrck.autocompleter.TextAutoCompleter;
+import com.sun.istack.internal.logging.Logger;
 import java.awt.Dialog;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import vista.ListaProveedor;
 
 /**
@@ -14,6 +28,13 @@ import vista.ListaProveedor;
  * @author Fran
  */
 public class AgregarMateriales extends javax.swing.JDialog {
+    
+    String cuitProveedor;
+    conectar cc = new conectar();
+    Connection cn = cc.conexion();
+    Callback callback;
+    private TableRowSorter trsfiltro;
+    
 
     /**
      * Creates new form ListaMateriales
@@ -26,17 +47,83 @@ public class AgregarMateriales extends javax.swing.JDialog {
     public AgregarMateriales(Dialog owner, boolean modal) {
         super(owner, modal);
         initComponents();
-        
-        TextAutoCompleter txt = new TextAutoCompleter(jTextField2);
-                txt.addItem("CEMENTO");
-                txt.addItem("RIPIO");
-                txt.addItem("VIGA");
-                txt.addItem("CABLES");
-                
-        labelProveedor.setText("VIVA LA URA");
-               
+     
     }
     
+       void mostrarCon(String cuitProveedor, String nombreProveedor){
+        
+        this.getLabelProveedor().setText(nombreProveedor);
+        this.cuitProveedor = cuitProveedor;
+        this.mostrarMateriales();
+        this.setLocationRelativeTo(this);
+        this.setVisible(true);
+    }
+       
+       public int getIdProv(String cuit){
+
+    String sqlp = "SELECT idProveedor FROM proveedor WHERE cuit=" + cuit + "";
+    //System.out.println(sqlp);
+    try{
+        cc.conexion();
+        Statement st1 = cn.createStatement();
+        ResultSet rs1 = st1.executeQuery(sqlp);
+        rs1.next();
+        return rs1.getInt(1);
+    }catch(SQLException ex){
+     throw new RuntimeException(ex);
+     }
+    }
+       
+       void mostrarMateriales(){
+        
+        int idProv = getIdProv(cuitProveedor);
+        String sql = "SELECT idMaterial, descripcion, precio FROM material WHERE Proveedor='"+idProv+"'";
+        
+        try{
+        cc.conexion();
+        Statement st = cn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        DefaultTableModel modelo = (DefaultTableModel)this.getjTable1().getModel();
+//        this.tablaMateriales.setModel(modelo);
+    int i;
+    Object datosfila[] = new Object[3];
+    while(rs.next()){
+    for(i=0;i<datosfila.length;i++){
+    datosfila[i]=rs.getObject(i+1);
+    }
+    modelo.addRow(datosfila);
+    }
+        }catch(SQLException ex){
+        Logger.getLogger(sql,null);
+        }
+    }
+
+    public JTable getjTable1() {
+        return tablaProducto;
+    }
+
+    public void setjTable1(JTable jTable1) {
+        this.tablaProducto = jTable1;
+    }
+
+    public JLabel getLabelProveedor() {
+        return labelProveedor;
+    }
+
+    public void setLabelProveedor(JLabel labelProveedor) {
+        this.labelProveedor = labelProveedor;
+    }
+
+    void llenarCamposMaterial(){
+        int row = tablaProducto.getSelectedRow();
+        int idMaterial = (int) tablaProducto.getValueAt(row, 0);
+        String descripcion = tablaProducto.getValueAt(row, 1).toString();
+        float precio = (float)tablaProducto.getValueAt(row, 2);
+        
+        callback.notificar(idMaterial, descripcion, precio);
+        
+        
+    }
     
 
     /**
@@ -50,18 +137,18 @@ public class AgregarMateriales extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaProducto = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         labelProveedor = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Producto:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaProducto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -69,7 +156,7 @@ public class AgregarMateriales extends javax.swing.JDialog {
                 "idMaterial", "Descripcion", "Precio"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaProducto);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Proveedor:");
@@ -79,18 +166,27 @@ public class AgregarMateriales extends javax.swing.JDialog {
                 jTextField2ActionPerformed(evt);
             }
         });
-
-        labelProveedor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        labelProveedor.setText("xxxxxxxxxxxxxxxxxxxxxx");
-
-        jButton1.setText("Cancelar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField2KeyTyped(evt);
             }
         });
 
-        jButton2.setText("Agregar");
+        labelProveedor.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,9 +213,9 @@ public class AgregarMateriales extends javax.swing.JDialog {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(84, 84, 84)
-                .addComponent(jButton2)
+                .addComponent(btnAgregar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnCancelar)
                 .addGap(73, 73, 73))
         );
         layout.setVerticalGroup(
@@ -137,22 +233,61 @@ public class AgregarMateriales extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnAgregar))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+public void filtro() {
+    trsfiltro.setRowFilter(RowFilter.regexFilter(jTextField2.getText(), 1));
+}
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        llenarCamposMaterial();
+        this.dispose();
+        
+        
+        
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped
+        // TODO add your handling code here:
+        jTextField2.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (jTextField2.getText().toUpperCase());
+                jTextField2.setText(cadena);
+                repaint();
+                filtro();
+           
+            }
+        });
+    
+    trsfiltro = new TableRowSorter(tablaProducto.getModel());
+    tablaProducto.setRowSorter(trsfiltro);
+    }//GEN-LAST:event_jTextField2KeyTyped
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
+    }
+
+    public void setjTextField2(JTextField jTextField2) {
+        this.jTextField2 = jTextField2;
+    }
 
     /**
      * @param args the command line arguments
@@ -197,13 +332,13 @@ public class AgregarMateriales extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel labelProveedor;
+    private javax.swing.JTable tablaProducto;
     // End of variables declaration//GEN-END:variables
 }
