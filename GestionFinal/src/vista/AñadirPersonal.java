@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import modelo.liquidacion.Categoria;
+import modelo.liquidacion.GrupoFamiliar;
 
 /**
  *
@@ -33,6 +35,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
     conectar cc = new conectar();
     Connection cn = cc.conexion();
     private String cuil;
+    private ArrayList<GrupoFamiliar> grupoFamiliar = new ArrayList<>();
 
     /**
      * Creates new form GestionarObrero
@@ -42,7 +45,29 @@ public class AñadirPersonal extends javax.swing.JDialog {
         initComponents();
         mostrarUltimoId();
     }
+    void llenarTabla(ArrayList grupoFamiliar) {
+        DefaultTableModel modelo = (DefaultTableModel) tablaGrupoFliar.getModel();
+        Controlador.Fecha fecha = new Fecha();
 
+        String nombre = campoNombreFliar.getText();
+        String apellido = campoApellidoFliar.getText();
+        int dni = Integer.parseInt(campoDniFliar.getText());
+        grupoFamiliar.add(new GrupoFamiliar(nombre, dni, getDateChooserNacGpoFliar().getDate(), apellido, 0));
+        Object parentesco = comboParentesco.getSelectedItem();
+        
+
+        Object[] fila = new Object[5];
+        fila[0] = nombre;
+        fila[1] = apellido;
+        fila[2] = dni;
+        fila[3] = fecha.getFecha(DateChooserNacGpoFliar);
+        fila[4] = parentesco;
+        
+
+        modelo.addRow(fila);
+        tablaGrupoFliar.setModel(modelo);
+    }
+    /*
     void llenarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tablaGrupoFliar.getModel();
         Controlador.Fecha fecha = new Fecha();
@@ -57,7 +82,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
         modelo.addRow(fila);
         tablaGrupoFliar.setModel(modelo);
     }
-
+*/
     void mostrarUltimoId() {
         String sqlid = "SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'obrero' AND table_schema = DATABASE();";
         try {
@@ -106,23 +131,32 @@ public class AñadirPersonal extends javax.swing.JDialog {
                 + "VALUES ('" +nombre+apellido+ "','" + dni + "','" + cuil + "','" + fechaNac + "','" + localidad + "','" + direccion + "','" + estadoCivil + "','" + fechaIng + "','" + telefono + "','" + idCat + "')";
 
         //Tomo datos Gpo Fliar
-        
+        for(GrupoFamiliar gf : grupoFamiliar){
         String nombreF = getCampoNombreFliar().getText().toUpperCase();
         String apellidoF = getCampoApellidoFliar().getText().toUpperCase();
         int dniF = Integer.parseInt(getCampoDniFliar().getText());
-        String parentesco = getComboParentesco().getSelectedItem().toString();
         Date fechaNacF = getDateChooserNacGpoFliar().getDate();
-
+        String parentesco = getComboParentesco().getSelectedItem().toString();
+        
+        
         String sqlFliar = "INSERT INTO grupofamiliar(nombre, dni, fechaNacimiento, parentesco, Obrero)"
                 + " VALUES ('" + nombreF + "','" + dniF + "','" + fechaNacF + "','" + parentesco + "','" + idOb + "')";
-
+        
+            try {
+                cc.conexion();
+                Statement st = cn.createStatement();
+                st.execute(sqlFliar);
+                AbmGrupoFamiliar.agregarGrupoFamiliar(nombreF, dniF, fechaNacF, parentesco, idOb);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         try {
             cc.conexion();
             Statement st = cn.createStatement();
             st.execute(sqlObrero);
-            st.execute(sqlFliar);
-            AbmObrero.agregarObrero(nombre, cuil, estadoCivil, localidad, direccion, fechaNacF, fechaIng, dni, telefono, idCat);
-            AbmGrupoFamiliar.agregarGrupoFamiliar(nombre, dni, fechaNacF, parentesco, idOb);
+            
+            AbmObrero.agregarObrero(nombre, cuil, estadoCivil, localidad, direccion, fechaNac, fechaIng, dni, telefono, idCat);
             JOptionPane.showMessageDialog(null, "Se agrego correctamente");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "ERROR AL REGISTRAR");
@@ -594,7 +628,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        llenarTabla();
+        llenarTabla(grupoFamiliar);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void campoTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTelefonoActionPerformed

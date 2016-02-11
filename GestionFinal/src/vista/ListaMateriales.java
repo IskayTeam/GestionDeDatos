@@ -6,7 +6,6 @@
 package vista;
 
 import Controlador.conectar;
-import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
 import java.awt.Dialog;
 import java.awt.event.KeyAdapter;
@@ -45,8 +44,6 @@ public class ListaMateriales extends javax.swing.JDialog {
     public ListaMateriales(Dialog owner, boolean modal) {
         super(owner, modal);
         initComponents();
-        autoCompletar();
-        //mostrarMateriales();
     }
     
     void mostrarCon(String cuitProveedor, String nombreProveedor){
@@ -58,26 +55,10 @@ public class ListaMateriales extends javax.swing.JDialog {
         this.setVisible(true);
 
     }
-    void autoCompletar(){
-      TextAutoCompleter txt = new TextAutoCompleter(campoProducto);
-        int idProv = getIdProv(cuitProveedor);
-        String sql = "SELECT descripcion FROM material WHERE Proveedor='"+idProv+"'";
-        cc.conexion(); 
-        try{
-        Statement st = cn.prepareStatement(sql);
-        ResultSet rs = st.executeQuery(sql);
-        while(rs.next()){
-            txt.addItem(rs.getString("descripcion"));
-        }
-        }catch(SQLException ex){
-            Logger.getLogger(sql, null);
-        }
-        
-    }
+
     public int getIdProv(String cuit){
 
     String sqlp = "SELECT idProveedor FROM proveedor WHERE cuit=" + cuit + "";
-    
     try{
         cc.conexion();
         Statement st1 = cn.createStatement();

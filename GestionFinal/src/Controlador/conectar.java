@@ -15,7 +15,8 @@ Connection conect = null;
              
            //Cargamos el Driver MySQL
            Class.forName("com.mysql.jdbc.Driver");
-           conect = DriverManager.getConnection("jdbc:mysql://localhost/finalgestion","root","");
+           conect = DriverManager.getConnection
+        ("jdbc:mysql://localhost/finalgestion","root","");
            //JOptionPane.showMessageDialog(null, "conectado");
            //Cargamos el Driver Access
            //Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
