@@ -6,6 +6,9 @@
 package vista;
 
 import controlador.AbmProveedor;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -322,7 +325,12 @@ public class PantallaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
-        // TODO add your handling code here:
+try {
+     File path = new File ("C:\\Users\\Taka\\Documents\\Fisica Universitaria - Sears - Zemansky - 12ava Edicion - Vol2.pdf");
+     Desktop.getDesktop().open(path);
+}catch (IOException ex) {
+     ex.printStackTrace();
+}        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
