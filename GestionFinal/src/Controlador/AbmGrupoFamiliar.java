@@ -17,10 +17,12 @@ public class AbmGrupoFamiliar {
     
     private static ArrayList<GrupoFamiliar> grupofamiliar = new ArrayList<>();
     
-    public static void agregarGrupoFamiliar(String nombre, int dni, Date fechaNacimiento, String parentesco, int idOb){
-    GrupoFamiliar miembro = new GrupoFamiliar(nombre, dni, fechaNacimiento, parentesco, idOb);
+    public static void agregarGrupoFamiliar(String nombre, String apellido, int dni, Date fechaNacimiento, String parentesco, int idOb){
+    GrupoFamiliar miembro = new GrupoFamiliar(nombre, apellido, dni, fechaNacimiento, parentesco, idOb);
     
     grupofamiliar.add(miembro);
     }
+    
+    
     
 }

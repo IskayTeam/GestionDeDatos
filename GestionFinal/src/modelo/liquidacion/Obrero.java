@@ -15,6 +15,7 @@ public class Obrero {
     
     private int idObrero;
     private String nombre;
+    private String apellido;
     private String cuil;
     private String estadoCivil;
     private String localidad;
@@ -25,9 +26,10 @@ public class Obrero {
     private int telefono;   
     private int categoria;
 
-    public Obrero(String nombre, String cuil, String estadoCivil, String localidad, String direccion, Date fechaNacimiento, Date fechaIngreso, int dni, int telefono, int categoria) {
+    public Obrero(String nombre, String apellido, String cuil, String estadoCivil, String localidad, String direccion, Date fechaNacimiento, Date fechaIngreso, int dni, int telefono, int categoria) {
         
         this.nombre = nombre;
+        this.apellido = apellido;
         this.cuil = cuil;
         this.estadoCivil = estadoCivil;
         this.localidad = localidad;
@@ -37,6 +39,10 @@ public class Obrero {
         this.dni = dni;
         this.telefono = telefono;
         this.categoria = categoria;
+    }
+
+    public String getApellido() {
+        return apellido;
     }
     
     

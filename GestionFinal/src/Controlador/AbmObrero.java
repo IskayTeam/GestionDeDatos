@@ -18,8 +18,8 @@ public class AbmObrero {
     
     private static ArrayList<Obrero> obreros = new ArrayList<>();
     
-    public static void agregarObrero(String nombre, String cuil, String estadoCivil, String localidad, String direccion, Date fechaNacimiento, Date fechaIngreso, int dni, int telefono, int idCat){
-        Obrero obrero = new Obrero(nombre, cuil, estadoCivil, localidad, direccion, fechaNacimiento, fechaIngreso, dni, telefono, idCat);
+    public static void agregarObrero(String nombre, String apellido, String cuil, String estadoCivil, String localidad, String direccion, Date fechaNacimiento, Date fechaIngreso, int dni, int telefono, int idCat){
+        Obrero obrero = new Obrero(nombre, apellido, cuil, estadoCivil, localidad, direccion, fechaNacimiento, fechaIngreso, dni, telefono, idCat);
         obreros.add(obrero);
         
     }
