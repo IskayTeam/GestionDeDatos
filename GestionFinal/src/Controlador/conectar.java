@@ -9,25 +9,28 @@ import javax.swing.*;
 
 public class conectar {
 Connection conect = null;
-   public Connection conexion()
+public static conectar instance;
+   
+public Connection conexion()
     {
-      try {
-             
+      try {            
            //Cargamos el Driver MySQL
            Class.forName("com.mysql.jdbc.Driver");
            conect = DriverManager.getConnection
-        ("jdbc:mysql://localhost/finalgestion","root","");
-           //JOptionPane.showMessageDialog(null, "conectado");
-           //Cargamos el Driver Access
-           //Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-           //Conectar en red base 
-           //String strConect = "jdbc:odbc:Driver=Microsoft Access Driver (*.mdb);DBQ=//servidor/bd_cw/cw.mdb";
-           //Conectar Localmente
-           //String strConect = "jdbc:odbc:Driver=Microsoft Access Driver (*.mdb);DBQ=D:/cwnetbeans/cw.mdb";
-          //conect = DriverManager.getConnection(strConect,"",""); 
+            ("jdbc:mysql://localhost/finalgestion","root","");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,"Error "+e);
         }
         return conect;
      
-}}
+}
+   public synchronized static conectar comprobarEstado() {
+        if (instance == null) {
+            instance = new conectar();
+        }
+        return instance;
+   }
+ public void cerrarConexion() {
+        conectar.instance = null;
+    }
+}

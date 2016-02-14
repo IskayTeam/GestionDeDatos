@@ -5,6 +5,7 @@
  */
 package vista;
 
+import Controlador.AbmObrero;
 import controlador.AbmProveedor;
 import java.awt.Desktop;
 import java.io.File;
@@ -17,6 +18,7 @@ import javax.swing.JOptionPane;
  */
 public class PantallaAdmin extends javax.swing.JFrame {
 
+    Controlador.AbmObrero abmobrero = new AbmObrero();
     /**
      * Creates new form PantallaPrincipal
      */
@@ -43,7 +45,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        menuItemListaPersonal = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -120,13 +122,13 @@ public class PantallaAdmin extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem4);
 
-        jMenuItem5.setText("Listado de Personal");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        menuItemListaPersonal.setText("Listado de Personal");
+        menuItemListaPersonal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                menuItemListaPersonalActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem5);
+        jMenu4.add(menuItemListaPersonal);
 
         jMenuBar1.add(jMenu4);
 
@@ -337,13 +339,12 @@ try {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
-        ListaPersonal lista = new ListaPersonal(this, true);
-        lista.setLocationRelativeTo(this);
-        lista.setVisible(true);
+    private void menuItemListaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemListaPersonalActionPerformed
+        ListaPersonal lp = new ListaPersonal(null, true);
+        lp.setLocationRelativeTo(lp);
+        lp.setVisible(true);
         
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_menuItemListaPersonalActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
@@ -410,10 +411,10 @@ try {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JMenuItem menuItemListaPersonal;
     // End of variables declaration//GEN-END:variables
 }

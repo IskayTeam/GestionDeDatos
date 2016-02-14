@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -45,7 +47,7 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         initComponents();
     }
     
-    void mostrarCon(int dniObrero, String nombre){
+    public void mostrarCon(int dniObrero, String nombre){
         
         this.getLblObrero().setText(nombre);
         this.dniObrero = dniObrero;
@@ -146,6 +148,32 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
     getDateChooserNacGpoFliar2().setDate(null);
     
     }
+    
+    void borrarMiembro(){
+    int fila;
+    int resp;
+    DefaultTableModel modelo = (DefaultTableModel)this.getTablaGrupoFliar2().getModel(); 
+    fila = tablaGrupoFliar2.getSelectedRow();
+    String dni = tablaGrupoFliar2.getValueAt(fila, 2).toString();
+    String sql = "DELETE FROM grupofamiliar WHERE dni='"+dni+"'";
+        
+    if(fila == -1){
+        JOptionPane.showMessageDialog(null, "Debe seleccionar el miembro a eliminar","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+    }else{
+        resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar",JOptionPane.YES_NO_OPTION);
+        if(resp == JOptionPane.YES_OPTION){
+        modelo.removeRow(fila);
+            try {
+                
+                Statement st = cn.prepareStatement(sql);
+                st.executeUpdate(sql);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        
+        }
+    }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -235,6 +263,11 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         jButton8.setText("jButton3");
         jButton8.setMargin(new java.awt.Insets(2, 29, 2, 14));
         jButton8.setPreferredSize(new java.awt.Dimension(107, 35));
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -397,6 +430,11 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         this.dispose();
         }else{}    
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        borrarMiembro();
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     public JDateChooser getDateChooserNacGpoFliar2() {
         return DateChooserNacGpoFliar2;

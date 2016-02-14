@@ -5,15 +5,18 @@
  */
 package vista;
 
+import Controlador.Validaciones;
 import Controlador.conectar;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
+import Controlador.AbmObrero;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -25,14 +28,39 @@ import javax.swing.table.TableRowSorter;
  */
 public class ListaPersonal extends javax.swing.JDialog {
 
+    private TableRowSorter trsfiltro;
+    Controlador.Validaciones val = new Validaciones();
+    Controlador.AbmObrero abmObrero = new AbmObrero();
     conectar cc = new conectar();
     Connection cn = cc.conexion();
-    private TableRowSorter trsfiltro;
     
     public ListaPersonal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         mostrarObrero();
+    }
+    public void mostrarObrero(){
+    
+    String sql = "SELECT nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria FROM obrero";
+        try{
+    Statement st = cn.createStatement();
+    ResultSet rs = st.executeQuery(sql);
+    DefaultTableModel modelo = (DefaultTableModel)this.getTablaObrero().getModel();
+    this.tablaObrero.setModel(modelo);
+    int i;
+    
+    Object datosfila[] = new Object[11];
+    while(rs.next()){
+    for(i=0;i<datosfila.length;i++){
+    datosfila[i]=rs.getObject(i+1);
+    }
+    modelo.addRow(datosfila);
+    }
+      }catch(SQLException ex){
+    throw new RuntimeException(ex);
+}finally {
+            cc.cerrarConexion();
+        }
     }
     public String getNombreObreroSeleccionado(){
     int row = tablaObrero.getSelectedRow();
@@ -47,31 +75,6 @@ public class ListaPersonal extends javax.swing.JDialog {
     return dni;
     }
     
-    public void mostrarObrero(){
-    String sql = "SELECT nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria FROM obrero";
-    
-        try{
-    cc.conexion();
-    Statement st = cn.createStatement();
-    ResultSet rs = st.executeQuery(sql);
-    DefaultTableModel modelo = (DefaultTableModel)this.getTablaObrero().getModel();
-    this.tablaObrero.setModel(modelo);
-    
-    int i;
-    
-    Object datosfila[] = new Object[11];
-    while(rs.next()){
-    for(i=0;i<datosfila.length;i++){
-    datosfila[i]=rs.getObject(i+1);
-    }
-    modelo.addRow(datosfila);
-    }
-      }catch(SQLException ex){
-    throw new RuntimeException(ex);
-
-    
-    }
-    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -116,6 +119,11 @@ public class ListaPersonal extends javax.swing.JDialog {
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/btnEliminar.png"))); // NOI18N
         btnEliminar.setText("Lista de Personal");
         btnEliminar.setMargin(new java.awt.Insets(2, 29, 2, 14));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         tablaObrero.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,6 +136,11 @@ public class ListaPersonal extends javax.swing.JDialog {
         jScrollPane1.setViewportView(tablaObrero);
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -237,13 +250,64 @@ public class ListaPersonal extends javax.swing.JDialog {
     }//GEN-LAST:event_campoBuscarObreroKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        AñadirGrupoFliar añadirmiembro = new AñadirGrupoFliar(this, true);
-        getDniObreroSeleccionado();
-        añadirmiembro.mostrarCon(getDniObreroSeleccionado(),getNombreObreroSeleccionado());
-        
+        // TODO add your handling code here:  
+       validar();
     }//GEN-LAST:event_jButton1ActionPerformed
-public void filtro() {
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        bajaObrero();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    public void bajaObrero() {
+        int fila;
+        int resp;
+        DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
+        fila = this.tablaObrero.getSelectedRow();
+        Object dni = this.getTablaObrero().getValueAt(fila, 2).toString();
+        String sql = "DELETE FROM obrero WHERE dni='" + dni + "'";
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar el obrero a eliminar", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar", JOptionPane.YES_NO_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+
+                modelo.removeRow(fila);
+                //AbmObrero.obreros.remove(fila);
+            }
+                try {
+                    
+                    Statement st = cn.prepareStatement(sql);
+                    st.executeUpdate(sql);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            }
+        }
+    
+    public void validar() {
+        AñadirGrupoFliar agf = new AñadirGrupoFliar(this, true);
+        int fila;
+        
+        DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
+        fila = tablaObrero.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar algún miembro", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            getDniObreroSeleccionado();
+            agf.mostrarCon(getDniObreroSeleccionado(),getNombreObreroSeleccionado());
+            }
+
+        }
+    public void filtro() {
     trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarObrero.getText(), 1));
 }
     /**

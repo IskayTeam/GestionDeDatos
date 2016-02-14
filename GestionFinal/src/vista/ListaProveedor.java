@@ -62,7 +62,6 @@ public String getCuitProveedorSeleccionado(){
     void autoCompletar(){
         TextAutoCompleter txt = new TextAutoCompleter(campoBuscarProv);
         String sql = "SELECT nombre FROM proveedor";
-        cc.conexion();
         try{
         Statement st = cn.prepareStatement(sql);
         ResultSet rs = st.executeQuery(sql);
@@ -77,7 +76,6 @@ public String getCuitProveedorSeleccionado(){
     public void mostrarProv(){
     String sql = "SELECT nombre, cuit, provincia, localidad, direccion, telefono FROM proveedor";
         try{
-    cc.conexion();
     Statement st = cn.createStatement();
     ResultSet rs = st.executeQuery(sql);
     DefaultTableModel modelo = (DefaultTableModel)this.getjTable1().getModel();
@@ -93,9 +91,9 @@ public String getCuitProveedorSeleccionado(){
     }
       }catch(SQLException ex){
     Logger.getLogger(sql, null);
-
-    
-    }
+    }finally {
+            cc.cerrarConexion();
+        }
     }
     
     public void filtro() {
