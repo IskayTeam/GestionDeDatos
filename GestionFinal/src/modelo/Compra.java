@@ -18,6 +18,7 @@ public class Compra {
    private double total;
    private ArrayList<LineaCompra> lineas;
    private Proveedor proveedor;
+   private Obra obra;
 
     public Compra() {
         lineas = new ArrayList<>();

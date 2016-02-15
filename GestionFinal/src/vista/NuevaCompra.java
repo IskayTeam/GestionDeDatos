@@ -596,6 +596,7 @@ public class NuevaCompra extends javax.swing.JDialog {
 
             @Override
             public void notificar(int idMaterial, String descripcion, float precio) {
+                
                 getCampoCodigoMaterial().setText(String.valueOf(idMaterial));
                 getCampoDescripMaterial().setText(descripcion);
                 getCampoPrecioMaterial().setText(String.valueOf(precio));

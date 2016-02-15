@@ -106,7 +106,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         Login2 log = new Login2(this, true);
-        log.setLocationRelativeTo(null);
+        log.setLocationRelativeTo(this);
         log.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jMenuItem1ActionPerformed

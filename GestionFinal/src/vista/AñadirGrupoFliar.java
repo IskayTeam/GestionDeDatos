@@ -88,13 +88,13 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         String apellido = campoApellidoFliar2.getText();
         int dni = Integer.parseInt(campoDniFliar2.getText());       
         Object parentesco = comboParentesco2.getSelectedItem();
-        grupoFamiliar.add(new GrupoFamiliar(nombre, apellido, dni, getDateChooserNacGpoFliar2().getDate(), parentesco.toString(), 0));
+        grupoFamiliar.add(new GrupoFamiliar(nombre, apellido, dni, getDateChooserNacGrupoFliar2().getDate(), parentesco.toString(), 0));
         
         Object[] fila = new Object[5];
         fila[0] = nombre;
         fila[1] = apellido;
         fila[2] = dni;
-        fila[3] = fecha.getFecha(DateChooserNacGpoFliar2);
+        fila[3] = fecha.getFecha(DateChooserNacGrupoFliar2);
         fila[4] = parentesco;
         
         modelo.addRow(fila);
@@ -145,7 +145,7 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
     getCampoApellidoFliar2().setText("");
     getCampoNombreFliar2().setText("");
     getCampoDniFliar2().setText("");
-    getDateChooserNacGpoFliar2().setDate(null);
+    getDateChooserNacGrupoFliar2().setDate(null);
     
     }
     
@@ -154,22 +154,23 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
     int resp;
     DefaultTableModel modelo = (DefaultTableModel)this.getTablaGrupoFliar2().getModel(); 
     fila = tablaGrupoFliar2.getSelectedRow();
-    String dni = tablaGrupoFliar2.getValueAt(fila, 2).toString();
-    String sql = "DELETE FROM grupofamiliar WHERE dni='"+dni+"'";
-        
+    
+    
     if(fila == -1){
         JOptionPane.showMessageDialog(null, "Debe seleccionar el miembro a eliminar","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
     }else{
         resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar",JOptionPane.YES_NO_OPTION);
         if(resp == JOptionPane.YES_OPTION){
-        modelo.removeRow(fila);
             try {
-                
+                String dni = tablaGrupoFliar2.getValueAt(fila, 2).toString();
+                String sql = "DELETE FROM grupofamiliar WHERE dni='"+dni+"'";
                 Statement st = cn.prepareStatement(sql);
                 st.executeUpdate(sql);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
+            modelo.removeRow(fila);
+        //AbmGrupoFamiliar.grupofamiliar.remove(fila);
         
         }
     }
@@ -193,11 +194,11 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         tablaGrupoFliar2 = new javax.swing.JTable();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
-        DateChooserNacGpoFliar2 = new com.toedter.calendar.JDateChooser();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblObrero = new javax.swing.JLabel();
+        DateChooserNacGrupoFliar2 = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -318,8 +319,8 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jLabel18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DateChooserNacGpoFliar2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
+                        .addComponent(DateChooserNacGrupoFliar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(117, 117, 117)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -356,13 +357,13 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
                     .addComponent(campoApellidoFliar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboParentesco2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel18)
                             .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(DateChooserNacGpoFliar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(DateChooserNacGrupoFliar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -436,13 +437,14 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         borrarMiembro();
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    public JDateChooser getDateChooserNacGpoFliar2() {
-        return DateChooserNacGpoFliar2;
+    public JDateChooser getDateChooserNacGrupoFliar2() {
+        return DateChooserNacGrupoFliar2;
     }
 
-    public void setDateChooserNacGpoFliar2(JDateChooser DateChooserNacGpoFliar2) {
-        this.DateChooserNacGpoFliar2 = DateChooserNacGpoFliar2;
+    public void setDateChooserNacGrupoFliar2(JDateChooser DateChooserNacGrupoFliar2) {
+        this.DateChooserNacGrupoFliar2 = DateChooserNacGrupoFliar2;
     }
+
 
     public JTextField getCampoApellidoFliar2() {
         return campoApellidoFliar2;
@@ -519,7 +521,7 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser DateChooserNacGpoFliar2;
+    private com.toedter.calendar.JDateChooser DateChooserNacGrupoFliar2;
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JTextField campoApellidoFliar2;

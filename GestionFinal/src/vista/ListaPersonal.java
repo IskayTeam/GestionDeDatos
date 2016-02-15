@@ -33,49 +33,50 @@ public class ListaPersonal extends javax.swing.JDialog {
     Controlador.AbmObrero abmObrero = new AbmObrero();
     conectar cc = new conectar();
     Connection cn = cc.conexion();
-    
+
     public ListaPersonal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         mostrarObrero();
     }
-    public void mostrarObrero(){
-    
-    String sql = "SELECT nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria FROM obrero";
-        try{
-    Statement st = cn.createStatement();
-    ResultSet rs = st.executeQuery(sql);
-    DefaultTableModel modelo = (DefaultTableModel)this.getTablaObrero().getModel();
-    this.tablaObrero.setModel(modelo);
-    int i;
-    
-    Object datosfila[] = new Object[11];
-    while(rs.next()){
-    for(i=0;i<datosfila.length;i++){
-    datosfila[i]=rs.getObject(i+1);
-    }
-    modelo.addRow(datosfila);
-    }
-      }catch(SQLException ex){
-    throw new RuntimeException(ex);
-}finally {
+
+    public void mostrarObrero() {
+
+        String sql = "SELECT nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria FROM obrero";
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
+            this.tablaObrero.setModel(modelo);
+            int i;
+
+            Object datosfila[] = new Object[11];
+            while (rs.next()) {
+                for (i = 0; i < datosfila.length; i++) {
+                    datosfila[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(datosfila);
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        } finally {
             cc.cerrarConexion();
         }
     }
-    public String getNombreObreroSeleccionado(){
-    int row = tablaObrero.getSelectedRow();
+
+    public String getNombreObreroSeleccionado() {
+        int row = tablaObrero.getSelectedRow();
         String name = tablaObrero.getValueAt(row, 0).toString();
         String apellido = tablaObrero.getValueAt(row, 1).toString();
-    return name+" "+apellido;
+        return name + " " + apellido;
     }
-    
-    public int getDniObreroSeleccionado(){
-    int row = tablaObrero.getSelectedRow();
+
+    public int getDniObreroSeleccionado() {
+        int row = tablaObrero.getSelectedRow();
         int dni = (int) tablaObrero.getValueAt(row, 2);
-    return dni;
+        return dni;
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -241,17 +242,17 @@ public class ListaPersonal extends javax.swing.JDialog {
                 campoBuscarObrero.setText(cadena);
                 repaint();
                 filtro();
-           
+
             }
         });
         trsfiltro = new TableRowSorter(tablaObrero.getModel());
-    tablaObrero.setRowSorter(trsfiltro);
-    
+        tablaObrero.setRowSorter(trsfiltro);
+
     }//GEN-LAST:event_campoBuscarObreroKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:  
-       validar();
+        validar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -268,34 +269,34 @@ public class ListaPersonal extends javax.swing.JDialog {
         int fila;
         int resp;
         DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
-        fila = this.tablaObrero.getSelectedRow();
-        Object dni = this.getTablaObrero().getValueAt(fila, 2).toString();
-        String sql = "DELETE FROM obrero WHERE dni='" + dni + "'";
-
+        fila = tablaObrero.getSelectedRow();
+        
         if (fila == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar el obrero a eliminar", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
-        } else {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar algún miembro", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } 
+        else {
             resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar", JOptionPane.YES_NO_OPTION);
             if (resp == JOptionPane.YES_OPTION) {
-
+                try {
+                String dni = tablaObrero.getValueAt(fila, 2).toString();
+                String sql = "DELETE FROM obrero WHERE dni='" + dni + "'";
+                Statement st = cn.prepareStatement(sql);
+                st.executeUpdate(sql);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
                 modelo.removeRow(fila);
                 //AbmObrero.obreros.remove(fila);
             }
-                try {
-                    
-                    Statement st = cn.prepareStatement(sql);
-                    st.executeUpdate(sql);
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
+            
 
-            }
         }
-    
+    }
+
     public void validar() {
         AñadirGrupoFliar agf = new AñadirGrupoFliar(this, true);
         int fila;
-        
+
         DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
         fila = tablaObrero.getSelectedRow();
 
@@ -303,13 +304,15 @@ public class ListaPersonal extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Debe seleccionar algún miembro", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
             getDniObreroSeleccionado();
-            agf.mostrarCon(getDniObreroSeleccionado(),getNombreObreroSeleccionado());
-            }
-
+            agf.mostrarCon(getDniObreroSeleccionado(), getNombreObreroSeleccionado());
         }
+
+    }
+
     public void filtro() {
-    trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarObrero.getText(), 1));
-}
+        trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarObrero.getText(), 1));
+    }
+
     /**
      * @param args the command line arguments
      */

@@ -22,14 +22,14 @@ public class ControladorCompra {
     private Material m;
     
     
-    public static void nuevaCompra(){
+    public void nuevaCompra(){
         
         Compra compra = new Compra();
         
     }
     
-    public  Proveedor buscarProveedor(int codigo){
-        p = AbmProveedor.buscarProveedor(codigo);
+    public Proveedor buscarProveedor(int codigo){
+        //p = AbmProveedor.buscarProveedor(codigo);
         return p;
     }
     

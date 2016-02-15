@@ -11,6 +11,7 @@ package vista;
  */
 public interface Callback {
     void notificar(int idMaterial, String descripcion,float precio);
+    
 
 
 }
