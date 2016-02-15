@@ -12,12 +12,15 @@ package modelo;
 public class Usuario {
     
     
+    public int idUsuario;
     private String usuario;
     private String contraseña;
+    private String tipoUsuario;
 
-    public Usuario(String usuario, String contraseña) {
+    public Usuario(String usuario, String contraseña, String tipoUsuario) {
         this.usuario = usuario;
         this.contraseña = contraseña;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getUsuario() {
@@ -34,6 +37,14 @@ public class Usuario {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
     
     

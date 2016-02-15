@@ -16,16 +16,20 @@ public class Proveedor {
     private int idProveedor;
     private String nombre;
     private int telefono;
-    private int cuit;
+    private String cuit;
+    private String provincia;
+    private String localidad;
     private String direccion;
     private ArrayList<Material> materiales;
 
-    public Proveedor(int idProveedor, String nombre, String direccion  , int cuit, int telefono) {
-        this.idProveedor = idProveedor;
+    public Proveedor(String nombre, String cuit, String provincia, String localidad, String direccion, int telefono) {
+        
         this.nombre = nombre;
         this.telefono = telefono;
         this.cuit = cuit;
         this.direccion = direccion;
+        this.provincia = provincia;
+        this.localidad = localidad;
         materiales = new ArrayList<>();
                 
     }
@@ -51,9 +55,27 @@ public class Proveedor {
         return telefono;
     }
 
-    public int getCuit() {
+    public String getCuit() {
         return cuit;
     }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+    
+    
     
     public Material buscarMaterial(int codigo){
         Material auxiliar = null;

@@ -9,6 +9,6 @@ package modelo.venta;
  *
  * @author Luca
  */
-public class Producto {
+public class Departamento {
     
 }

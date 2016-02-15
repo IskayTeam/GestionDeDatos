@@ -5,6 +5,8 @@
  */
 package modelo.liquidacion;
 
+import modelo.Usuario;
+
 /**
  *
  * @author Luca
@@ -14,15 +16,18 @@ public class Administrativo {
     private int idAdmin;
     private String nombre;
     private String domicilio;
-    private int cuit;
-    private int telefono;
+    private String cuit;
+    private int idUs;
+    
+    
 
-    public Administrativo(int idAdmin, String nombre, String domicilio, int cuit, int telefono) {
-        this.idAdmin = idAdmin;
+    public Administrativo(String nombre, String domicilio, String cuit, int idUs) {
+        
         this.nombre = nombre;
         this.domicilio = domicilio;
         this.cuit = cuit;
-        this.telefono = telefono;
+        this.idUs = idUs;
+        
     }
 
     public int getIdAdmin() {
@@ -37,13 +42,11 @@ public class Administrativo {
         return domicilio;
     }
 
-    public int getCuit() {
+    public String getCuit() {
         return cuit;
     }
 
-    public int getTelefono() {
-        return telefono;
-    }
+    
     
     
     

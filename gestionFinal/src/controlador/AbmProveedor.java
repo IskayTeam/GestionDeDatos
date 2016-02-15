@@ -7,7 +7,7 @@ package controlador;
 
 import java.util.ArrayList;
 import modelo.compra.Proveedor;
-import vista.GestionarProveedor;
+import vista.AltaProveedor;
 
 /**
  *
@@ -15,14 +15,12 @@ import vista.GestionarProveedor;
  */
 public class AbmProveedor {
     
-    private static ArrayList<Proveedor> proveedores = new ArrayList<>();
+    public static ArrayList<Proveedor> proveedores = new ArrayList<>();
     
-    public static void agregarProveedor(int idProveedor, String nombre, String direccion , int cuit, int telefono){
+    public static void agregarProveedor(String nombre, String cuit, String provincia, String localidad, String direccion, int telefono){
         
-        Proveedor proveedor = new Proveedor(idProveedor, nombre, direccion, cuit, telefono);
-        
+        Proveedor proveedor = new Proveedor(nombre, cuit, provincia, localidad, direccion, telefono);
         proveedores.add(proveedor);
-        
         System.out.println(proveedor);
     }
     

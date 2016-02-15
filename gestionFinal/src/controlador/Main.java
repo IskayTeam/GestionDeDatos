@@ -5,6 +5,7 @@
  */
 package controlador;
 
+import vista.PantallaAdmin;
 import vista.PantallaPrincipal;
 
 /**
@@ -18,9 +19,12 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        PantallaPrincipal pantallaPrincipal = new PantallaPrincipal();
-        pantallaPrincipal.setVisible(true);
-        pantallaPrincipal.setLocationRelativeTo(null);
+        PantallaPrincipal pp = new PantallaPrincipal();
+        pp.setVisible(true);
+        pp.setLocationRelativeTo(null);
+        //PantallaAdmin pantallaPrincipal = new PantallaAdmin();
+        //pantallaPrincipal.setVisible(true);
+        //pantallaPrincipal.setLocationRelativeTo(null);
         
         
     }
