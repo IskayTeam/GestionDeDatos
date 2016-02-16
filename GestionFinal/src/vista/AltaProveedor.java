@@ -44,7 +44,7 @@ public class AltaProveedor extends javax.swing.JDialog {
             + "VALUES ('"+nombre+"','"+cuit+"','"+provincia+"','"+localidad+"','"+direccion+"','"+telefono+"')";
        
         try{
-            //cc.conexion();
+            /*cc.conexion();*/
             Statement st = cn.createStatement();
             st.execute(sql);
             AbmProveedor.agregarProveedor(nombre, cuit, provincia, localidad, direccion, telefono);
