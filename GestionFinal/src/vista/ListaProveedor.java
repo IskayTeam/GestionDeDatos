@@ -329,11 +329,11 @@ public String getCuitProveedorSeleccionado(){
                 }
                 modelo.removeRow(fila);
                 //AbmProveedor.proveedores.remove(fila);
-            
-
             }
     }
     }
+    
+    
     /**
      * @param args the command line arguments
      */

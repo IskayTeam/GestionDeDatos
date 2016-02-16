@@ -16,6 +16,8 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import modelo.compra.Material;
 
@@ -34,6 +36,7 @@ public class NuevaCompra extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         autoCompletar();
+        
     }
 
     public String getNombreProveedorSeleccionado() {
@@ -106,8 +109,6 @@ public class NuevaCompra extends javax.swing.JDialog {
             Logger.getLogger(sql, null);
         }
     }
-    
-   
 
     public JTextField getCampoBuscarProv() {
         return campoBuscarProv;
@@ -282,6 +283,11 @@ public class NuevaCompra extends javax.swing.JDialog {
         jLabel9.setText("TOTAL:");
 
         campoTotalCompra.setEditable(false);
+        campoTotalCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoTotalCompraActionPerformed(evt);
+            }
+        });
 
         botonFinalizarCompra.setText("Finalizar");
 
@@ -419,6 +425,11 @@ public class NuevaCompra extends javax.swing.JDialog {
         jButton3.setMaximumSize(new java.awt.Dimension(121, 37));
         jButton3.setMinimumSize(new java.awt.Dimension(121, 37));
         jButton3.setPreferredSize(new java.awt.Dimension(107, 35));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         campoPrecioMaterial.setEditable(false);
 
@@ -443,6 +454,11 @@ public class NuevaCompra extends javax.swing.JDialog {
         jButton6.setText("jButton3");
         jButton6.setMargin(new java.awt.Insets(2, 26, 2, 14));
         jButton6.setPreferredSize(new java.awt.Dimension(107, 35));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         btnBuscarProduc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/ico_buscar_tbjo.png"))); // NOI18N
         btnBuscarProduc.setText("jButton1");
@@ -596,7 +612,7 @@ public class NuevaCompra extends javax.swing.JDialog {
 
             @Override
             public void notificar(int idMaterial, String descripcion, float precio) {
-                
+
                 getCampoCodigoMaterial().setText(String.valueOf(idMaterial));
                 getCampoDescripMaterial().setText(descripcion);
                 getCampoPrecioMaterial().setText(String.valueOf(precio));
@@ -617,14 +633,91 @@ public class NuevaCompra extends javax.swing.JDialog {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        
+        DefaultTableModel modelo = (DefaultTableModel) tablaNuevaCompra.getModel();
+        int filas=tablaNuevaCompra.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                modelo.removeRow(0);
+            }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if(campoCantidad.getText().equals("")){    
+        JOptionPane.showMessageDialog(null, "Debes ingresar una cantidad", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            llenarTabla();
+            actualizarTotal();
+        }
+        
+        limpiarCampos();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        borrarTabla();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void campoTotalCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTotalCompraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoTotalCompraActionPerformed
+
+    void actualizarTotal(){
+    DefaultTableModel modelo = (DefaultTableModel) tablaNuevaCompra.getModel();
+    
+        float total=0, subTotal=0;
+        for(int i=0; i<tablaNuevaCompra.getRowCount();i++){
+        total = total + Float.parseFloat(modelo.getValueAt(i, 4).toString());
+
+        }
+        
+        campoTotalCompra.setText(""+total);
+    }
+    void llenarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaNuevaCompra.getModel();
+
+        int codigo = Integer.parseInt(campoCodigoMaterial.getText());
+        String descripcion = campoDescripMaterial.getText();
+        int cantidad = Integer.parseInt(campoCantidad.getText());
+        float precio = Float.parseFloat(campoPrecioMaterial.getText());
+        float subTotal = cantidad * precio;
+
+        Object[] fila = new Object[5];
+        fila[0] = codigo;
+        fila[1] = descripcion;
+        fila[2] = cantidad;
+        fila[3] = precio;
+        fila[4] = subTotal;
+        modelo.addRow(fila);
+        tablaNuevaCompra.setModel(modelo);
+    }
+    void limpiarCampos(){
         getCampoCodigoMaterial().setText("");
         getCampoDescripMaterial().setText("");
         getCampoPrecioMaterial().setText("");
-    }//GEN-LAST:event_jButton5ActionPerformed
+        getCampoCantidad().setText("");
+    }
 
-    /**
-     * @param args the command line arguments
-     */
+    void borrarTabla() {
+        int fila, resp;
+        DefaultTableModel modelo = (DefaultTableModel) this.getTablaNuevaCompra().getModel();
+        fila = tablaNuevaCompra.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar el producto a eliminar", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este producto?", "Eliminar", JOptionPane.YES_NO_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                modelo.removeRow(fila);
+            }
+        }
+    }
+    
+    
+        /**
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -23,6 +23,7 @@ public class AltaProveedor extends javax.swing.JDialog {
 
     conectar cc = new conectar();
     Connection cn = cc.conexion();
+    
     /**
      * Creates new form GestionarProveedor
      */
@@ -49,6 +50,7 @@ public class AltaProveedor extends javax.swing.JDialog {
             st.execute(sql);
             AbmProveedor.agregarProveedor(nombre, cuit, provincia, localidad, direccion, telefono);
             JOptionPane.showMessageDialog(null, "Se agregó correctamente");
+            
             setVisible(false);
         }catch(SQLException ex){
                 JOptionPane.showMessageDialog(null, "Error al insertar");
