@@ -10,7 +10,9 @@ import controlador.AbmProveedor;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -24,6 +26,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
      */
     public PantallaAdmin() {
         initComponents();
+        jPanel1.setVisible(false);
     }
 
     /**
@@ -35,6 +38,28 @@ public class PantallaAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        campoObraActual = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        campoDireccion = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        campoFechaInicio = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        campoFechaFinal = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jSeparator2 = new javax.swing.JSeparator();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        campoCompras = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        campoSueldos = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        campoTotal = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        campoId = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -44,10 +69,8 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
         menuItemListaPersonal = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
@@ -63,6 +86,168 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jMenuItem17 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Obra Actual:");
+
+        campoObraActual.setEditable(false);
+        campoObraActual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoObraActualActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Dirección:");
+
+        campoDireccion.setEditable(false);
+
+        jLabel3.setText("Fecha de Inicio:");
+
+        campoFechaInicio.setEditable(false);
+
+        jLabel4.setText("Fecha estimada de finalizacion:");
+
+        campoFechaFinal.setEditable(false);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setText("Personal contratado");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nombre", "Apellido", "Dni", "CUIL", "Localidad", "Categoría"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setText("Gastos realizados");
+
+        jLabel7.setText("Compras:");
+
+        campoCompras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoComprasActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Sueldos:");
+
+        campoSueldos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoSueldosActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel9.setText("TOTAL:");
+
+        campoTotal.setEditable(false);
+        campoTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoTotalActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Id Obra:");
+
+        campoId.setEditable(false);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jSeparator2)
+                            .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(campoObraActual, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(campoFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(campoFechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(118, 118, 118))
+                        .addComponent(jScrollPane1)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel8)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(163, 163, 163)
+                                                .addComponent(jLabel7))))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(campoCompras, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(campoSueldos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(14, 14, 14)
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(campoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel5))
+                            .addGap(0, 0, Short.MAX_VALUE)))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(campoObraActual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(campoFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(campoFechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(campoCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(campoSueldos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(campoTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
+        );
 
         jMenu1.setText("Usuario");
 
@@ -114,14 +299,6 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
         jMenu4.setText("Personal");
 
-        jMenuItem4.setText("Añadir Personal");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem4);
-
         menuItemListaPersonal.setText("Listado de Personal");
         menuItemListaPersonal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,14 +310,6 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jMenuBar1.add(jMenu4);
 
         jMenu6.setText("Proveedor");
-
-        jMenuItem2.setText("Nuevo Proveedor");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem2);
 
         jMenuItem3.setText("Listado de Proveedores");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -238,11 +407,17 @@ public class PantallaAdmin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 594, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 259, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -250,27 +425,32 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        AltaObra altaobra = new AltaObra(this, true);
+        altaobra.setLocationRelativeTo(this);
+        altaobra.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
-        AltaProveedor pantallaProveedor = new AltaProveedor(this, true);
-        pantallaProveedor.setLocationRelativeTo(this);
-        pantallaProveedor.setVisible(true);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        AñadirPersonal pantallaObrero = new AñadirPersonal(this, true);
-        pantallaObrero.setLocationRelativeTo(this);
-        pantallaObrero.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-        PantallaObra obra = new PantallaObra(this, true);
-        obra.setLocationRelativeTo(this);
-        obra.setVisible(true);
-        
+       ListaObras lista = new ListaObras(this, true);
+        lista.llenarTabla();
+        lista.setCallback2(new Callback2() {
+
+
+            @Override
+            public void notificarObra(int idObra, String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos) {
+                
+                getCampoId().setText("" + idObra);
+                getCampoDireccion().setText(direccion);
+                getCampoObraActual().setText(nombre);
+                getCampoFechaInicio().setText(""+fechaInicio);
+                getCampoFechaFinal().setText(""+fechaFin);
+                getCampoTotal().setText(""+egresos);
+            }
+        });
+        jPanel1.setVisible(true);
+        lista.setLocationRelativeTo(this);
+        lista.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
@@ -353,6 +533,87 @@ try {
         usuarionuevo.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void campoObraActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoObraActualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoObraActualActionPerformed
+
+    private void campoComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoComprasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoComprasActionPerformed
+
+    private void campoSueldosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoSueldosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoSueldosActionPerformed
+
+    private void campoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoTotalActionPerformed
+
+    public JTextField getCampoCompras() {
+        return campoCompras;
+    }
+
+    public void setCampoCompras(JTextField campoCompras) {
+        this.campoCompras = campoCompras;
+    }
+
+    public JTextField getCampoDireccion() {
+        return campoDireccion;
+    }
+
+    public void setCampoDireccion(JTextField campoDireccion) {
+        this.campoDireccion = campoDireccion;
+    }
+
+    public JTextField getCampoFechaFinal() {
+        return campoFechaFinal;
+    }
+
+    public void setCampoFechaFinal(JTextField campoFechaFinal) {
+        this.campoFechaFinal = campoFechaFinal;
+    }
+
+    public JTextField getCampoFechaInicio() {
+        return campoFechaInicio;
+    }
+
+    public void setCampoFechaInicio(JTextField campoFechaInicio) {
+        this.campoFechaInicio = campoFechaInicio;
+    }
+
+    public JTextField getCampoId() {
+        return campoId;
+    }
+
+    public void setCampoId(JTextField campoId) {
+        this.campoId = campoId;
+    }
+
+    public JTextField getCampoObraActual() {
+        return campoObraActual;
+    }
+
+    public void setCampoObraActual(JTextField campoObraActual) {
+        this.campoObraActual = campoObraActual;
+    }
+
+    public JTextField getCampoSueldos() {
+        return campoSueldos;
+    }
+
+    public void setCampoSueldos(JTextField campoSueldos) {
+        this.campoSueldos = campoSueldos;
+    }
+
+    public JTextField getCampoTotal() {
+        return campoTotal;
+    }
+
+    public void setCampoTotal(JTextField campoTotal) {
+        this.campoTotal = campoTotal;
+    }
+
+    
     /**
      * @param args the command line arguments
      */
@@ -390,6 +651,24 @@ try {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField campoCompras;
+    private javax.swing.JTextField campoDireccion;
+    private javax.swing.JTextField campoFechaFinal;
+    private javax.swing.JTextField campoFechaInicio;
+    private javax.swing.JTextField campoId;
+    private javax.swing.JTextField campoObraActual;
+    private javax.swing.JTextField campoSueldos;
+    private javax.swing.JTextField campoTotal;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu2;
@@ -408,13 +687,15 @@ try {
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JMenuItem menuItemListaPersonal;
     // End of variables declaration//GEN-END:variables
 }

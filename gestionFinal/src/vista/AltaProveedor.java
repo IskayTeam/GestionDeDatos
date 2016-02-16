@@ -23,12 +23,41 @@ public class AltaProveedor extends javax.swing.JDialog {
 
     conectar cc = new conectar();
     Connection cn = cc.conexion();
+    
     /**
      * Creates new form GestionarProveedor
      */
     public AltaProveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+    
+    public void agregarProveedor(){
+    
+        String nombre = getCampoNombreProveedor().getText().toUpperCase();
+        String cuit = getCampoCuitProveedor().getText();
+        String provincia = getComboProvincia().getSelectedItem().toString().toUpperCase();
+        String localidad = getCampoLocalidadProv().getText().toUpperCase();
+        String direccion = getCampoDireccionProv().getText().toUpperCase();
+        int telefono = Integer.parseInt(getCampoTelefonoProveedor().getText());
+       
+    String sql = "INSERT INTO proveedor(nombre, cuit, provincia, localidad, direccion, telefono) "
+            + "VALUES ('"+nombre+"','"+cuit+"','"+provincia+"','"+localidad+"','"+direccion+"','"+telefono+"')";
+       
+        try{
+            /*cc.conexion();*/
+            Statement st = cn.createStatement();
+            st.execute(sql);
+            AbmProveedor.agregarProveedor(nombre, cuit, provincia, localidad, direccion, telefono);
+            JOptionPane.showMessageDialog(null, "Se agregó correctamente");
+            
+            setVisible(false);
+        }catch(SQLException ex){
+                JOptionPane.showMessageDialog(null, "Error al insertar");
+                setVisible(true);
+
+        }
+        
     }
     
     
@@ -197,30 +226,7 @@ public class AltaProveedor extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarProvActionPerformed
-        
-        String nombre = getCampoNombreProveedor().getText().toUpperCase();
-        String cuit = getCampoCuitProveedor().getText();
-        String provincia = getComboProvincia().getSelectedItem().toString().toUpperCase();
-        String localidad = getCampoLocalidadProv().getText().toUpperCase();
-        String direccion = getCampoDireccionProv().getText().toUpperCase();
-        int telefono = Integer.parseInt(getCampoTelefonoProveedor().getText());
-       
-    String sql = "INSERT INTO proveedor(nombre, cuit, provincia, localidad, direccion, telefono) "
-            + "VALUES ('"+nombre+"','"+cuit+"','"+provincia+"','"+localidad+"','"+direccion+"','"+telefono+"')";
-       
-        try{
-            cc.conexion();
-            Statement st = cn.createStatement();
-            st.execute(sql);
-            AbmProveedor.agregarProveedor(nombre, cuit, provincia, localidad, direccion, telefono);
-            JOptionPane.showMessageDialog(null, "Se agregó correctamente");
-            setVisible(false);
-        }catch(SQLException ex){
-                JOptionPane.showMessageDialog(null, "Error al insertar");
-                setVisible(true);
-
-        }
-        
+        agregarProveedor();
     }//GEN-LAST:event_botonAceptarProvActionPerformed
 
     private void botonCancelarProvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarProvActionPerformed

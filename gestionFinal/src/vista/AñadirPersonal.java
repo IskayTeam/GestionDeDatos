@@ -80,10 +80,9 @@ public class AñadirPersonal extends javax.swing.JDialog {
                 + "VALUES ('" +nombre+"','"+apellido+"','" + dni + "','" + cuil + "','" + fechaNacSqlOb + "','" + localidad + "','" + direccion + "','" + estadoCivil + "','" + fechaIngSqlOb + "','" + telefono + "','" + idCat + "')";
 System.out.println(sqlObrero);
         try {
-            cc.conexion();
+            
             Statement st = cn.createStatement();
             st.execute(sqlObrero);
-            
             AbmObrero.agregarObrero(nombre, apellido, cuil, estadoCivil, localidad, direccion, fechaNac, fechaIng, dni, telefono, idCat);
             JOptionPane.showMessageDialog(null, "Se agrego correctamente");
         } catch (SQLException ex) {

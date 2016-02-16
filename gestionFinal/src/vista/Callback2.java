@@ -15,6 +15,6 @@ import modelo.liquidacion.Obrero;
  * @author Luca
  */
 public interface Callback2 {
-    void notificarObra(int idObra, String nombre, String direccion);
+    void notificarObra(int idObra, String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos);
     
 }

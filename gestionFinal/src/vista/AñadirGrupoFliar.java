@@ -154,22 +154,23 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
     int resp;
     DefaultTableModel modelo = (DefaultTableModel)this.getTablaGrupoFliar2().getModel(); 
     fila = tablaGrupoFliar2.getSelectedRow();
-    String dni = tablaGrupoFliar2.getValueAt(fila, 2).toString();
-    String sql = "DELETE FROM grupofamiliar WHERE dni='"+dni+"'";
-        
+    
+    
     if(fila == -1){
         JOptionPane.showMessageDialog(null, "Debe seleccionar el miembro a eliminar","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
     }else{
         resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar",JOptionPane.YES_NO_OPTION);
         if(resp == JOptionPane.YES_OPTION){
-        modelo.removeRow(fila);
             try {
-                
+                String dni = tablaGrupoFliar2.getValueAt(fila, 2).toString();
+                String sql = "DELETE FROM grupofamiliar WHERE dni='"+dni+"'";
                 Statement st = cn.prepareStatement(sql);
                 st.executeUpdate(sql);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
+            modelo.removeRow(fila);
+        //AbmGrupoFamiliar.grupofamiliar.remove(fila);
         
         }
     }

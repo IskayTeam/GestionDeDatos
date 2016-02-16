@@ -255,10 +255,7 @@ public void filtro() {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         llenarCamposMaterial();
-        this.dispose();
-        
-        
-        
+        this.dispose();        
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void jTextField2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyTyped

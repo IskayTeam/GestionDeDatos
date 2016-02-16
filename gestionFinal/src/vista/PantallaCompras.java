@@ -22,7 +22,7 @@ public class PantallaCompras extends javax.swing.JFrame {
      */
     public PantallaCompras() {
         initComponents();
-        jPanel1.setVisible(false);
+        jPanel1.setVisible(true);
         
     }
 
@@ -198,6 +198,7 @@ public class PantallaCompras extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("TOTAL:");
 
+        jTextField8.setEditable(false);
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
@@ -333,6 +334,7 @@ public class PantallaCompras extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem2);
 
+        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem6.setText("Abrir Obra");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -345,6 +347,7 @@ public class PantallaCompras extends javax.swing.JFrame {
 
         jMenu8.setText("Compras");
 
+        jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem12.setText("Nueva Compra");
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,20 +452,22 @@ public class PantallaCompras extends javax.swing.JFrame {
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         ListaObras lista = new ListaObras(this, true);
         lista.llenarTabla();
-        lista.setLocationRelativeTo(this);
-        lista.setVisible(true);
         lista.setCallback2(new Callback2() {
 
 
             @Override
-            public void notificarObra(int idObra, String nombre, String direccion) {
+            public void notificarObra(int idObra, String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos) {
                 
                 getCampoId().setText("" + idObra);
                 getCampoDireccion().setText(direccion);
                 getCampoObraActual().setText(nombre);
+                getCampoFechaInicio().setText(""+fechaInicio);
+                getCampoFechaFinal().setText(""+fechaFin);
+                getCampoTotal().setText(""+egresos);
             }
         });
-        
+        lista.setLocationRelativeTo(this);
+        lista.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 

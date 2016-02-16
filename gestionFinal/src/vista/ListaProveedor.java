@@ -7,12 +7,14 @@ package vista;
 import Controlador.conectar;
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
+import controlador.AbmProveedor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -78,7 +80,7 @@ public String getCuitProveedorSeleccionado(){
         try{
     Statement st = cn.createStatement();
     ResultSet rs = st.executeQuery(sql);
-    DefaultTableModel modelo = (DefaultTableModel)this.getjTable1().getModel();
+    DefaultTableModel modelo = (DefaultTableModel)this.getTablaProveedor().getModel();
     this.tablaProveedor.setModel(modelo);
     
     int i;
@@ -151,6 +153,11 @@ public String getCuitProveedorSeleccionado(){
         });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/btnEliminar.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         tablaProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -246,9 +253,11 @@ public String getCuitProveedorSeleccionado(){
         this.campoBuscarProv = campoBuscarProv;
     }
 
-    public JTable getjTable1() {
+    public JTable getTablaProveedor() {
         return tablaProveedor;
     }
+
+    
     
     
 
@@ -292,6 +301,38 @@ public String getCuitProveedorSeleccionado(){
     
     }//GEN-LAST:event_campoBuscarProvKeyTyped
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        bajaProveedor();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    public void bajaProveedor(){
+        int fila;
+        int resp;
+        DefaultTableModel modelo = (DefaultTableModel) this.getTablaProveedor().getModel();
+        fila = tablaProveedor.getSelectedRow();
+        
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar el proveedor a eliminar", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este proveedor?", "Eliminar", JOptionPane.YES_NO_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                
+                try {
+                    String cuit = tablaProveedor.getValueAt(fila, 1).toString();
+                    String sql = "DELETE FROM proveedor WHERE cuit='" + cuit + "'";
+                    Statement st = cn.prepareStatement(sql);
+                    st.executeUpdate(sql);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                modelo.removeRow(fila);
+                //AbmProveedor.proveedores.remove(fila);
+            }
+    }
+    }
+    
     
     /**
      * @param args the command line arguments

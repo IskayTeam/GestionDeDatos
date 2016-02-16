@@ -22,6 +22,7 @@ public class Main {
         PantallaPrincipal pp = new PantallaPrincipal();
         pp.setVisible(true);
         pp.setLocationRelativeTo(null);
+        
         //PantallaAdmin pantallaPrincipal = new PantallaAdmin();
         //pantallaPrincipal.setVisible(true);
         //pantallaPrincipal.setLocationRelativeTo(null);
