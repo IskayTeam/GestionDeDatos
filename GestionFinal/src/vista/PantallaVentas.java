@@ -5,6 +5,7 @@
  */
 package vista;
 
+import controlador.ControladorVenta;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,9 +14,8 @@ import javax.swing.JOptionPane;
  */
 public class PantallaVentas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PantallaVentas
-     */
+    ControladorVenta cv = new ControladorVenta();
+    
     public PantallaVentas() {
         initComponents();
     }
@@ -29,6 +29,10 @@ public class PantallaVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
+        jLabel12 = new javax.swing.JLabel();
+        campoObraActual = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
@@ -40,8 +44,22 @@ public class PantallaVentas extends javax.swing.JFrame {
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
 
+        jMenu1.setText("jMenu1");
+
+        jLabel12.setText("Obra Actual:");
+
+        campoObraActual.setEditable(false);
+        campoObraActual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoObraActualActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventas");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setText("Ventas");
 
         jMenu3.setText("Usuario");
 
@@ -65,6 +83,7 @@ public class PantallaVentas extends javax.swing.JFrame {
 
         jMenu7.setText("Venta");
 
+        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem10.setText("Nueva Venta");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,11 +128,17 @@ public class PantallaVentas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(jLabel1)
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(224, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,12 +171,19 @@ public class PantallaVentas extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
+        NuevaVenta nueva = new NuevaVenta(this, true);
+        nueva.setLocationRelativeTo(this);
+        nueva.setVisible(true);
+        cv.crearNuevaVenta();
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void campoObraActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoObraActualActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoObraActualActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,6 +221,10 @@ public class PantallaVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField campoObraActual;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu7;

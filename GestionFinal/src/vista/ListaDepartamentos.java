@@ -5,90 +5,91 @@
  */
 package vista;
 
-import Controlador.Fecha;
 import Controlador.conectar;
-import java.awt.Dialog;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import modelo.Obra;
+import modelo.venta.Departamento;
 
 /**
  *
  * @author Luca
  */
-public class ListaObras extends javax.swing.JDialog {
+public class ListaDepartamentos extends javax.swing.JDialog {
 
-    Callback2 callback2;
+ 
+    CallbackDeptos cd;
     conectar cc = new conectar();
     Connection cn = cc.conexion();
-    
-    public ListaObras(java.awt.Frame parent, boolean modal) {
+    Departamento depa;
+            
+            
+    public ListaDepartamentos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    
-    
-
-    public void setCallback2(Callback2 callback2) {
-        this.callback2 = callback2;
+    public JTable getTablaDptos() {
+        return tablaDptos;
     }
 
-    public JTable getjTable1() {
-        return jTable1;
+    public void setTablaDptos(JTable tablaDptos) {
+        this.tablaDptos = tablaDptos;
     }
+
+    public CallbackDeptos getCd() {
+        return cd;
+    }
+
+    public void setCd(CallbackDeptos cd) {
+        this.cd = cd;
+    }
+    
+    
+    public void llenarCamposDepto(){
+        
+        int row = tablaDptos.getSelectedRow();
+        
+        String descripcion = tablaDptos.getValueAt(row, 0).toString();
+        int piso = (int) tablaDptos.getValueAt(row, 1);
+        int numero = (int) tablaDptos.getValueAt(row, 2);
+        float precio = (float) tablaDptos.getValueAt(row, 3);
+        
+        cd.notificarDepto(descripcion,piso, numero, precio);
+        depa = new Departamento(descripcion, piso, numero, precio);
+        
+
+    }
+    
+    
     public void llenarTabla(){
-        String sql = "SELECT idObra, nombre, direccion FROM obra";
+        
+        int idObra = 1;
+        
+        String sql = "SELECT descripcion, piso, nro, precio FROM departamento WHERE Obra =" + idObra;
         cc.conexion();
         try {
-           Statement st = cn.prepareStatement(sql);
-          ResultSet rs = st.executeQuery(sql);
-            DefaultTableModel modelo = (DefaultTableModel)this.getjTable1().getModel();
-            
-            Object datosFila[] = new Object [3];
-            while (rs.next()){
-                for(int i=0; i< datosFila.length; i++){
-                    datosFila[i]=rs.getObject(i+1);
-                }
-                modelo.addRow(datosFila);
-                
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ListaObras.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-     void llenarCamposObra(){
-        
-        int row = jTable1.getSelectedRow();
-        int idObra = (int) jTable1.getValueAt(row, 0);
-        String nombre = jTable1.getValueAt(row, 1).toString();
-        String direccion = jTable1.getValueAt(row, 2).toString();
-        
-        String sql = "SELECT fechaInicio, fechaFinalizacion, egresos FROM obra WHERE idObra='"+idObra+"'";
-        
-        cc.conexion();
-        Statement st;
-        try {
-            st = cn.prepareStatement(sql);
+            Statement st = cn.prepareStatement(sql);
             ResultSet rs = st.executeQuery(sql);
-            rs.next();
-            Date fechaInicio = rs.getDate("fechaInicio");
-            Date fechaFin = rs.getDate("fechaFinalizacion");
-            double egresos = rs.getDouble("egresos");
-            callback2.notificarObra(idObra, nombre, direccion, fechaInicio, fechaFin, egresos);
+            DefaultTableModel modelo = (DefaultTableModel)this.getTablaDptos().getModel();
+            
+            Object datosFila[] = new Object[4];
+            while (rs.next()){
+                for(int i=0;i<datosFila.length;i++){
+                    datosFila[i]=rs.getObject(i+1);
+                    
+                }
+                
+                modelo.addRow(datosFila);
+            }
             
         } catch (SQLException ex) {
-            Logger.getLogger(ListaObras.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListaDepartamentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -105,24 +106,24 @@ public class ListaObras extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaDptos = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Seleccione una obra:");
+        jLabel1.setText("Seleccione un departamento:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDptos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id Obra", "Nombre", "Direccion"
+                "Descripcion", "Piso", "Numero", "Precio"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaDptos);
 
         jButton1.setText("Seleccionar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -144,54 +145,48 @@ public class ListaObras extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(15, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(85, 85, 85)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(91, 91, 91)
-                                .addComponent(jButton1)
-                                .addGap(46, 46, 46)
-                                .addComponent(jButton2)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addGap(116, 116, 116)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(26, 26, 26)
+                .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int fila;
-        fila = jTable1.getSelectedRow();
-        if(fila == -1){
-            JOptionPane.showMessageDialog(rootPane, "Debe seleccionar una obra", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
-        }
-        else{
-        llenarCamposObra();
+
+        llenarCamposDepto();
         this.dispose();
-        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        System.exit(1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -211,20 +206,20 @@ public class ListaObras extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListaObras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaDepartamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListaObras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaDepartamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListaObras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaDepartamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListaObras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListaDepartamentos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ListaObras dialog = new ListaObras(new javax.swing.JFrame(), true);
+                ListaDepartamentos dialog = new ListaDepartamentos(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -241,6 +236,6 @@ public class ListaObras extends javax.swing.JDialog {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaDptos;
     // End of variables declaration//GEN-END:variables
 }

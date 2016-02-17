@@ -334,6 +334,7 @@ public class PantallaCompras extends javax.swing.JFrame {
         });
         jMenu4.add(jMenuItem2);
 
+        jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem6.setText("Abrir Obra");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -346,6 +347,7 @@ public class PantallaCompras extends javax.swing.JFrame {
 
         jMenu8.setText("Compras");
 
+        jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem12.setText("Nueva Compra");
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
