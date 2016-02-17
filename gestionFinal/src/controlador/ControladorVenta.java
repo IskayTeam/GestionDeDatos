@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,12 +31,15 @@ public class ControladorVenta {
     private Cliente cliente;
     private LineaVenta linea;
     
-    
+   
     
     public  void  crearNuevaVenta(){
         
     venta = new Venta();
-    venta.setFecha(Date.from(Instant.EPOCH));
+    venta.setFecha(new Date());
+    
+    
+    
         
     }
     
@@ -49,8 +53,8 @@ public class ControladorVenta {
         
         linea = new LineaVenta(depa);
         linea.calcularSubtotal();
-     venta.getLineas().add(linea);
-        
+       venta.agregarLineaVenta(linea);
+
     }
     
     
@@ -67,25 +71,31 @@ public class ControladorVenta {
     }
     
     public void finalizarVenta(){
-        Controlador.conectar cc = new conectar();
-    Connection cn = cc.conexion();
     
-        String sql = "INSERT INTO venta(monto, fecha )VALUES ( " + venta.getMonto() + "," + venta.getFecha() + ")";
+  Conectar cc = new Conectar();
+   Connection cn = cc.conexion();
+   //System.out.print(venta);
+   
+    Date fechaVenta = venta.getFecha();
+    java.sql.Date fechaSql = new java.sql.Date(fechaVenta.getTime());
+    
+            //"" + fechaSql.getYear()+ "" + fechaSql.getMonth() + "" + fechaSql.getDay();
+    
+    System.out.println(fechaSql);
+    
+       String sql = "INSERT INTO venta(monto, fecha, Cliente, Administrativo)VALUES ( " + venta.getMonto() + "," + fechaSql + ",1,2)";
+       //String sql = "INSERT INTO venta(monto, fecha, Cliente, Administrativo)VALUES ( " + venta.getMonto() + ",20160217,1,2)";
         Statement st;
         try {
             st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            
+            st.execute(sql);
         } catch (SQLException ex) {
             Logger.getLogger(ControladorVenta.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         JOptionPane.showMessageDialog(null, "Venta Finalizada", "EXITO", JOptionPane.INFORMATION_MESSAGE);
-        
-        
-        
-        
-        
-        
+    
 }
     
 }

@@ -6,7 +6,8 @@
 package vista;
 
 import Controlador.Fecha;
-import Controlador.conectar;
+import controlador.Conectar;
+
 import java.awt.Dialog;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ import modelo.Obra;
 public class ListaObras extends javax.swing.JDialog {
 
     Callback2 callback2;
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     
     public ListaObras(java.awt.Frame parent, boolean modal) {

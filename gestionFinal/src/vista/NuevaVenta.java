@@ -234,11 +234,19 @@ public class NuevaVenta extends javax.swing.JDialog {
 
         jLabel8.setText("Descripción:");
 
+        campoDescDpto.setEditable(false);
+
         jLabel9.setText("Piso:");
+
+        campoPisoDepto.setEditable(false);
 
         jLabel10.setText("Número:");
 
+        campoNroDpto.setEditable(false);
+
         jLabel12.setText("Precio:");
+
+        campoPrecioDpto.setEditable(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -299,12 +307,16 @@ public class NuevaVenta extends javax.swing.JDialog {
 
         jLabel6.setText("Obra Actual:");
 
+        campoObraActual.setEditable(false);
+
         jButton2.setText("Buscar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        campoDireccion.setEditable(false);
 
         jLabel13.setText("Dirección:");
 
@@ -390,19 +402,22 @@ public class NuevaVenta extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFinalizarActionPerformed
-        //Agregar el cliente a la venta
+       
+        cv.crearNuevaVenta();
+
+//Agregar el cliente a la venta
         int idCliente = Integer.parseInt(getCampoDniCliente().getText());
         String nombre = getCampoNombreCliente().getText();
         String domicilio = getCampoDomicilio().getText();
         int telefono = Integer.parseInt(getCampoTelefono().getText());
         
-       // cv.agregarCliente(idCliente, nombre, domicilio, telefono);
+       cv.agregarCliente(idCliente, nombre, domicilio, telefono);
     
         //Agregar departamento a la venta
         String descripcion = getCampoDescDpto().getText();
         int piso = Integer.parseInt(getCampoPisoDepto().getText());
         int numero = Integer.parseInt(getCampoNroDpto().getText());
-        float precio = Integer.parseInt(getCampoPrecioDpto().getText());
+        float precio = Float.parseFloat(getCampoPrecioDpto().getText());
         Departamento dpto = new Departamento(descripcion, piso, numero, precio);
         cv.agregarDepartamento(dpto);
         
@@ -413,6 +428,7 @@ public class NuevaVenta extends javax.swing.JDialog {
         //finaliza la venta guardando en la base datos
         
         cv.finalizarVenta();
+        this.dispose();
         
         
     }//GEN-LAST:event_botonFinalizarActionPerformed

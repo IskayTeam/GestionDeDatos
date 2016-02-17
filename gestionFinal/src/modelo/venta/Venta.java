@@ -70,6 +70,16 @@ public class Venta {
        monto = total;
    }
    
+   public void agregarLineaVenta(LineaVenta lv){
+       
+       lineas.add(lv);
+   }
+
+    @Override
+    public String toString() {
+        return "Venta{" + "monto=" + monto + ", fecha=" + fecha + ", cliente=" + cliente + '}';
+    }
+   
    
    
     

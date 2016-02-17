@@ -6,10 +6,11 @@
 package vista;
 
 import Controlador.Validaciones;
-import Controlador.conectar;
+
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
 import Controlador.AbmObrero;
+import controlador.Conectar;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -34,7 +35,7 @@ public class ListaPersonal extends javax.swing.JDialog {
     private TableRowSorter trsfiltro;
     Controlador.Validaciones val = new Validaciones();
     Controlador.AbmObrero abmObrero = new AbmObrero();
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     
     

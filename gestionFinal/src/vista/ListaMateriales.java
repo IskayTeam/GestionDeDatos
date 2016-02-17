@@ -5,8 +5,9 @@
  */
 package vista;
 
-import Controlador.conectar;
+
 import com.sun.istack.internal.logging.Logger;
+import controlador.Conectar;
 import java.awt.Dialog;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -27,7 +28,7 @@ import vista.ListaProveedor;
  */
 public class ListaMateriales extends javax.swing.JDialog {
 
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     private String cuitProveedor;
     private TableRowSorter trsfiltro;

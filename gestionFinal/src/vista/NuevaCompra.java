@@ -5,9 +5,10 @@
  */
 package vista;
 
-import Controlador.conectar;
+
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
+import controlador.Conectar;
 import controlador.ControladorCompra;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ import modelo.compra.Material;
  */
 public class NuevaCompra extends javax.swing.JDialog {
 
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     ControladorCompra controlador = new ControladorCompra();
     Material m;

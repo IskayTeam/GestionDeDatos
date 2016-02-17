@@ -7,9 +7,10 @@ package vista;
 
 import Controlador.AbmGrupoFamiliar;
 import Controlador.Fecha;
-import Controlador.conectar;
+
 import com.toedter.calendar.JDateChooser;
 import Controlador.AbmObrero;
+import controlador.Conectar;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +33,7 @@ import modelo.liquidacion.GrupoFamiliar;
  */
 public class AñadirPersonal extends javax.swing.JDialog {
 
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     private String cuil;
     

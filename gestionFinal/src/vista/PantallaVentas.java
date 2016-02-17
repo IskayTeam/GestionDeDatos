@@ -14,8 +14,6 @@ import javax.swing.JOptionPane;
  */
 public class PantallaVentas extends javax.swing.JFrame {
 
-    ControladorVenta cv = new ControladorVenta();
-    
     public PantallaVentas() {
         initComponents();
     }
@@ -174,7 +172,7 @@ public class PantallaVentas extends javax.swing.JFrame {
         NuevaVenta nueva = new NuevaVenta(this, true);
         nueva.setLocationRelativeTo(this);
         nueva.setVisible(true);
-        cv.crearNuevaVenta();
+        
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed

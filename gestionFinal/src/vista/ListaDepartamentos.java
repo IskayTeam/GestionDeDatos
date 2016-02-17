@@ -5,7 +5,8 @@
  */
 package vista;
 
-import Controlador.conectar;
+
+import controlador.Conectar;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,7 @@ public class ListaDepartamentos extends javax.swing.JDialog {
 
  
     CallbackDeptos cd;
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     Departamento depa;
             
