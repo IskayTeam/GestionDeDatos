@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import modelo.Obra;
 
 /**
  *
@@ -74,7 +73,6 @@ public class ListaObras extends javax.swing.JDialog {
         int idObra = (int) jTable1.getValueAt(row, 0);
         String nombre = jTable1.getValueAt(row, 1).toString();
         String direccion = jTable1.getValueAt(row, 2).toString();
-        
         String sql = "SELECT fechaInicio, fechaFinalizacion, egresos FROM obra WHERE idObra='"+idObra+"'";
         
         cc.conexion();
@@ -87,12 +85,9 @@ public class ListaObras extends javax.swing.JDialog {
             Date fechaFin = rs.getDate("fechaFinalizacion");
             double egresos = rs.getDouble("egresos");
             callback2.notificarObra(idObra, nombre, direccion, fechaInicio, fechaFin, egresos);
-            
         } catch (SQLException ex) {
             Logger.getLogger(ListaObras.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }
 
     /**

@@ -21,8 +21,8 @@ public class LineaVenta {
         this.dpto = dpto;
     }
 
-    
  
+    
     public int getIdLineaVenta() {
         return idLineaVenta;
     }
