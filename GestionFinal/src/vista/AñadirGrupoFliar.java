@@ -32,10 +32,11 @@ import modelo.liquidacion.GrupoFamiliar;
  */
 public class AñadirGrupoFliar extends javax.swing.JDialog {
 
-    private ArrayList<GrupoFamiliar> grupoFamiliar = new ArrayList<>();
+    AbmGrupoFamiliar grupofliar = new AbmGrupoFamiliar();
+    
+    private int dniObrero;
     conectar cc = new conectar();
     Connection cn = cc.conexion();
-    private int dniObrero;
     
     public AñadirGrupoFliar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -47,134 +48,6 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         initComponents();
     }
     
-    public void mostrarCon(int dniObrero, String nombre){
-        
-        this.getLblObrero().setText(nombre);
-        this.dniObrero = dniObrero;
-        this.mostrarGrupoFamiliar();
-        this.setLocationRelativeTo(this);
-        this.setVisible(true);
-
-    }
-    
-    void mostrarGrupoFamiliar(){
-       int idOb = getIdObrero(dniObrero);
-        String sql = "SELECT nombre, apellido, dni, fechaNacimiento, parentesco FROM grupofamiliar WHERE Obrero='"+idOb+"'";
-        try{
-        cc.conexion();
-        Statement st = cn.createStatement();
-        ResultSet rs = st.executeQuery(sql);
-        DefaultTableModel modelo = (DefaultTableModel)this.getTablaGrupoFliar2().getModel();
-//        this.tablaMateriales.setModel(modelo);
-    int i;
-    Object datosfila[] = new Object[5];
-    while(rs.next()){
-    for(i=0;i<datosfila.length;i++){
-    datosfila[i]=rs.getObject(i+1);
-    }
-    modelo.addRow(datosfila);
-    }
-        }catch(SQLException ex){
-        throw new RuntimeException(ex);
-        }
-    }
-    
-
-    void llenarTabla(ArrayList grupoFamiliar) {
-        DefaultTableModel modelo = (DefaultTableModel) tablaGrupoFliar2.getModel();
-        Controlador.Fecha fecha = new Fecha();
-
-        String nombre = campoNombreFliar2.getText();
-        String apellido = campoApellidoFliar2.getText();
-        int dni = Integer.parseInt(campoDniFliar2.getText());       
-        Object parentesco = comboParentesco2.getSelectedItem();
-        grupoFamiliar.add(new GrupoFamiliar(nombre, apellido, dni, getDateChooserNacGrupoFliar2().getDate(), parentesco.toString(), 0));
-        
-        Object[] fila = new Object[5];
-        fila[0] = nombre;
-        fila[1] = apellido;
-        fila[2] = dni;
-        fila[3] = fecha.getFecha(DateChooserNacGrupoFliar2);
-        fila[4] = parentesco;
-        
-        modelo.addRow(fila);
-        tablaGrupoFliar2.setModel(modelo);
-    }
-    
-    int getIdObrero(int dni){
-
-    String sqlp = "SELECT idObrero FROM obrero WHERE dni=" + dni + "";
-    try{
-        cc.conexion();
-        Statement st1 = cn.createStatement();
-        ResultSet rs1 = st1.executeQuery(sqlp);
-        rs1.next();
-        return rs1.getInt(1);
-    }catch(SQLException ex){
-     throw new RuntimeException(ex);
-     }
-    }
-    
-    void añadirGrupo(){
-        int idOb = getIdObrero(dniObrero);
-        for(GrupoFamiliar gf : grupoFamiliar){
-            String nombreF = gf.getNombre().toUpperCase();
-            String apellidoF = gf.getApellido().toUpperCase();
-            int dniF = gf.getDni();
-            Date fechaNacF = gf.getFechaNacimiento();
-            String parentesco = gf.getParentesco().toUpperCase();
-
-        java.sql.Date fechaNacSql = new java.sql.Date(fechaNacF.getTime());
-        
-        String sqlFliar = "INSERT INTO grupofamiliar(nombre, apellido, dni, fechaNacimiento, parentesco, Obrero)"
-                + " VALUES ('" + nombreF +"','"+apellidoF+"','"+ dniF + "','" + fechaNacSql + "','" + parentesco + "','" + idOb + "')";
-            System.out.println(sqlFliar);
-            try {
-                cc.conexion();
-                Statement st = cn.createStatement();
-                st.execute(sqlFliar);
-                AbmGrupoFamiliar.agregarGrupoFamiliar(nombreF, apellidoF, dniF, fechaNacF, parentesco, idOb);
-            } catch (SQLException ex) {
-                
-                throw new RuntimeException(ex);
-            }
-        }
-    }
-    
-    void limpiarCampos(){
-    getCampoApellidoFliar2().setText("");
-    getCampoNombreFliar2().setText("");
-    getCampoDniFliar2().setText("");
-    getDateChooserNacGrupoFliar2().setDate(null);
-    
-    }
-    
-    void borrarMiembro(){
-    int fila;
-    int resp;
-    DefaultTableModel modelo = (DefaultTableModel)this.getTablaGrupoFliar2().getModel(); 
-    fila = tablaGrupoFliar2.getSelectedRow();
-    
-    
-    if(fila == -1){
-        JOptionPane.showMessageDialog(null, "Debe seleccionar el miembro a eliminar","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-    }else{
-        resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar",JOptionPane.YES_NO_OPTION);
-        if(resp == JOptionPane.YES_OPTION){
-            try {
-                String dni = tablaGrupoFliar2.getValueAt(fila, 2).toString();
-                String sql = "DELETE FROM grupofamiliar WHERE dni='"+dni+"'";
-                Statement st = cn.prepareStatement(sql);
-                st.executeUpdate(sql);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-            modelo.removeRow(fila);
-        //AbmGrupoFamiliar.grupofamiliar.remove(fila);
-        
-        }
-    }
-    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -213,6 +86,12 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         jLabel18.setText("Fecha Nacimiento:");
 
         jLabel19.setText("Parentesco:");
+
+        campoApellidoFliar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoApellidoFliar2ActionPerformed(evt);
+            }
+        });
 
         campoDniFliar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -409,8 +288,9 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        llenarTabla(grupoFamiliar);
-        limpiarCampos();
+        grupofliar.llenarTabla(grupofliar.grupofamiliar, this);
+        grupofliar.limpiarCampos(this);
+        
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -427,15 +307,19 @@ public class AñadirGrupoFliar extends javax.swing.JDialog {
         
         int confirmar = JOptionPane.showConfirmDialog(rootPane, "Desea finalizar edición?", "Advertencia", JOptionPane.YES_NO_OPTION);
         if(confirmar == JOptionPane.YES_OPTION){
-        añadirGrupo();
+        grupofliar.añadirGrupo();
         this.dispose();
         }else{}    
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        borrarMiembro();
+        grupofliar.borrarMiembro(this);
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void campoApellidoFliar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidoFliar2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoApellidoFliar2ActionPerformed
 
     public JDateChooser getDateChooserNacGrupoFliar2() {
         return DateChooserNacGrupoFliar2;

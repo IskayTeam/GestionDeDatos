@@ -17,6 +17,10 @@ public class Concepto {
     private float montoFijo;
     private float montoVariable;
 
+    public Concepto() {
+    }
+    
+
     public Concepto(int idConcepto, String descripcion, String tipo, float montoFijo, float montoVariable) {
         this.idConcepto = idConcepto;
         this.descripcion = descripcion;
@@ -24,6 +28,27 @@ public class Concepto {
         this.montoFijo = montoFijo;
         this.montoVariable = montoVariable;
     }
+
+    public void setIdConcepto(int idConcepto) {
+        this.idConcepto = idConcepto;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setMontoFijo(float montoFijo) {
+        this.montoFijo = montoFijo;
+    }
+
+    public void setMontoVariable(float montoVariable) {
+        this.montoVariable = montoVariable;
+    }
+    
 
     public int getIdConcepto() {
         return idConcepto;
@@ -43,6 +68,11 @@ public class Concepto {
 
     public float getMontoVariable() {
         return montoVariable;
+    }
+
+    @Override
+    public String toString() {
+        return "Concepto{" + "idConcepto=" + idConcepto + ", descripcion=" + descripcion + ", tipo=" + tipo + ", montoFijo=" + montoFijo + ", montoVariable=" + montoVariable + '}';
     }
     
     

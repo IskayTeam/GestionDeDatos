@@ -32,8 +32,7 @@ import javax.swing.table.TableRowSorter;
 public class ListaPersonal extends javax.swing.JDialog {
 
     private TableRowSorter trsfiltro;
-    Controlador.Validaciones val = new Validaciones();
-    Controlador.AbmObrero abmObrero = new AbmObrero();
+    AbmObrero abmObrero = new AbmObrero();
     conectar cc = new conectar();
     Connection cn = cc.conexion();
     
@@ -42,45 +41,12 @@ public class ListaPersonal extends javax.swing.JDialog {
     public ListaPersonal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        mostrarObrero();
+        abmObrero.mostrarObrero(this);
     }
-
-    public void mostrarObrero() {
-        
-        String sql = "SELECT nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria FROM obrero";
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
-            this.tablaObrero.setModel(modelo);
-            int i;
-
-            Object datosfila[] = new Object[11];
-            while (rs.next()) {
-                for (i = 0; i < datosfila.length; i++) {
-                    datosfila[i] = rs.getObject(i + 1);
-                }
-                modelo.addRow(datosfila);
-            }
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            cc.cerrarConexion();
-        }
-    }
-   
-
-    public String getNombreObreroSeleccionado() {
-        int row = tablaObrero.getSelectedRow();
-        String name = tablaObrero.getValueAt(row, 0).toString();
-        String apellido = tablaObrero.getValueAt(row, 1).toString();
-        return name + " " + apellido;
-    }
-
-    public int getDniObreroSeleccionado() {
-        int row = tablaObrero.getSelectedRow();
-        int dni = (int) tablaObrero.getValueAt(row, 2);
-        return dni;
+    
+    
+    public void filtro() {
+        trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarObrero.getText(), 1));
     }
 
     @SuppressWarnings("unchecked")
@@ -234,7 +200,7 @@ public class ListaPersonal extends javax.swing.JDialog {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-        modificarPersonal();
+        //modificarPersonal();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -259,155 +225,19 @@ public class ListaPersonal extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:  
-        validar();
+        abmObrero.validar(this);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        bajaObrero();
+        abmObrero.bajaObrero(this);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
-
-    public void bajaObrero() {
-        int fila;
-        int resp;
-        DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
-        fila = tablaObrero.getSelectedRow();
-        
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar algún miembro", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
-        } 
-        else {
-            resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea eliminar este miembro?", "Eliminar", JOptionPane.YES_NO_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                try {
-                String dni = tablaObrero.getValueAt(fila, 2).toString();
-                String sql = "DELETE FROM obrero WHERE dni='" + dni + "'";
-                Statement st = cn.prepareStatement(sql);
-                st.executeUpdate(sql);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-                modelo.removeRow(fila);
-                //AbmObrero.obreros.remove(fila);
-            }
-            
-
-        }
-    }
-    public int getIdCategoriaObrero() {
-        int idCategoria = (int) tablaObrero.getValueAt(tablaObrero.getSelectedRow(), 10);
-        String sqlOb = "SELECT idCategoria FROM categoria WHERE nombreCategoria='" + idCategoria + "'";
-        try {
-            cc.conexion();
-            Statement st1 = cn.createStatement();
-            ResultSet rs1 = st1.executeQuery(sqlOb);
-            rs1.next();
-            return rs1.getInt(1);
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
     
-    public void modificarPersonal(){
-        int resp;
-        int fila;
-        DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
-        fila = tablaObrero.getSelectedRow();
-        
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar algún miembro", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
-        } 
-        else {
-            resp = JOptionPane.showConfirmDialog(null, "Está seguro que desea modificar este miembro?", "Eliminar", JOptionPane.YES_NO_OPTION);
-            if (resp == JOptionPane.YES_OPTION) {
-                AñadirPersonal ap = new AñadirPersonal(null, true);
-                String nombre = (String) tablaObrero.getValueAt(fila, 0);
-        String apellido = (String) tablaObrero.getValueAt(fila, 1);
-        int dni = (int) tablaObrero.getValueAt(fila, 2);
-        String cuil = (String) tablaObrero.getValueAt(fila, 3);
-        Date fechaNac = (Date) tablaObrero.getValueAt(fila, 4);
-        String localidad = (String) tablaObrero.getValueAt(fila, 5);
-        String direccion = (String) tablaObrero.getValueAt(fila, 6);
-        String estadoCivil = (String) tablaObrero.getValueAt(fila, 7);
-        Date fechaIngreso = (Date) tablaObrero.getValueAt(fila, 8);
-        int telefono = (int) tablaObrero.getValueAt(fila, 9);
-                
-        int idCategoria2 = getIdCategoriaObrero();
-        ap.setLocationRelativeTo(this);
-                ap.setVisible(true);
-                ap.getCampoNombre().setText(nombre);
-                ap.getCampoApellido().setText(apellido);                
-                ap.getCampoDni().setText(""+dni);
-                ap.getCampoCuil().setText(cuil);
-                ap.getDateChooserNacOb().setDate(fechaNac);
-                ap.getCampoLocalidad().setText(localidad);
-                ap.getCampoDireccion().setText(direccion);
-                ap.getDateChooserIngOb().setDate(fechaIngreso);
-                ap.getCampoTelefono().setText(""+telefono);
-                
-                String nombre2 = ap.getCampoNombre().getText().toUpperCase();
-                String apellido2 = ap.getCampoNombre().getText().toUpperCase();
-                String dni2 = ap.getCampoNombre().getText().toUpperCase();
-                String cuil2 = ap.getCampoNombre().getText().toUpperCase();
-                String fechaNac2 = ap.getCampoNombre().getText().toUpperCase();
-                String localidad2 = ap.getCampoNombre().getText().toUpperCase();
-                String direccion2 = ap.getCampoNombre().getText().toUpperCase();
-                String estadoCivil2 = ap.getComboEstadoCivil().getSelectedItem().toString().toUpperCase();
-                String fechaIngreso2 = ap.getCampoNombre().getText().toUpperCase();
-                String telefono2 = ap.getCampoNombre().getText().toUpperCase();
-                
-    
-            String query = "UPDATE obrero SET " + "Nombre = '"+ nombre2 + "',Apellido = '" + apellido2 + "',dni = " + dni2 + 
-                   ",cuil = " + cuil2 + ", fechaNacimiento = " +fechaNac2+ ", localidad = '"+ localidad2 +"',direccion = '"+direccion2+"', "
-                    + "estadoCivil = '"+ estadoCivil2 +"', fechaIngreso="+fechaIngreso2+",telefono='"+telefono2+",Categoria="+idCategoria2+" WHERE Dni = "+dni+";";
-                try {            
-            PreparedStatement pstm = cc.conexion().prepareStatement(query);
-            pstm.setString(1, nombre2);                   
-            pstm.setString(2, apellido2);
-            pstm.setString(3, dni2);
-            pstm.setString(4, cuil2);
-            pstm.setString(5, fechaNac2);
-            pstm.setString(6, localidad2);
-            pstm.setString(7, direccion2);
-            pstm.setString(8, estadoCivil2);
-            pstm.setString(9, fechaIngreso2);
-            pstm.setString(10, telefono2);
-            pstm.setString(11, String.valueOf(idCategoria2));
-            pstm.execute();
-            pstm.close();            
-         }catch(SQLException e){
-         System.out.println(e);
-      }
-       
-                    
-            }
-        }
-    }
-    public void validar() {
-        AñadirGrupoFliar agf = new AñadirGrupoFliar(this, true);
-        int fila;
-
-        DefaultTableModel modelo = (DefaultTableModel) this.getTablaObrero().getModel();
-        fila = tablaObrero.getSelectedRow();
-
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar algún miembro", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
-        } else {
-            getDniObreroSeleccionado();
-            agf.mostrarCon(getDniObreroSeleccionado(), getNombreObreroSeleccionado());
-        }
-
-    }
-
-    public void filtro() {
-        trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarObrero.getText(), 1));
-    }
-
     /**
      * @param args the command line arguments
      */

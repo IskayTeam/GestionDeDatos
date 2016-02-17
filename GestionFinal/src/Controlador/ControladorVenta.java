@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
+//import java.time.Instant;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +35,7 @@ public class ControladorVenta {
     public  void  crearNuevaVenta(){
         
     venta = new Venta();
-    venta.setFecha(Date.from(Instant.EPOCH));
+    //venta.setFecha(Date.from(Instant.EPOCH));
         
     }
     

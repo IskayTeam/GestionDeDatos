@@ -5,6 +5,10 @@
  */
 package vista;
 
+import Controlador.ControladorPantallaLiquidaciones;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -149,7 +153,10 @@ public class PantallaLiquidaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        // TODO add your handling code here:
+ControladorPantallaLiquidaciones pan  =  new ControladorPantallaLiquidaciones();
+ListadosConceptos con = new ListadosConceptos(null, true);
+pan.leerTablaConceptos(con);// TODO add your handling code here:  
+con.setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     /**
