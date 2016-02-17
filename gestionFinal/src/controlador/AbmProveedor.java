@@ -18,7 +18,7 @@ import vista.AltaProveedor;
  * @author Luca
  */
 public class AbmProveedor {
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     public static ArrayList<Proveedor> proveedores = new ArrayList<>();
     

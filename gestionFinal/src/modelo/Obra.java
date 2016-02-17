@@ -7,7 +7,6 @@ package modelo;
 
 import Controlador.Fecha;
 import java.util.ArrayList;
-import java.util.Date;
 import modelo.liquidacion.Obrero;
 
 /**
@@ -20,21 +19,15 @@ public class Obra {
     private String nombre;
     private String direccion;
     private ArrayList<Obrero> obreros;
-    private Date fechaInicio;
-    private Date fechaFin;
-    private double egresos;
+    private Fecha fechaInicio;
+    private Fecha fechaFin;
+    private float egresos;
 
-    public Obra(String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos) {
+    public Obra(int idObra, String nombre) {
+        this.idObra = idObra;
         this.nombre = nombre;
-        this.direccion = direccion;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.egresos = egresos;
         obreros = new ArrayList<>();
     }
-
-
-  
 
     public int getIdObra() {
         return idObra;
@@ -68,31 +61,21 @@ public class Obra {
         this.obreros = obreros;
     }
 
-    public Date getFechaInicio() {
+    public Fecha getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(Fecha fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public Fecha getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(Fecha fechaFin) {
         this.fechaFin = fechaFin;
     }
-
-    public double getEgresos() {
-        return egresos;
-    }
-
-    public void setEgresos(float egresos) {
-        this.egresos = egresos;
-    }
-
-
     
     
     

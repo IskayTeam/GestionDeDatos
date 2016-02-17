@@ -7,8 +7,9 @@ package vista;
 
 import Controlador.AbmGrupoFamiliar;
 import Controlador.Fecha;
-import Controlador.conectar;
+
 import com.toedter.calendar.JDateChooser;
+import controlador.Conectar;
 import java.awt.Dialog;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ import modelo.liquidacion.GrupoFamiliar;
 public class AñadirGrupoFliar extends javax.swing.JDialog {
 
     private ArrayList<GrupoFamiliar> grupoFamiliar = new ArrayList<>();
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     private int dniObrero;
     

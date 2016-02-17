@@ -6,7 +6,8 @@
 package vista;
 
 import Controlador.AbmUsuario;
-import Controlador.conectar;
+import controlador.Conectar;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
     /**
      * Creates new form NuevoUsuario
      */
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     
     public NuevoUsuario(java.awt.Frame parent, boolean modal) {

@@ -83,7 +83,6 @@
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
             <TitledBorder title="Alta de Proveedor">
               <Font PropertyName="font" name="Lucida Bright" size="12" style="1"/>
-              <Color PropertyName="color" blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </TitledBorder>
           </Border>
         </Property>

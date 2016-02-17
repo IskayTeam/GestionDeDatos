@@ -294,6 +294,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="campoDescDpto">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
@@ -301,6 +304,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="campoPisoDepto">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
@@ -308,6 +314,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="campoNroDpto">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
@@ -315,6 +324,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="campoPrecioDpto">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -377,6 +389,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="campoObraActual">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
@@ -387,6 +402,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="campoDireccion">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>

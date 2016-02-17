@@ -5,94 +5,16 @@
  */
 package vista;
 
-import java.util.Date;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-
 /**
  *
- * @author Fran
+ * @author Luca
  */
-public class PantallaCompras extends javax.swing.JFrame {
-
-    /**
-     * Creates new form PantallaCompras
-     */
-    public PantallaCompras() {
-        initComponents();
-        jPanel1.setVisible(true);
-        
-    }
-
-    public JTextField getCampoId() {
-        return campoId;
-    }
-
-    public void setCampoId(JTextField campoId) {
-        this.campoId = campoId;
-    }
+public class PanelCompras extends javax.swing.JDialog {
 
     
-    public JTextField getCampoCompras() {
-        return campoCompras;
-    }
-
-    public void setCampoCompras(JTextField campoCompras) {
-        this.campoCompras = campoCompras;
-    }
-
-    public JTextField getCampoDireccion() {
-        return campoDireccion;
-    }
-
-    public void setCampoDireccion(JTextField campoDireccion) {
-        this.campoDireccion = campoDireccion;
-    }
-
-    public JTextField getCampoFechaFinal() {
-        return campoFechaFinal;
-    }
-
-    public void setCampoFechaFinal(JTextField campoFechaFinal) {
-        this.campoFechaFinal = campoFechaFinal;
-    }
-
-    public JTextField getCampoFechaInicio() {
-        return campoFechaInicio;
-    }
-
-    public void setCampoFechaInicio(JTextField campoFechaInicio) {
-        this.campoFechaInicio = campoFechaInicio;
-    }
-
-    public JTextField getCampoObraActual() {
-        return campoObraActual;
-    }
-
-    public void setCampoObraActual(JTextField campoObraActual) {
-        this.campoObraActual = campoObraActual;
-    }
-
-    public JTextField getCampoSueldos() {
-        return campoSueldos;
-    }
-
-    public void setCampoSueldos(JTextField campoSueldos) {
-        this.campoSueldos = campoSueldos;
-    }
-
-    public JTextField getCampoTotal() {
-        return jTextField8;
-    }
-
-    public void setCampoTotal(JTextField campoTotal) {
-        this.jTextField8 = campoTotal;
-    }
-
-    public JTable getjTable1() {
-        return jTable1;
+    public PanelCompras(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        initComponents();
     }
 
  
@@ -100,7 +22,6 @@ public class PantallaCompras extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         campoObraActual = new javax.swing.JTextField();
@@ -124,23 +45,8 @@ public class PantallaCompras extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         campoId = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu8 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem16 = new javax.swing.JMenuItem();
-        jMenuItem17 = new javax.swing.JMenuItem();
 
-        jMenuItem1.setText("jMenuItem1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Compra");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Obra Actual:");
 
@@ -198,7 +104,6 @@ public class PantallaCompras extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("TOTAL:");
 
-        jTextField8.setEditable(false);
         jTextField8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField8ActionPerformed(evt);
@@ -287,7 +192,7 @@ public class PantallaCompras extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -303,86 +208,6 @@ public class PantallaCompras extends javax.swing.JFrame {
                     .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
-
-        jMenu3.setText("Usuario");
-
-        jMenuItem8.setText("Cerrar Sesión");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem8);
-
-        jMenuItem9.setText("Salir");
-        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem9ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem9);
-
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Obra");
-
-        jMenuItem2.setText("Nueva Obra");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem2);
-
-        jMenuItem6.setText("Abrir Obra");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu4);
-
-        jMenu8.setText("Compras");
-
-        jMenuItem12.setText("Nueva Compra");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem12);
-
-        jMenuItem13.setText("Listado de Compra");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
-            }
-        });
-        jMenu8.add(jMenuItem13);
-
-        jMenuBar1.add(jMenu8);
-
-        jMenu2.setText("Ayuda");
-
-        jMenuItem16.setText("Manual de Usuario");
-        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem16ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem16);
-
-        jMenuItem17.setText("Acerca de...");
-        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem17ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem17);
-
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -406,68 +231,9 @@ public class PantallaCompras extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+    private void campoObraActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoObraActualActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem16ActionPerformed
-
-    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem17ActionPerformed
-
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        // TODO add your handling code here:
-        NuevaCompra compranueva = new NuevaCompra(this, true);
-        compranueva.setLocationRelativeTo(this);
-        compranueva.setVisible(true);
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
-
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
-        int dialog = JOptionPane.showConfirmDialog(this, "Seguro desea cerrar sesión?");
-        if(dialog == JOptionPane.YES_OPTION){
-            PantallaPrincipal pp = new PantallaPrincipal();
-            pp.setVisible(true);
-            pp.setLocationRelativeTo(null);
-            this.setVisible(false);
-        }else{
-            this.setVisible(true);
-        }
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
-    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        ListaObras lista = new ListaObras(this, true);
-        lista.llenarTabla();
-        lista.setCallback2(new Callback2() {
-
-
-            @Override
-            public void notificarObra(int idObra, String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos) {
-                
-                getCampoId().setText("" + idObra);
-                getCampoDireccion().setText(direccion);
-                getCampoObraActual().setText(nombre);
-                getCampoFechaInicio().setText(""+fechaInicio);
-                getCampoFechaFinal().setText(""+fechaFin);
-                getCampoTotal().setText(""+egresos);
-            }
-        });
-        lista.setLocationRelativeTo(this);
-        lista.setVisible(true);
-
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_campoObraActualActionPerformed
 
     private void campoComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoComprasActionPerformed
         // TODO add your handling code here:
@@ -480,10 +246,6 @@ public class PantallaCompras extends javax.swing.JFrame {
     private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField8ActionPerformed
-
-    private void campoObraActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoObraActualActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoObraActualActionPerformed
 
     /**
      * @param args the command line arguments
@@ -502,20 +264,27 @@ public class PantallaCompras extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PantallaCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PantallaCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PantallaCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PantallaCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PanelCompras.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PantallaCompras().setVisible(true);
+                PanelCompras dialog = new PanelCompras(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -538,20 +307,7 @@ public class PantallaCompras extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem17;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
