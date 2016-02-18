@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
@@ -70,21 +72,37 @@ public class ControladorVenta {
         
     }
     
+    public String getFechaActual(){
+    String holi = venta.getFecha().toString();
+    Date fecha = new Date();
+    SimpleDateFormat formateador = new SimpleDateFormat("yyyy-mm-dd");
+   
+        try {
+            Date pito = formateador.parse(holi);
+        } catch (ParseException ex) {
+            Logger.getLogger(ControladorVenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    
+     return formateador.format(fecha);
+}
+    
     public void finalizarVenta(){
     
-  Conectar cc = new Conectar();
-   Connection cn = cc.conexion();
-   //System.out.print(venta);
+    Conectar cc = new Conectar();
+    Connection cn = cc.conexion();
+    Date fecha = venta.getFecha();
+    SimpleDateFormat formateador = new SimpleDateFormat("yyyyMMdd");
+    String fechaSql = formateador.format(fecha);
+    
+  
    
-    Date fechaVenta = venta.getFecha();
-    java.sql.Date fechaSql = new java.sql.Date(fechaVenta.getTime());
-    
-            //"" + fechaSql.getYear()+ "" + fechaSql.getMonth() + "" + fechaSql.getDay();
-    
-    System.out.println(fechaSql);
-    
-       String sql = "INSERT INTO venta(monto, fecha, Cliente, Administrativo)VALUES ( " + venta.getMonto() + "," + fechaSql + ",1,2)";
-       //String sql = "INSERT INTO venta(monto, fecha, Cliente, Administrativo)VALUES ( " + venta.getMonto() + ",20160217,1,2)";
+
+
+
+
+    String sql = "INSERT INTO venta(monto, fecha, Cliente, Administrativo)VALUES ( " + venta.getMonto() + "," + fechaSql + ",1,2)";
+     //  String sql = "INSERT INTO venta(monto, fecha, Cliente, Administrativo)VALUES ( " + venta.getMonto() + ",20160218,1,2)";
         Statement st;
         try {
             st = cn.createStatement();
