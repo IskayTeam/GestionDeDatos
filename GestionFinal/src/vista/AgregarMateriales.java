@@ -5,9 +5,10 @@
  */
 package vista;
 
-import Controlador.conectar;
+
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
+import Controlador.Conectar;
 import java.awt.Dialog;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -30,7 +31,7 @@ import vista.ListaProveedor;
 public class AgregarMateriales extends javax.swing.JDialog {
     
     String cuitProveedor;
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     Callback callback;
     private TableRowSorter trsfiltro;

@@ -7,9 +7,10 @@ package vista;
 
 import Controlador.AbmGrupoFamiliar;
 import Controlador.Fecha;
-import Controlador.conectar;
+
 import com.toedter.calendar.JDateChooser;
 import Controlador.AbmObrero;
+import Controlador.Conectar;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,10 +33,10 @@ import modelo.liquidacion.GrupoFamiliar;
  */
 public class AñadirPersonal extends javax.swing.JDialog {
 
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     private String cuil;
-    AbmObrero abmObrero = new AbmObrero();
+    
 
     /**
      * Creates new form GestionarObrero
@@ -43,6 +44,51 @@ public class AñadirPersonal extends javax.swing.JDialog {
     public AñadirPersonal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+    }
+        
+    public int getIdCategoriaObrero() {
+        String categoria = getComboCategoria().getSelectedItem().toString();
+        String sqlOb = "SELECT idCategoria FROM categoria WHERE nombreCategoria='" + categoria + "'";
+        try {
+            cc.conexion();
+            Statement st1 = cn.createStatement();
+            ResultSet rs1 = st1.executeQuery(sqlOb);
+            rs1.next();
+            return rs1.getInt(1);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    void agregarPersonal() {
+        //Tomo datos obrero
+        
+        int idCat = getIdCategoriaObrero();
+        String nombre = getCampoNombre().getText().toUpperCase();
+        String apellido = getCampoApellido().getText().toUpperCase();
+        int dni = Integer.parseInt(getCampoDni().getText());
+        String cuil = getCampoCuil().getText();
+        int telefono = Integer.parseInt(getCampoTelefono().getText());
+        String direccion = getCampoDireccion().getText().toUpperCase();
+        String localidad = getCampoLocalidad().getText().toUpperCase();
+        String estadoCivil = getComboEstadoCivil().getSelectedItem().toString().toUpperCase();
+        Date fechaNac = getDateChooserNacOb().getDate();
+        Date fechaIng = getDateChooserIngOb().getDate();
+        java.sql.Date fechaNacSqlOb = new java.sql.Date(fechaNac.getTime());
+        java.sql.Date fechaIngSqlOb = new java.sql.Date(fechaIng.getTime());
+        String sqlObrero = "INSERT INTO obrero(nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria) "
+                + "VALUES ('" +nombre+"','"+apellido+"','" + dni + "','" + cuil + "','" + fechaNacSqlOb + "','" + localidad + "','" + direccion + "','" + estadoCivil + "','" + fechaIngSqlOb + "','" + telefono + "','" + idCat + "')";
+System.out.println(sqlObrero);
+        try {
+            
+            Statement st = cn.createStatement();
+            st.execute(sqlObrero);
+            AbmObrero.agregarObrero(nombre, apellido, cuil, estadoCivil, localidad, direccion, fechaNac, fechaIng, dni, telefono, idCat);
+            JOptionPane.showMessageDialog(null, "Se agrego correctamente");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR AL REGISTRAR");
+        }
     }
 
     public JComboBox getComboEstadoCivil() {
@@ -337,7 +383,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        abmObrero.agregarPersonal(this);
+        agregarPersonal();
         this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -367,19 +413,19 @@ public class AñadirPersonal extends javax.swing.JDialog {
         llenarCampoSalario();
     }//GEN-LAST:event_comboCategoriaItemStateChanged
 
-    void llenarCampoSalario() {
+    void llenarCampoSalario(){
         String nombreCat = getComboCategoria().getSelectedItem().toString();
-        String sql = "SELECT salarioBasico FROM categoria WHERE nombreCategoria='" + nombreCat + "'";
-        try {
-            Statement st = cn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery(sql);
-            rs.next();
-            getCampoSalarioBasico().setText(rs.getString("salarioBasico"));
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
+    String sql = "SELECT salarioBasico FROM categoria WHERE nombreCategoria='"+nombreCat+"'";
+try{    
+    Statement st = cn.prepareStatement(sql);
+    ResultSet rs = st.executeQuery(sql);
+    rs.next();
+    getCampoSalarioBasico().setText(rs.getString("salarioBasico"));
+}catch(SQLException ex){
+throw new RuntimeException(ex);
+}
     }
-
+    
     public JTextField getCampoCuil() {
         return campoCuil;
     }
@@ -451,7 +497,7 @@ public class AñadirPersonal extends javax.swing.JDialog {
     public void setjComboBox1(JComboBox jComboBox1) {
         this.comboEstadoCivil = jComboBox1;
     }
-
+    
     public JTextField getCampoApellido() {
         return campoApellido;
     }

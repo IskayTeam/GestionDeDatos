@@ -5,8 +5,9 @@
  */
 package vista;
 
-import Controlador.conectar;
+
 import controlador.AbmProveedor;
+import Controlador.Conectar;
 import java.sql.Connection;
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ import javax.swing.JTextField;
  */
 public class AltaProveedor extends javax.swing.JDialog {
 
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     
     /**

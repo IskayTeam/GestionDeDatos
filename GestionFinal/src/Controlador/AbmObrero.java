@@ -29,7 +29,7 @@ import vista.ListaProveedor;
 public class AbmObrero {
 
     public static ArrayList<Obrero> obreros = new ArrayList<>();
-    Controlador.conectar cc = new Controlador.conectar();
+    Controlador.Conectar cc = new Controlador.Conectar();
     Connection cn = cc.conexion();
 
     

@@ -4,10 +4,11 @@
  * and open the template in the editor.
  */
 package vista;
-import Controlador.conectar;
+
 import com.mxrck.autocompleter.TextAutoCompleter;
 import com.sun.istack.internal.logging.Logger;
 import controlador.AbmProveedor;
+import Controlador.Conectar;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
@@ -29,7 +30,7 @@ import javax.swing.table.TableRowSorter;
  */
 public class ListaProveedor extends javax.swing.JDialog {
     
-conectar cc = new conectar();
+Conectar cc = new Conectar();
 Connection cn = cc.conexion();
 private TableRowSorter trsfiltro;
 

@@ -45,10 +45,6 @@ public class Obrero {
         return apellido;
     }
     
-    
-
-
-    
     public int getIdObrero() {
         return idObrero;
     }

@@ -5,7 +5,8 @@
  */
 package vista;
 
-import Controlador.conectar;
+
+import Controlador.Conectar;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -266,6 +267,6 @@ public class Login2 extends javax.swing.JDialog {
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
 }

@@ -6,6 +6,7 @@
 package vista;
 
 import Controlador.AbmObrero;
+import Controlador.ControladorPantallaLiquidaciones;
 import controlador.AbmProveedor;
 import java.awt.Desktop;
 import java.io.File;
@@ -504,6 +505,12 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
         // TODO add your handling code here:
+        ControladorPantallaLiquidaciones cpl = new ControladorPantallaLiquidaciones();
+        ListadosConceptos lc = new ListadosConceptos(this, true);
+        cpl.leerTablaConceptos(lc);
+        lc.setLocationRelativeTo(this);
+        lc.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed

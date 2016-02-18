@@ -18,6 +18,7 @@ import javax.swing.JTextField;
  */
 public class AgregarConcepto extends javax.swing.JDialog {
 
+    
     int returnstatus;
 
     public int getReturnstatus() {

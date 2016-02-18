@@ -6,7 +6,8 @@
 package vista;
 
 import Controlador.AbmUsuario;
-import Controlador.conectar;
+import Controlador.Conectar;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -27,32 +29,17 @@ public class NuevoUsuario extends javax.swing.JDialog {
     /**
      * Creates new form NuevoUsuario
      */
-    conectar cc = new conectar();
-    Connection cn = cc.conexion();
+    
+    AbmUsuario abmusuario = new AbmUsuario();
     
     public NuevoUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        mostrarUltimoId();
+        abmusuario.mostrarUltimoId(this);
         
     }
     
-    void mostrarUltimoId(){
-    String sqlid = "SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'usuario' AND table_schema = DATABASE();";
-        try {
-        
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sqlid);
-            rs.next();
-            int id1 = rs.getInt(1);
-            this.getCampoId().setText(String.valueOf(id1));
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(NuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-
+    
     public JTextField getCampoId() {
         return campoId;
     }
@@ -74,11 +61,11 @@ public class NuevoUsuario extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         campoUsuario = new javax.swing.JTextField();
-        campoPass = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel7 = new javax.swing.JLabel();
         campoId = new javax.swing.JTextField();
+        CampoPass = new javax.swing.JPasswordField();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -122,12 +109,11 @@ public class NuevoUsuario extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(campoPass, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                        .addComponent(campoUsuario)
-                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(campoUsuario)
+                    .addComponent(jComboBox1, 0, 178, Short.MAX_VALUE)
+                    .addComponent(campoId, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CampoPass))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -144,8 +130,8 @@ public class NuevoUsuario extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(campoPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                    .addComponent(CampoPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -158,7 +144,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
 
         jLabel5.setText("Domicilio:");
 
-        jLabel6.setText("CUIT:");
+        jLabel6.setText("CUIL:");
 
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -250,7 +236,7 @@ public class NuevoUsuario extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -266,39 +252,11 @@ public class NuevoUsuario extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //Para el "usuario"
-        String user = getCampoUsuario().getText();
-        String pass = getCampoPass().getText();
-        String tipoUs = (String)jComboBox1.getSelectedItem();
-        //Para el "administrativo"
-        String nombre = getjTextField1().getText();
-        String domicilio = getjTextField2().getText();
-        String cuit = getjTextField3().getText();
-        int idUs = Integer.parseInt(getCampoId().getText());
-        //Encriptación
-        String passC = DigestUtils.md5Hex(pass);
-        //Declaracion de la query para la bd
-        String sql = "INSERT INTO usuario(user, password, tipoUsuario) VALUES ('"+user+"','"+passC+"','"+tipoUs+"')";
-        String sql2 = "INSERT INTO administrativo(nombre, domicilio, cuit, Usuario) VALUES ('"+nombre+"','"+domicilio+"','"+cuit+"','"+idUs+"')";
-        
-        try{
-        cc.conexion();
-        Statement st = cn.createStatement();
-        st.execute(sql);
-        st.execute(sql2);
-        AbmUsuario.agregarUsuario(user, pass, tipoUs);
-        AbmUsuario.agregarAdmin(nombre, domicilio, cuit, idUs);
-            JOptionPane.showMessageDialog(null, "Se agrego correctamente");
-        }catch(SQLException ex){
-        JOptionPane.showMessageDialog(null, "Error al insertar");
-        }
-        
-        setVisible(false);
+        abmusuario.agregarUsuario(this);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void campoIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoIdActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_campoIdActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -315,13 +273,15 @@ public class NuevoUsuario extends javax.swing.JDialog {
         this.jComboBox1 = jComboBox1;
     }
 
-    public JTextField getCampoPass() {
-        return campoPass;
+    public JPasswordField getCampoPass() {
+        return CampoPass;
     }
 
-    public void setCampoPass(JTextField campoPass) {
-        this.campoPass = campoPass;
+    public void setCampoPass(JPasswordField CampoPass) {
+        this.CampoPass = CampoPass;
     }
+
+    
 
     public JTextField getCampoUsuario() {
         return campoUsuario;
@@ -398,8 +358,8 @@ public class NuevoUsuario extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField CampoPass;
     private javax.swing.JTextField campoId;
-    private javax.swing.JTextField campoPass;
     private javax.swing.JTextField campoUsuario;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

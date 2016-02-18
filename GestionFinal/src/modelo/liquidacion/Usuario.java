@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package modelo.liquidacion;
 
 /**
  *
@@ -12,16 +12,23 @@ package modelo;
 public class Usuario {
     
     
-    public int idUsuario;
+    private int idUsuario;
     private String usuario;
     private String contraseña;
     private String tipoUsuario;
 
-    public Usuario(String usuario, String contraseña, String tipoUsuario) {
+    public Usuario(int idUsuario, String usuario, String contraseña, String tipoUsuario) {
+        this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contraseña = contraseña;
         this.tipoUsuario = tipoUsuario;
     }
+
+    public Usuario() {
+    }
+
+    
+    
 
     public String getUsuario() {
         return usuario;
@@ -46,6 +53,20 @@ public class Usuario {
     public void setTipoUsuario(String tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "idUsuario=" + idUsuario + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", tipoUsuario=" + tipoUsuario + '}';
+    }
+    
     
     
 }

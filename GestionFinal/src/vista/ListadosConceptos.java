@@ -6,9 +6,13 @@
 package vista;
 
 import Controlador.ControladorPantallaLiquidaciones;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Locale;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import modelo.liquidacion.Concepto;
 
 /**
@@ -50,7 +54,7 @@ public class ListadosConceptos extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        campoBuscarConcepto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -84,7 +88,7 @@ public class ListadosConceptos extends javax.swing.JDialog {
             }
         });
 
-        jButton3.setText("Eleminar");
+        jButton3.setText("Eliminar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -93,6 +97,12 @@ public class ListadosConceptos extends javax.swing.JDialog {
 
         jLabel2.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jLabel2.setText("Lista de conceptos");
+
+        campoBuscarConcepto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoBuscarConceptoKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Buscar");
 
@@ -120,7 +130,7 @@ public class ListadosConceptos extends javax.swing.JDialog {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(40, 40, 40)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(campoBuscarConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(103, 103, 103))
         );
         layout.setVerticalGroup(
@@ -135,7 +145,7 @@ public class ListadosConceptos extends javax.swing.JDialog {
                     .addComponent(botonAgregar))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoBuscarConcepto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,7 +175,28 @@ concepto.eliminarBaseDatosConcepto(this);
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    /**
+    private void campoBuscarConceptoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoBuscarConceptoKeyTyped
+        // TODO add your handling code here:
+        campoBuscarConcepto.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (campoBuscarConcepto.getText().toUpperCase());
+                campoBuscarConcepto.setText(cadena);
+                repaint();
+                filtro();
+            }
+        });
+    
+    trsfiltro = new TableRowSorter(TablaConceptos.getModel());
+    TablaConceptos.setRowSorter(trsfiltro);
+    }//GEN-LAST:event_campoBuscarConceptoKeyTyped
+public void filtro() {
+    trsfiltro.setRowFilter(RowFilter.regexFilter(campoBuscarConcepto.getText(), 1));
+}
+//Declaración de variable para la busqueda
+private TableRowSorter trsfiltro;
+    
+
+/**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -210,11 +241,11 @@ concepto.eliminarBaseDatosConcepto(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablaConceptos;
     private javax.swing.JButton botonAgregar;
+    private javax.swing.JTextField campoBuscarConcepto;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

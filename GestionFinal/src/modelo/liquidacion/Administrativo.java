@@ -5,8 +5,6 @@
  */
 package modelo.liquidacion;
 
-import modelo.Usuario;
-
 /**
  *
  * @author Luca
@@ -16,19 +14,23 @@ public class Administrativo {
     private int idAdmin;
     private String nombre;
     private String domicilio;
-    private String cuit;
-    private int idUs;
+    private String cuil;
+    private Usuario usuario;
     
     
 
-    public Administrativo(String nombre, String domicilio, String cuit, int idUs) {
+    public Administrativo(String nombre, String domicilio, String cuil, Usuario usuario) {
         
         this.nombre = nombre;
         this.domicilio = domicilio;
-        this.cuit = cuit;
-        this.idUs = idUs;
-        
+        this.cuil = cuil;
+        this.usuario = usuario;
     }
+
+    public Administrativo() {
+    }
+    
+    
 
     public int getIdAdmin() {
         return idAdmin;
@@ -42,8 +44,38 @@ public class Administrativo {
         return domicilio;
     }
 
-    public String getCuit() {
-        return cuit;
+    public String getCuil() {
+        return cuil;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+
+    public void setIdAdmin(int idAdmin) {
+        this.idAdmin = idAdmin;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public void setCuil(String cuil) {
+        this.cuil = cuil;
+    }
+
+    @Override
+    public String toString() {
+        return "Administrativo{" + "idAdmin=" + idAdmin + ", nombre=" + nombre + ", domicilio=" + domicilio + ", cuil=" + cuil + ", usuario=" + usuario + '}';
     }
 
     

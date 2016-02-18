@@ -5,8 +5,9 @@
  */
 package vista;
 
-import Controlador.conectar;
+
 import com.toedter.calendar.JDateChooser;
+import Controlador.Conectar;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,7 +21,7 @@ import javax.swing.JTextField;
  */
 public class AltaObra extends javax.swing.JDialog {
 
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
 
     /**

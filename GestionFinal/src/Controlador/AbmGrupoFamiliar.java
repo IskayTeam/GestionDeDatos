@@ -23,10 +23,10 @@ import vista.ListaPersonal;
  */
 public class AbmGrupoFamiliar {
 
-    public static ArrayList<GrupoFamiliar> grupofamiliar = new ArrayList<>();
+    private static ArrayList<GrupoFamiliar> grupofamiliar = new ArrayList<>();
     //private ArrayList<GrupoFamiliar> grupoFamiliar2 = new ArrayList<>();
     private static int dniObrero;
-    conectar cc = new conectar();
+    Conectar cc = new Conectar();
     Connection cn = cc.conexion();
 
     public static void agregarGrupoFamiliar(String nombre, String apellido, int dni, Date fechaNacimiento, String parentesco, int idOb) {
