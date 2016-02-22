@@ -43,7 +43,6 @@ public class Login2 extends javax.swing.JDialog {
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 tip = rs.getString("tipoUsuario");
-
             }
             if (tip.equals("Administrador")) {
                 this.setVisible(false);

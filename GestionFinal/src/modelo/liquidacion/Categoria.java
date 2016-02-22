@@ -15,6 +15,17 @@ public class Categoria {
     private String nombreCategoria;
     private float salarioBasico;
 
+    public Categoria() {
+    }
+
+    public Categoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+    
+  
+    
+    
+
     public Categoria(int idCategoria, String nombreCategoria, float salarioBasico) {
         this.idCategoria = idCategoria;
         this.nombreCategoria = nombreCategoria;
@@ -31,6 +42,18 @@ public class Categoria {
 
     public float getSalarioBasico() {
         return salarioBasico;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
+    }
+
+    public void setSalarioBasico(float salarioBasico) {
+        this.salarioBasico = salarioBasico;
     }
     
     

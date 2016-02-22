@@ -6,26 +6,18 @@
 package vista;
 
 import Controlador.AbmGrupoFamiliar;
+import Controlador.AbmObrero;
 import Controlador.Fecha;
 
 import com.toedter.calendar.JDateChooser;
-import Controlador.AbmObrero;
 import Controlador.Conectar;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import modelo.liquidacion.Categoria;
-import modelo.liquidacion.GrupoFamiliar;
+
 
 /**
  *
@@ -36,6 +28,12 @@ public class AñadirPersonal extends javax.swing.JDialog {
     Conectar cc = new Conectar();
     Connection cn = cc.conexion();
     private String cuil;
+    public int retornarEstado;
+    AbmObrero abmobrero = new AbmObrero();
+
+    public int getRetornarEstado() {
+        return retornarEstado;
+    }
     
 
     /**
@@ -44,53 +42,9 @@ public class AñadirPersonal extends javax.swing.JDialog {
     public AñadirPersonal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        //abmobrero.llenarCombo(this);
     }
-        
-    public int getIdCategoriaObrero() {
-        String categoria = getComboCategoria().getSelectedItem().toString();
-        String sqlOb = "SELECT idCategoria FROM categoria WHERE nombreCategoria='" + categoria + "'";
-        try {
-            cc.conexion();
-            Statement st1 = cn.createStatement();
-            ResultSet rs1 = st1.executeQuery(sqlOb);
-            rs1.next();
-            return rs1.getInt(1);
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    void agregarPersonal() {
-        //Tomo datos obrero
-        
-        int idCat = getIdCategoriaObrero();
-        String nombre = getCampoNombre().getText().toUpperCase();
-        String apellido = getCampoApellido().getText().toUpperCase();
-        int dni = Integer.parseInt(getCampoDni().getText());
-        String cuil = getCampoCuil().getText();
-        int telefono = Integer.parseInt(getCampoTelefono().getText());
-        String direccion = getCampoDireccion().getText().toUpperCase();
-        String localidad = getCampoLocalidad().getText().toUpperCase();
-        String estadoCivil = getComboEstadoCivil().getSelectedItem().toString().toUpperCase();
-        Date fechaNac = getDateChooserNacOb().getDate();
-        Date fechaIng = getDateChooserIngOb().getDate();
-        java.sql.Date fechaNacSqlOb = new java.sql.Date(fechaNac.getTime());
-        java.sql.Date fechaIngSqlOb = new java.sql.Date(fechaIng.getTime());
-        String sqlObrero = "INSERT INTO obrero(nombre, apellido, dni, cuil, fechaNacimiento, localidad, direccion, estadoCivil, fechaIngreso, telefono, Categoria) "
-                + "VALUES ('" +nombre+"','"+apellido+"','" + dni + "','" + cuil + "','" + fechaNacSqlOb + "','" + localidad + "','" + direccion + "','" + estadoCivil + "','" + fechaIngSqlOb + "','" + telefono + "','" + idCat + "')";
-System.out.println(sqlObrero);
-        try {
-            
-            Statement st = cn.createStatement();
-            st.execute(sqlObrero);
-            AbmObrero.agregarObrero(nombre, apellido, cuil, estadoCivil, localidad, direccion, fechaNac, fechaIng, dni, telefono, idCat);
-            JOptionPane.showMessageDialog(null, "Se agrego correctamente");
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "ERROR AL REGISTRAR");
-        }
-    }
-
+  
     public JComboBox getComboEstadoCivil() {
         return comboEstadoCivil;
     }
@@ -383,13 +337,13 @@ System.out.println(sqlObrero);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        agregarPersonal();
+        retornarEstado = 1;
         this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
+        retornarEstado = 0;
+        setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void campoApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidoActionPerformed

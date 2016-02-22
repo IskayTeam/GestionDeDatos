@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e30dd62-960b-4f5d-9c01-db16f476e9b9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -18,19 +21,15 @@
 	</background>
 	<title>
 		<band height="70" splitType="Stretch">
-			<image>
-				<reportElement uuid="4176ad7c-d4f5-4faa-b55e-11bc80bdb250" x="275" y="0" width="300" height="64"/>
-				<imageExpression><![CDATA["leaf_banner_red.png"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement uuid="dc731015-c3c6-4588-8950-d8f708b22c0d" style="Title" x="0" y="13" width="263" height="33"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Leaf Red Title]]></text>
+				<reportElement uuid="dc731015-c3c6-4588-8950-d8f708b22c0d" style="Title" x="149" y="13" width="263" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[JASYCO SA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3f8e0b25-c506-4bc4-8eb3-b8e98fcd0243" style="SubTitle" x="117" y="46" width="157" height="22"/>
+				<reportElement uuid="3f8e0b25-c506-4bc4-8eb3-b8e98fcd0243" style="SubTitle" x="0" y="48" width="233" height="22"/>
 				<textElement/>
-				<text><![CDATA[Leaf Red SubTitle]]></text>
+				<text><![CDATA[LISTA DE PROVEEDORES]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -48,32 +47,32 @@
 			<staticText>
 				<reportElement uuid="3bc99205-7960-4a5d-8243-97133317afaf" style="Column header" x="0" y="19" width="92" height="15"/>
 				<textElement/>
-				<text><![CDATA[nombre]]></text>
+				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="7fe8f069-af95-4cd9-9bff-dad24af6f970" style="Column header" x="92" y="19" width="92" height="15"/>
 				<textElement/>
-				<text><![CDATA[cuit]]></text>
+				<text><![CDATA[CUIT]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="b89f668a-6aa3-41c5-95cf-c313be4138a6" style="Column header" x="184" y="19" width="92" height="15"/>
 				<textElement/>
-				<text><![CDATA[provincia]]></text>
+				<text><![CDATA[Provincia]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="6125eb23-bdc7-483a-a691-668fb3aab717" style="Column header" x="276" y="19" width="92" height="15"/>
 				<textElement/>
-				<text><![CDATA[localidad]]></text>
+				<text><![CDATA[Localidad]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="4c1c043c-d419-462d-823c-a8e281c4324a" style="Column header" x="368" y="19" width="92" height="15"/>
 				<textElement/>
-				<text><![CDATA[direccion]]></text>
+				<text><![CDATA[Direccion]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="80e4241b-24be-4509-a53f-1bd0847cc2ea" style="Column header" x="460" y="19" width="92" height="15"/>
 				<textElement/>
-				<text><![CDATA[telefono]]></text>
+				<text><![CDATA[Telefono]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

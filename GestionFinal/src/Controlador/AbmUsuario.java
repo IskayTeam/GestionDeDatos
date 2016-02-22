@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -60,7 +61,7 @@ public class AbmUsuario {
         Usuario us = new Usuario();
         int idUsuario = Integer.parseInt(nu.getCampoId().getText());
         String user = nu.getCampoUsuario().getText();
-        String pass = nu.getCampoPass().getPassword().toString();
+        String pass = Arrays.toString(nu.getCampoPass().getPassword());
         String tipoUs = (String)nu.getjComboBox1().getSelectedItem();
         us.setIdUsuario(idUsuario);
         us.setUsuario(user);
@@ -81,14 +82,14 @@ public class AbmUsuario {
         //Declaracion de la query para la bd
         String sql = "INSERT INTO usuario(user, password, tipoUsuario) VALUES ('"+user+"','"+passC+"','"+tipoUs+"')";
         String sql2 = "INSERT INTO administrativo(nombre, domicilio, cuit, Usuario) VALUES ('"+nombre+"','"+domicilio+"','"+cuil+"','"+idUsuario+"')";
-        usuarios.add(us);
-        admines.add(ad);
+        
         try{
         cc.conexion();
         Statement st = cn.createStatement();
         st.execute(sql);
         st.execute(sql2);
-        
+        usuarios.add(us);
+        admines.add(ad);
             JOptionPane.showMessageDialog(null, "Se agrego correctamente");
         }catch(SQLException ex){
         JOptionPane.showMessageDialog(null, "Error al insertar");

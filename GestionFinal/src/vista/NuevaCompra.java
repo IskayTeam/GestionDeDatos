@@ -21,6 +21,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import modelo.compra.Material;
+import modelo.compra.Proveedor;
+import vista.AgregarMateriales;
+import vista.Callback;
 
 /**
  *
@@ -32,11 +35,13 @@ public class NuevaCompra extends javax.swing.JDialog {
     Connection cn = cc.conexion();
     ControladorCompra controlador = new ControladorCompra();
     Material m;
+    Proveedor p;
 
     public NuevaCompra(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         autoCompletar();
+        controlador.nuevaCompra();
         
     }
 
@@ -87,7 +92,7 @@ public class NuevaCompra extends javax.swing.JDialog {
     void llenarCamposSegunProv() {
 
         String nombre = getCampoBuscarProv().getText();
-        String sql = "SELECT cuit, provincia, localidad, direccion, telefono FROM proveedor "
+        String sql = "SELECT idProveedor, cuit, provincia, localidad, direccion, telefono FROM proveedor "
                 + "WHERE nombre='" + nombre + "'";
 
         cc.conexion();
@@ -99,6 +104,7 @@ public class NuevaCompra extends javax.swing.JDialog {
             String provincia = rs.getString("provincia");
             String localidad = rs.getString("localidad");
             String direccion = rs.getString("direccion");
+            String idProveedor = rs.getString("idProveedor");
             int telefono = rs.getInt("telefono");
             //this.getCampoId().setText(String.valueOf(id1));
             this.getCampoCuit().setText(cuit);
@@ -106,6 +112,9 @@ public class NuevaCompra extends javax.swing.JDialog {
             this.getCampoLocalidad().setText(localidad);
             this.getCampoDireccion().setText(direccion);
             this.getCampoTelefono().setText(String.valueOf(telefono));
+            p = new Proveedor(nombre, cuit, provincia, localidad, direccion, telefono);
+            p.setIdProveedor(Integer.parseInt(idProveedor));
+            
         } catch (SQLException ex) {
             Logger.getLogger(sql, null);
         }
@@ -291,6 +300,11 @@ public class NuevaCompra extends javax.swing.JDialog {
         });
 
         botonFinalizarCompra.setText("Finalizar");
+        botonFinalizarCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonFinalizarCompraActionPerformed(evt);
+            }
+        });
 
         botonCancelarCompra.setText("Cancelar");
         botonCancelarCompra.addActionListener(new java.awt.event.ActionListener() {
@@ -644,12 +658,13 @@ public class NuevaCompra extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if(campoCantidad.getText().equals("")){    
+        int cantidad = Integer.parseInt(campoCantidad.getText());
+        if(campoCantidad.equals("")){    
         JOptionPane.showMessageDialog(null, "Debes ingresar una cantidad", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
         }
         else{
             llenarTabla();
-            actualizarTotal();
+            float total = actualizarTotal();
         }
         
         limpiarCampos();
@@ -664,16 +679,29 @@ public class NuevaCompra extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_campoTotalCompraActionPerformed
 
-    void actualizarTotal(){
+    private void botonFinalizarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonFinalizarCompraActionPerformed
+        float total = Float.parseFloat(getCampoTotalCompra().getText());
+       
+        controlador.agregarTotal(total);
+        controlador.agregarProveedor(p.getIdProveedor(), p.getNombre(), p.getCuit(), p.getProvincia(), p.getLocalidad(), p.getLocalidad(),p.getTelefono());
+        controlador.finalizarCompra();
+        this.dispose();
+        
+        
+
+    }//GEN-LAST:event_botonFinalizarCompraActionPerformed
+
+    float actualizarTotal(){
     DefaultTableModel modelo = (DefaultTableModel) tablaNuevaCompra.getModel();
     
-        float total=0, subTotal=0;
+        float total=0;
         for(int i=0; i<tablaNuevaCompra.getRowCount();i++){
         total = total + Float.parseFloat(modelo.getValueAt(i, 4).toString());
 
         }
-        
+       
         campoTotalCompra.setText(""+total);
+        return total;
     }
     void llenarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tablaNuevaCompra.getModel();
@@ -683,7 +711,7 @@ public class NuevaCompra extends javax.swing.JDialog {
         int cantidad = Integer.parseInt(campoCantidad.getText());
         float precio = Float.parseFloat(campoPrecioMaterial.getText());
         float subTotal = cantidad * precio;
-
+        m = new Material(descripcion, precio);
         Object[] fila = new Object[5];
         fila[0] = codigo;
         fila[1] = descripcion;
@@ -741,6 +769,12 @@ public class NuevaCompra extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(NuevaCompra.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

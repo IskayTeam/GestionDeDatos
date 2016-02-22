@@ -6,14 +6,10 @@
 package vista;
 
 
-import java.util.Date;
-
-
 /**
  *
- * @author Luca
+ * @author Fran
  */
-public interface Callback2 {
-    void notificarObra(int idObra, String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos);
-    
+public interface Callback3 {
+    void pasarObra(String nombre, String apellido, int dni, String cuil, String localidad, String direccion, int categoria);
 }

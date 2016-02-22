@@ -8,12 +8,10 @@ package vista;
 import Controlador.ControladorPantallaLiquidaciones;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Locale;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import modelo.liquidacion.Concepto;
+
 
 /**
  *

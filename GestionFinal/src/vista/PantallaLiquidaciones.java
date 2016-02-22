@@ -23,7 +23,7 @@ public class PantallaLiquidaciones extends javax.swing.JFrame {
     public PantallaLiquidaciones() {
         initComponents();
     }
-
+ControladorPantallaLiquidaciones pan  =  new ControladorPantallaLiquidaciones();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,6 +40,7 @@ public class PantallaLiquidaciones extends javax.swing.JFrame {
         jMenu9 = new javax.swing.JMenu();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
@@ -83,6 +84,14 @@ public class PantallaLiquidaciones extends javax.swing.JFrame {
             }
         });
         jMenu9.add(jMenuItem15);
+
+        jMenuItem2.setText("Lista de Liquidaciones");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem2);
 
         jMenuBar1.add(jMenu9);
 
@@ -149,15 +158,27 @@ public class PantallaLiquidaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        // TODO add your handling code here:
+        AgregarLiquidacion liquidacion = new AgregarLiquidacion(this, true);
+        pan.AgregarObrero(liquidacion);        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-ControladorPantallaLiquidaciones pan  =  new ControladorPantallaLiquidaciones();
+
 ListadosConceptos con = new ListadosConceptos(null, true);
 pan.leerTablaConceptos(con);// TODO add your handling code here:  
+con.setLocationRelativeTo(null);
 con.setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+
+        ListaLiquidaciones ll = new ListaLiquidaciones(this,true);
+        ControladorPantallaLiquidaciones cpl = new ControladorPantallaLiquidaciones();
+        cpl.mostrarLiquidaciones(ll);
+        ll.setLocationRelativeTo(this);
+        ll.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,6 +224,7 @@ con.setVisible(true);
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     // End of variables declaration//GEN-END:variables

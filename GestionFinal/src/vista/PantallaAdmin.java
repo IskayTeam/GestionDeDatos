@@ -8,12 +8,17 @@ package vista;
 import Controlador.AbmObrero;
 import Controlador.ControladorPantallaLiquidaciones;
 import controlador.AbmProveedor;
+import controlador.ControladorCompra;
+import controlador.ControladorObra;
+import controlador.ControladorVenta;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,6 +27,9 @@ import javax.swing.JTextField;
 public class PantallaAdmin extends javax.swing.JFrame {
 
     Controlador.AbmObrero abmobrero = new AbmObrero();
+    int identificador;
+    int returnStatus;
+    ControladorPantallaLiquidaciones pan  =  new ControladorPantallaLiquidaciones();
     /**
      * Creates new form PantallaPrincipal
      */
@@ -50,7 +58,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
         campoFechaFinal = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaObraPersonal = new javax.swing.JTable();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -73,15 +81,16 @@ public class PantallaAdmin extends javax.swing.JFrame {
         menuItemListaPersonal = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
-        jMenu9 = new javax.swing.JMenu();
-        jMenuItem14 = new javax.swing.JMenuItem();
-        jMenuItem15 = new javax.swing.JMenuItem();
+        jMenu11 = new javax.swing.JMenu();
+        jMenuItem18 = new javax.swing.JMenuItem();
+        jMenuItem19 = new javax.swing.JMenuItem();
+        jMenu12 = new javax.swing.JMenu();
+        jMenuItem20 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu10 = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
@@ -112,15 +121,15 @@ public class PantallaAdmin extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Personal contratado");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaObraPersonal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Apellido", "Dni", "CUIL", "Localidad", "Categoría"
+                "Nombre", "Apellido", "Dni", "CUIL", "Localidad", "Direccion", "Categoría"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaObraPersonal);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText("Gastos realizados");
@@ -322,29 +331,10 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu6);
 
-        jMenu7.setText("Venta");
+        jMenu8.setText("Venta");
 
-        jMenuItem10.setText("Nueva Venta");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
-            }
-        });
-        jMenu7.add(jMenuItem10);
-
-        jMenuItem11.setText("Listado de Ventas");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu7.add(jMenuItem11);
-
-        jMenuBar1.add(jMenu7);
-
-        jMenu8.setText("Compras");
-
-        jMenuItem12.setText("Nueva Compra");
+        jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem12.setText("Nueva Venta");
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem12ActionPerformed(evt);
@@ -352,7 +342,7 @@ public class PantallaAdmin extends javax.swing.JFrame {
         });
         jMenu8.add(jMenuItem12);
 
-        jMenuItem13.setText("Listado de Compra");
+        jMenuItem13.setText("Listado de Ventas");
         jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem13ActionPerformed(evt);
@@ -362,25 +352,54 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu8);
 
-        jMenu9.setText("Liquidación");
+        jMenu11.setText("Compras");
 
-        jMenuItem14.setText("Nueva Liquidación");
-        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem18.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem18.setText("Nueva Compra");
+        jMenuItem18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem14ActionPerformed(evt);
+                jMenuItem18ActionPerformed(evt);
             }
         });
-        jMenu9.add(jMenuItem14);
+        jMenu11.add(jMenuItem18);
 
-        jMenuItem15.setText("Listado de Conceptos");
-        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem19.setText("Listado de Compra");
+        jMenuItem19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem15ActionPerformed(evt);
+                jMenuItem19ActionPerformed(evt);
             }
         });
-        jMenu9.add(jMenuItem15);
+        jMenu11.add(jMenuItem19);
 
-        jMenuBar1.add(jMenu9);
+        jMenuBar1.add(jMenu11);
+
+        jMenu12.setText("Liquidación");
+
+        jMenuItem20.setText("Nueva Liquidación");
+        jMenuItem20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem20ActionPerformed(evt);
+            }
+        });
+        jMenu12.add(jMenuItem20);
+
+        jMenuItem21.setText("Listado de Conceptos");
+        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem21ActionPerformed(evt);
+            }
+        });
+        jMenu12.add(jMenuItem21);
+
+        jMenuItem2.setText("Lista de Liquidaciones");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu12.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu12);
 
         jMenu10.setText("Ayuda");
 
@@ -426,44 +445,48 @@ public class PantallaAdmin extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        AltaObra altaobra = new AltaObra(this, true);
-        altaobra.setLocationRelativeTo(this);
-        altaobra.setVisible(true);
+        ControladorObra co = new ControladorObra();
+        co.agregarObra(null);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
-       ListaObras lista = new ListaObras(this, true);
-        lista.llenarTabla();
+        ControladorObra co = new ControladorObra();
+        ListaObras lista = new ListaObras(this, true);
+        co.llenarTabla(lista);
         lista.setCallback2(new Callback2() {
-
 
             @Override
             public void notificarObra(int idObra, String nombre, String direccion, Date fechaInicio, Date fechaFin, double egresos) {
-                
+
+                identificador = idObra;
                 getCampoId().setText("" + idObra);
                 getCampoDireccion().setText(direccion);
                 getCampoObraActual().setText(nombre);
-                getCampoFechaInicio().setText(""+fechaInicio);
-                getCampoFechaFinal().setText(""+fechaFin);
-                getCampoTotal().setText(""+egresos);
+                getCampoFechaInicio().setText("" + fechaInicio);
+                getCampoFechaFinal().setText("" + fechaFin);
+                getCampoTotal().setText("" + egresos);
             }
         });
-        jPanel1.setVisible(true);
         lista.setLocationRelativeTo(this);
         lista.setVisible(true);
+        int idObra = Integer.parseInt(getCampoId().getText());
+        co.llenarTablaObreros(idObra,getTablaObraPersonal());
+        if (lista.retornarEstado == 1) {
+            jPanel1.setVisible(true);
+            returnStatus = 1;
+        }
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         // TODO add your handling code here:
         int dialog = JOptionPane.showConfirmDialog(this, "Seguro desea cerrar sesión?");
-        if(dialog == JOptionPane.YES_OPTION){
-        PantallaPrincipal pp = new PantallaPrincipal();
-        pp.setVisible(true);
-        pp.setLocationRelativeTo(null);
-        this.setVisible(false);
-        }else{
-        this.setVisible(true);
+        if (dialog == JOptionPane.YES_OPTION) {
+            PantallaPrincipal pp = new PantallaPrincipal();
+            pp.setVisible(true);
+            pp.setLocationRelativeTo(null);
+            this.setVisible(false);
+        } else {
+            this.setVisible(true);
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
@@ -473,53 +496,20 @@ public class PantallaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+        
         ListaProveedor listaprov = new ListaProveedor(this, true);
         listaprov.setLocationRelativeTo(this);
         listaprov.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
-
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        // TODO add your handling code here:
-        NuevaCompra compranueva = new NuevaCompra(this, true);
-        compranueva.setLocationRelativeTo(this);
-        compranueva.setVisible(true);
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
-
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
-    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem14ActionPerformed
-
-    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-        // TODO add your handling code here:
-        ControladorPantallaLiquidaciones cpl = new ControladorPantallaLiquidaciones();
-        ListadosConceptos lc = new ListadosConceptos(this, true);
-        cpl.leerTablaConceptos(lc);
-        lc.setLocationRelativeTo(this);
-        lc.setVisible(true);
-        
-    }//GEN-LAST:event_jMenuItem15ActionPerformed
-
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
-try {
-     File path = new File ("C:\\Users\\Taka\\Documents\\Fisica Universitaria - Sears - Zemansky - 12ava Edicion - Vol2.pdf");
-     Desktop.getDesktop().open(path);
-}catch (IOException ex) {
-     ex.printStackTrace();
-}        // TODO add your handling code here:
+        try {
+            File path = new File("C:\\Users\\Taka\\Documents\\Fisica Universitaria - Sears - Zemansky - 12ava Edicion - Vol2.pdf");
+            Desktop.getDesktop().open(path);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
@@ -527,10 +517,31 @@ try {
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void menuItemListaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemListaPersonalActionPerformed
-        ListaPersonal lp = new ListaPersonal(null, true);
-        lp.setLocationRelativeTo(lp);
+        ListaPersonal lp = new ListaPersonal(null, true, identificador);
+        abmobrero.mostrarObrero(lp);
+        lp.setCallback3(new Callback3() {
+
+            @Override
+            public void pasarObra(String nombre, String apellido, int dni, String cuil, String localidad, String direccion, int categoria) {
+
+                DefaultTableModel modelo = (DefaultTableModel) tablaObraPersonal.getModel();
+
+                Object[] fila = new Object[7];
+                fila[0] = nombre;
+                fila[1] = apellido;
+                fila[2] = dni;
+                fila[3] = cuil;
+                fila[4] = localidad;
+                fila[5] = direccion;
+                fila[6] = categoria;
+
+                modelo.addRow(fila);
+                tablaObraPersonal.setModel(modelo);
+            }
+        });
+        lp.setLocationRelativeTo(null);
         lp.setVisible(true);
-        
+
     }//GEN-LAST:event_menuItemListaPersonalActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -555,6 +566,68 @@ try {
     private void campoTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoTotalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoTotalActionPerformed
+
+    private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
+        if (returnStatus == 1) {
+
+            NuevaCompra compranueva = new NuevaCompra(this, true);
+            compranueva.setLocationRelativeTo(this);
+            compranueva.setVisible(true);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "NO SE HA SELECCIONADO UNA OBRA", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_jMenuItem18ActionPerformed
+
+    private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
+        // TODO add your handling code here:
+        ListaCompras lc = new ListaCompras(this, true);
+        ControladorCompra cc = new ControladorCompra();
+        cc.mostrarCompras(lc);
+        lc.setLocationRelativeTo(this);
+        lc.setVisible(true);
+    }//GEN-LAST:event_jMenuItem19ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        NuevaVenta nueva = new NuevaVenta(this, true);
+        nueva.setLocationRelativeTo(this);
+        nueva.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+        ListaVentas lv = new ListaVentas(this, true);
+        ControladorVenta cv = new ControladorVenta();
+        cv.mostrarVentas(lv);
+        lv.setLocationRelativeTo(this);
+        lv.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem20ActionPerformed
+        AgregarLiquidacion liquidacion = new AgregarLiquidacion(this, true);
+        pan.AgregarObrero(liquidacion);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem20ActionPerformed
+
+    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+
+        ListadosConceptos con = new ListadosConceptos(null, true);
+        pan.leerTablaConceptos(con);// TODO add your handling code here:
+        con.setLocationRelativeTo(null);
+        con.setVisible(true);
+    }//GEN-LAST:event_jMenuItem21ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        
+        ListaLiquidaciones ll = new ListaLiquidaciones(this,true);
+        ControladorPantallaLiquidaciones cpl = new ControladorPantallaLiquidaciones();
+        cpl.mostrarLiquidaciones(ll);
+        ll.setLocationRelativeTo(this);
+        ll.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     public JTextField getCampoCompras() {
         return campoCompras;
@@ -620,6 +693,10 @@ try {
         this.campoTotal = campoTotal;
     }
 
+    public JTable getTablaObraPersonal() {
+        return tablaObraPersonal;
+    }
+
     
     /**
      * @param args the command line arguments
@@ -678,22 +755,23 @@ try {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
+    private javax.swing.JMenu jMenu11;
+    private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
-    private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
+    private javax.swing.JMenuItem jMenuItem18;
+    private javax.swing.JMenuItem jMenuItem19;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -702,7 +780,7 @@ try {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JMenuItem menuItemListaPersonal;
+    private javax.swing.JTable tablaObraPersonal;
     // End of variables declaration//GEN-END:variables
 }

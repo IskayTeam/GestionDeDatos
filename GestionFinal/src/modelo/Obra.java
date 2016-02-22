@@ -30,6 +30,9 @@ public class Obra {
         obreros = new ArrayList<>();
     }
 
+    public Obra() {
+    }
+    
     public int getIdObra() {
         return idObra;
     }

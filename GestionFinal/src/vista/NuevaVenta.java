@@ -5,6 +5,7 @@
  */
 package vista;
 
+import controlador.ControladorObra;
 import controlador.ControladorVenta;
 import java.util.Date;
 import javax.swing.JTextField;
@@ -459,7 +460,8 @@ public class NuevaVenta extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
          ListaObras lista = new ListaObras(null, true);
-        lista.llenarTabla();
+         ControladorObra co = new ControladorObra();
+        co.llenarTabla(lista);
         lista.setLocationRelativeTo(this);
 
         lista.setCallback2(new Callback2() {

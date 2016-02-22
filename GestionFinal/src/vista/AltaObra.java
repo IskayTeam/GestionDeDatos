@@ -8,6 +8,7 @@ package vista;
 
 import com.toedter.calendar.JDateChooser;
 import Controlador.Conectar;
+import controlador.ControladorObra;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +24,7 @@ public class AltaObra extends javax.swing.JDialog {
 
     Conectar cc = new Conectar();
     Connection cn = cc.conexion();
+    int retornarEstado;
 
     /**
      * Creates new form AltaObra
@@ -32,34 +34,9 @@ public class AltaObra extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void agregarObra() {
-
-        String nombreObra = getCampoNombreObra().getText().toUpperCase();
-        String direccion = getCampoDireccion().getText().toUpperCase();
-        Date fechaInicio = getDateChooserFechaInicio().getDate();
-        Date fechaFin = getDateChooserFechaFinaliz().getDate();
-        java.sql.Date fechaInicioObra = new java.sql.Date(fechaInicio.getTime());
-        java.sql.Date fechaFinalizObra = new java.sql.Date(fechaFin.getTime());
-
-        String sql = "INSERT INTO obra(nombre, direccion, fechaInicio, fechaFinalizacion, estado, egresos) "
-                + "VALUES ('" + nombreObra + "','" + direccion + "','" + fechaInicioObra + "','" + fechaFinalizObra
-                + "','" + "En construccion" + "','" + 0 + "')";
-
-        Statement st;
-        try {
-            st = cn.createStatement();
-            st.execute(sql);
-            JOptionPane.showMessageDialog(null, "Se agrego correctamente");
-            setVisible(false);
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "ERROR AL REGISTRAR");
-            setVisible(true);
-            throw new RuntimeException(ex);
-        } finally {
-            cc.cerrarConexion();
-        }
-
+    public AltaObra() {
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -196,12 +173,15 @@ public class AltaObra extends javax.swing.JDialog {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+       retornarEstado = 0;
+        setVisible(false);
+        
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        agregarObra();
+        retornarEstado = 1;
+        this.dispose();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     /**
@@ -276,6 +256,10 @@ public class AltaObra extends javax.swing.JDialog {
 
     public void setDateChooserFechaInicio(JDateChooser dateChooserFechaInicio) {
         this.dateChooserFechaInicio = dateChooserFechaInicio;
+    }
+
+    public int getRetornarEstado() {
+        return retornarEstado;
     }
 
 

@@ -13,10 +13,10 @@ public class Material {
     
     private int idMaterial;
     private String descripcion;
-    private int precio;
+    private float precio;
     private int idProv;
 
-    public Material(int idMaterial, String descripcion, int precio, int idProv) {
+    public Material(int idMaterial, String descripcion, float precio, int idProv) {
         this.idMaterial = idMaterial;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -24,11 +24,17 @@ public class Material {
 
     }
 
-    public int getPrecio() {
+    public Material(String descripcion, float precio) {
+        this.descripcion = descripcion;
+        this.precio = precio;
+    }
+
+
+    public float getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(float precio) {
         this.precio = precio;
     }
 

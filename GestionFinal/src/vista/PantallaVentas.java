@@ -7,6 +7,8 @@ package vista;
 
 import controlador.ControladorVenta;
 import javax.swing.JOptionPane;
+import vista.NuevaVenta;
+import vista.PantallaPrincipal;
 
 /**
  *
@@ -27,37 +29,19 @@ public class PantallaVentas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenu1 = new javax.swing.JMenu();
-        jLabel12 = new javax.swing.JLabel();
-        campoObraActual = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenuItem17 = new javax.swing.JMenuItem();
 
-        jMenu1.setText("jMenu1");
-
-        jLabel12.setText("Obra Actual:");
-
-        campoObraActual.setEditable(false);
-        campoObraActual.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoObraActualActionPerformed(evt);
-            }
-        });
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ventas");
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel1.setText("Ventas");
 
         jMenu3.setText("Usuario");
 
@@ -90,13 +74,13 @@ public class PantallaVentas extends javax.swing.JFrame {
         });
         jMenu7.add(jMenuItem10);
 
-        jMenuItem11.setText("Listado de Ventas");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem13.setText("Listado de Ventas");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
+                jMenuItem13ActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem11);
+        jMenu7.add(jMenuItem13);
 
         jMenuBar1.add(jMenu7);
 
@@ -126,17 +110,11 @@ public class PantallaVentas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jLabel1)
-                .addContainerGap(165, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(224, Short.MAX_VALUE))
+            .addGap(0, 279, Short.MAX_VALUE)
         );
 
         pack();
@@ -175,13 +153,19 @@ public class PantallaVentas extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
-
     private void campoObraActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoObraActualActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoObraActualActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+        // TODO add your handling code here:
+        ListaVentas lv = new ListaVentas(this, true);
+        ControladorVenta cv = new ControladorVenta();
+        cv.mostrarVentas(lv);
+        lv.setLocationRelativeTo(this);
+        lv.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,6 +193,9 @@ public class PantallaVentas extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PantallaVentas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -219,16 +206,12 @@ public class PantallaVentas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField campoObraActual;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem8;
